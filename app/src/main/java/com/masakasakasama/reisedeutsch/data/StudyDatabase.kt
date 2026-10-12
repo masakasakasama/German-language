@@ -51,10 +51,12 @@ data class RewardGrantEntity(@PrimaryKey val rewardKey:String,val localDate:Stri
     @Query("SELECT * FROM lesson_progress WHERE lessonId=:id") suspend fun lesson(id:String):LessonProgressEntity?
     @Upsert suspend fun putLesson(p:LessonProgressEntity)
     @Query("SELECT * FROM lesson_progress") suspend fun lessons():List<LessonProgressEntity>
+    @Query("SELECT * FROM lesson_progress") fun watchLessons():Flow<List<LessonProgressEntity>>
     @Query("SELECT * FROM study_session LIMIT 1") suspend fun session():SessionEntity?
     @Upsert suspend fun putSession(s:SessionEntity)
     @Query("DELETE FROM study_session") suspend fun clearSession()
     @Query("SELECT * FROM reward_grant") suspend fun rewards():List<RewardGrantEntity>
+    @Query("SELECT * FROM reward_grant") fun watchRewards():Flow<List<RewardGrantEntity>>
     @Query("SELECT * FROM answer_event") suspend fun events():List<AnswerEventEntity>
     @Query("DELETE FROM card_state") suspend fun clearCards()
     @Query("DELETE FROM answer_event") suspend fun clearEvents()

@@ -11,7 +11,7 @@ object AnswerGrader{
         if(actual.isBlank())return false
         val candidates=card.acceptedAnswers.ifEmpty{listOf(card.german)}
         return candidates.any{expected->
-            if(card.kind=="PHRASE")normalize(expected).lowercase(Locale.ROOT)==actual.lowercase(Locale.ROOT)
+            if(card.kind=="PHRASE"&&card.scene!="foundation")normalize(expected).lowercase(Locale.ROOT)==actual.lowercase(Locale.ROOT)
             else normalize(expected)==actual
         }
     }

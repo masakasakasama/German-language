@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.speech.RecognizerIntent
 import android.speech.SpeechRecognizer
 import android.speech.tts.TextToSpeech
+import androidx.activity.compose.BackHandler
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.compose.setContent
@@ -49,7 +50,10 @@ private val navItems=listOf("home" to ("ホーム" to Icons.Default.Home),"lesso
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable fun ReiseApp(vm:StudyViewModel= viewModel()){
  val page by vm.page.collectAsState();val stats by vm.stats.collectAsState();val session by vm.session.collectAsState();val dark by vm.dark.collectAsState();val notice by vm.notice.collectAsState();val goal by vm.goal.collectAsState();val update by vm.update.collectAsState()
+ val courseUnit by vm.courseUnit.collectAsState()
+ BackHandler(enabled=page in setOf("course","course-unit","course-complete")){vm.setPage(if(page=="course")"home" else "course")}
  val context= LocalContext.current;val scope= rememberCoroutineScope();var drawer by remember{mutableStateOf(false)};var showUpdate by remember{mutableStateOf(false)}
+ LaunchedEffect(update.release?.versionCode){if(update.release!=null)showUpdate=true}
  var tts by remember{mutableStateOf<TextToSpeech?>(null)}
  DisposableEffect(context){val engine=TextToSpeech(context){status->if(status==TextToSpeech.SUCCESS)tts?.language=Locale.GERMANY};tts=engine;onDispose{engine.stop();engine.shutdown()}}
  val speechLauncher= rememberLauncherForActivityResult(ActivityResultContracts.StartActivityForResult()){result->
@@ -65,14 +69,17 @@ private val navItems=listOf("home" to ("ホーム" to Icons.Default.Home),"lesso
   LaunchedEffect(notice){notice?.let{snackbar.showSnackbar(it);vm.clearNotice()}}
   Scaffold(snackbarHost={SnackbarHost(snackbar)},containerColor=c.paper,topBar={
    if(page !in setOf("study","complete","conversation-detail"))TopAppBar(
-    title={Text(if(page=="home")"ReiseDeutsch" else navItems.firstOrNull{it.first==page}?.second?.first?:when(page){"settings"->"設定";"backup"->"データ管理";else->"ReiseDeutsch"},fontWeight=FontWeight.Bold,color=c.ink)},
-    navigationIcon={IconButton(onClick={if(page=="settings"||page=="backup")vm.setPage("profile") else drawer=true}){Icon(if(page=="settings"||page=="backup")Icons.Default.ArrowBack else Icons.Default.Menu,null,tint=c.ink)}},
-    actions={if(page=="home")IconButton(onClick={vm::dueClick}){Icon(Icons.Default.Notifications,null,tint=c.ink)};if(page=="lessons")IconButton(onClick={vm.setPage("map")}){Icon(Icons.Default.Explore,null,tint=c.ink)}} ,colors=TopAppBarDefaults.topAppBarColors(containerColor=c.paper))
+    title={Text(if(page=="home")"ReiseDeutsch" else navItems.firstOrNull{it.first==page}?.second?.first?:when(page){"settings"->"設定";"backup"->"データ管理";"course"->"ドイツ語の基礎";"course-unit"->"しくみを学ぶ";"course-complete"->"基礎レッスン完了";else->"ReiseDeutsch"},fontWeight=FontWeight.Bold,color=c.ink)},
+    navigationIcon={IconButton(onClick={when(page){"settings","backup"->vm.setPage("profile");"course-unit","course-complete"->vm.setPage("course");"course"->vm.setPage("home");else->drawer=true}}){Icon(if(page in setOf("settings","backup","course","course-unit","course-complete"))Icons.Default.ArrowBack else Icons.Default.Menu,null,tint=c.ink)}},
+    actions={if(page=="home")IconButton(onClick=vm::dueClick){Icon(Icons.Default.Notifications,null,tint=c.ink)};if(page=="lessons")IconButton(onClick={vm.setPage("map")}){Icon(Icons.Default.Explore,null,tint=c.ink)}} ,colors=TopAppBarDefaults.topAppBarColors(containerColor=c.paper))
   },bottomBar={if(page in setOf("home","lessons","map","conversation","collection","profile"))NavigationBar(containerColor=c.surface,tonalElevation=2.dp){navItems.forEach{(id,pair)->NavigationBarItem(selected=page==id||id=="lessons"&&page=="map",onClick={vm.setPage(id)},icon={Icon(pair.second,null)},label={Text(pair.first,maxLines=1,fontSize=10.sp)},colors=NavigationBarItemDefaults.colors(selectedIconColor=c.action,selectedTextColor=c.action,indicatorColor=c.actionSoft,unselectedIconColor=c.muted,unselectedTextColor=c.muted))}}}){padding->
    Box(Modifier.fillMaxSize().padding(padding)){
     when(page){
      "home"->HomeScreen(vm,stats,goal,tts){vm.setPage("lessons")}
      "lessons","map"->LessonMapScreen(vm,stats)
+     "course"->CourseOverviewScreen(vm,stats)
+     "course-unit"->CourseUnitScreen(vm,courseUnit,tts)
+     "course-complete"->CourseCompleteScreen(vm,courseUnit)
      "conversation"->ConversationList(vm)
      "conversation-detail"->ConversationScreen(vm,vm.conversation.collectAsState().value,tts,micPermission)
      "collection"->CollectionScreen(vm,stats)
@@ -95,6 +102,7 @@ private val navItems=listOf("home" to ("ホーム" to Icons.Default.Home),"lesso
  val c=LocalReiseColors.current;val hour=java.time.LocalTime.now().hour;val greeting=when(hour){in 5..10->"Guten Morgen!";in 11..17->"Guten Tag!";else->"Guten Abend!"}
  PageColumn{
   ReiseCard(Modifier.fillMaxWidth().heightIn(min=130.dp)){Row(Modifier.fillMaxWidth(),horizontalArrangement=Arrangement.SpaceBetween,verticalAlignment=Alignment.CenterVertically){Column(Modifier.weight(1f),verticalArrangement=Arrangement.spacedBy(8.dp)){Text(greeting,fontSize=25.sp,fontWeight=FontWeight.ExtraBold,color=c.ink);Text("今日も一歩、ドイツ語で新しい世界に近づこう！",color=c.muted);TextButton(onClick={tts?.speak("Guten Morgen",TextToSpeech.QUEUE_FLUSH,null,"greeting")}){Text("🔊 こんにちはを聞く")}};TravelBunny(Modifier.size(82.dp))}}
+  CourseEntry(vm,s)
   ReiseCard(Modifier.fillMaxWidth()){Row(verticalAlignment=Alignment.CenterVertically){Text("🎯",fontSize=34.sp);Column(Modifier.weight(1f).padding(horizontal=12.dp)){Text("今日のミッション",color=c.action,fontWeight=FontWeight.Bold);Text(if(s.today>=3)"今日の目標クリア！旅を続けよう 🐰" else "カフェで注文するフレーズを3つ練習しよう！",fontWeight=FontWeight.SemiBold);ProgressBar(s.today.coerceAtMost(3),3)};PrimaryButton("→",onClick={if(s.due>0)vm.dueClick() else onLessons()},Modifier.width(64.dp))}}
   ReiseCard(Modifier.fillMaxWidth()){Row(Modifier.fillMaxWidth(),horizontalArrangement=Arrangement.SpaceBetween){Text("今日の目標",fontWeight=FontWeight.Bold);Text("${s.today.coerceAtMost(goal)} / $goal 枚",color=c.muted)};ProgressBar(s.today,goal)}
   Row(horizontalArrangement=Arrangement.spacedBy(10.dp)){Metric("🔥","${s.streak}日","連続学習",Modifier.weight(1f));Metric("👑","${s.xp}","合計XP",Modifier.weight(1f));Metric("📊","A1","学習の目安",Modifier.weight(1f))}
@@ -112,6 +120,7 @@ private fun sceneTitle(scene:String)=when(scene){"cafe"->"Café";"station"->"Am 
  val c=LocalReiseColors.current;var listMode by remember{mutableStateOf(false)}
  PageColumn{
   ReiseCard(Modifier.fillMaxWidth()){Row(horizontalArrangement=Arrangement.SpaceBetween,modifier=Modifier.fillMaxWidth()){MetricInline("🔥","${s.streak}日","連続中");MetricInline("👑","${s.xp} XP","旅の記録")};Spacer(Modifier.height(4.dp));Row(horizontalArrangement=Arrangement.SpaceBetween,modifier=Modifier.fillMaxWidth(),verticalAlignment=Alignment.CenterVertically){Text("ドイツを旅する学習マップ",fontWeight=FontWeight.Bold);TextButton(onClick={listMode=!listMode}){Text(if(listMode)"地図へ" else "一覧へ",color=c.action)}}}
+  CourseEntry(vm,s)
   if(!listMode)MapCard(vm,s)
   vm.content.cities.forEach{city->val ls=city.lessonIds.mapNotNull(vm.content::lesson);val done=ls.count{it.id in s.completedLessons};val opened=city.order==1||vm.content.cities.getOrNull(city.order-2)?.lessonIds?.all{s.completedLessons.contains(it)}==true
    ReiseCard(Modifier.fillMaxWidth()){Row(Modifier.fillMaxWidth(),verticalAlignment=Alignment.CenterVertically){Text(if(done==4)"✅" else if(opened)"📍" else "🔒",fontSize=24.sp);Column(Modifier.weight(1f).padding(start=12.dp)){Text(city.name,fontWeight=FontWeight.Bold,fontSize=19.sp);Text("${done}/4 レッスン",color=c.muted)};Text(sceneIcon(ls.firstOrNull()?.scene?:""),fontSize=23.sp)};ProgressBar(done,4)
@@ -120,10 +129,10 @@ private fun sceneTitle(scene:String)=when(scene){"cafe"->"Café";"station"->"Am 
  }
 }
 @Composable private fun MetricInline(icon:String,value:String,label:String){val c=LocalReiseColors.current;Column(horizontalAlignment=Alignment.CenterHorizontally){Text("$icon $value",fontWeight=FontWeight.Bold,fontSize=18.sp,color=c.ink);Text(label,fontSize=11.sp,color=c.muted)}}
-@Composable private fun MapCard(vm:StudyViewModel,s:AppStats){val c=LocalReiseColors.current;val names=vm.content.cities.map{it.name};val nodes=listOf(0.24f to 0.08f,0.72f to 0.24f,0.19f to 0.43f,0.38f to 0.63f,0.66f to 0.84f)
- Box(Modifier.fillMaxWidth().height(460.dp).clip(RoundedCornerShape(26.dp)).background(Brush.verticalGradient(listOf(Color(0xFFEDF5D7),c.mapPaper,Color(0xFFE4F3E9))))){Canvas(Modifier.fillMaxSize()){val pts=nodes.map{Offset(size.width*it.first,size.height*it.second)};for(i in 0 until pts.lastIndex){drawLine(if(i<s.completedLessons.size/4)c.progress else c.action,pts[i],pts[i+1],strokeWidth=6.dp.toPx(),pathEffect=PathEffect.dashPathEffect(floatArrayOf(12f,10f)))};pts.forEachIndexed{i,p->drawCircle(if(i<=s.completedLessons.size/4)c.action else Color.White,14.dp.toPx(),p);drawCircle(if(i<=s.completedLessons.size/4)c.action else c.muted,22.dp.toPx(),p,style=Stroke(3.dp.toPx()))}}
+@Composable private fun MapCard(vm:StudyViewModel,s:AppStats){val c=LocalReiseColors.current;val names=vm.content.cities.map{it.name};val travelDone=vm.content.cities.sumOf{city->city.lessonIds.count{it in s.completedLessons}};val nodes=listOf(0.24f to 0.08f,0.72f to 0.24f,0.19f to 0.43f,0.38f to 0.63f,0.66f to 0.84f)
+ Box(Modifier.fillMaxWidth().height(460.dp).clip(RoundedCornerShape(26.dp)).background(Brush.verticalGradient(listOf(Color(0xFFEDF5D7),c.mapPaper,Color(0xFFE4F3E9))))){Canvas(Modifier.fillMaxSize()){val pts=nodes.map{Offset(size.width*it.first,size.height*it.second)};for(i in 0 until pts.lastIndex){drawLine(if(i<travelDone/4)c.progress else c.action,pts[i],pts[i+1],strokeWidth=6.dp.toPx(),pathEffect=PathEffect.dashPathEffect(floatArrayOf(12f,10f)))};pts.forEachIndexed{i,p->drawCircle(if(i<=travelDone/4)c.action else Color.White,14.dp.toPx(),p);drawCircle(if(i<=travelDone/4)c.action else c.muted,22.dp.toPx(),p,style=Stroke(3.dp.toPx()))}}
   Box(Modifier.align(Alignment.TopEnd).padding(10.dp)){Text("🌲     🏰      🌳\n    🌲        🏰",fontSize=32.sp,lineHeight=52.sp,color=Color(0xFF60775A))}
-  nodes.forEachIndexed{i,pos->Column(Modifier.align(Alignment.TopStart).offset(x=(pos.first*310+8).dp,y=(pos.second*420+5).dp).widthIn(max=150.dp),horizontalAlignment=Alignment.CenterHorizontally){Text(if(i<s.completedLessons.size/4)"✅" else if(i==s.completedLessons.size/4)"🐰" else "",fontSize=23.sp);Text(names[i],fontWeight=FontWeight.Bold,fontSize=13.sp,color=c.ink);Text("${vm.content.cities[i].lessonIds.count{s.completedLessons.contains(it)}}/4",fontSize=11.sp,color=c.muted)}}
+  nodes.forEachIndexed{i,pos->Column(Modifier.align(Alignment.TopStart).offset(x=(pos.first*310+8).dp,y=(pos.second*420+5).dp).widthIn(max=150.dp),horizontalAlignment=Alignment.CenterHorizontally){Text(if(i<travelDone/4)"✅" else if(i==travelDone/4)"🐰" else "",fontSize=23.sp);Text(names[i],fontWeight=FontWeight.Bold,fontSize=13.sp,color=c.ink);Text("${vm.content.cities[i].lessonIds.count{s.completedLessons.contains(it)}}/4",fontSize=11.sp,color=c.muted)}}
   Text("DEUTSCHLAND 🇩🇪",Modifier.align(Alignment.BottomEnd).padding(14.dp),color=c.muted,fontSize=12.sp)
  }
 }
@@ -140,25 +149,72 @@ private fun sceneTitle(scene:String)=when(scene){"cafe"->"Café";"station"->"Am 
 }
 
 @Composable private fun CollectionScreen(vm:StudyViewModel,s:AppStats){val c=LocalReiseColors.current;var query by remember{mutableStateOf("")};val f by vm.filter.collectAsState();val cards=vm.content.cards.filter{it.kind=="PHRASE"}.filter{it.id in s.collected}.filter{f=="ALL"||s.assessments[it.id]==f}.filter{query.isBlank()||it.german.contains(query,true)||it.japanese.contains(query)}
- PageColumn{Text("フレーズカード",fontSize=22.sp,fontWeight=FontWeight.Bold);Text("${s.collected.size} / 60 集めたフレーズ",color=c.muted);OutlinedTextField(query,{query=it},modifier=Modifier.fillMaxWidth(),label={Text("フレーズを検索")},singleLine=true);Row(horizontalArrangement=Arrangement.spacedBy(7.dp)){listOf("ALL" to "すべて","KNOW" to "わかる","OK" to "少し","DONT_KNOW" to "復習").forEach{(id,label)->FilterChip(selected=f==id,onClick={vm.setFilter(id)},label={Text(label)},colors=FilterChipDefaults.filterChipColors(selectedContainerColor=c.actionSoft))}};if(cards.isEmpty())EmptyMessage("🎒","まだカードがありません","レッスンで新しいフレーズを学ぼう") else cards.forEach{card->PhraseTile(card,{vm.startCard(card)},s.assessments[card.id])}}
+ PageColumn{Text("フレーズカード",fontSize=22.sp,fontWeight=FontWeight.Bold);Text("${s.collected.size} / ${vm.content.cards.count{it.kind=="PHRASE"}} 集めたフレーズ",color=c.muted);OutlinedTextField(query,{query=it},modifier=Modifier.fillMaxWidth(),label={Text("フレーズを検索")},singleLine=true);Row(horizontalArrangement=Arrangement.spacedBy(7.dp)){listOf("ALL" to "すべて","KNOW" to "わかる","OK" to "少し","DONT_KNOW" to "復習").forEach{(id,label)->FilterChip(selected=f==id,onClick={vm.setFilter(id)},label={Text(label)},colors=FilterChipDefaults.filterChipColors(selectedContainerColor=c.actionSoft))}};if(cards.isEmpty())EmptyMessage("🎒","まだカードがありません","レッスンで新しいフレーズを学ぼう") else cards.forEach{card->PhraseTile(card,{vm.startCard(card)},s.assessments[card.id])}}
 }
 
-@Composable private fun ProfileScreen(vm:StudyViewModel,s:AppStats,export:androidx.activity.result.ActivityResultLauncher<String>,import:androidx.activity.result.ActivityResultLauncher<Array<String>>,updates:()->Unit){val c=LocalReiseColors.current;PageColumn{BunnyCard("Meine Reise 🐰","ドイツ語の旅の記録。できたことを見てみよう！");ReiseCard(Modifier.fillMaxWidth()){Text("今日の記録",fontWeight=FontWeight.Bold,fontSize=18.sp);Row(horizontalArrangement=Arrangement.spacedBy(12.dp)){Metric("📚","${s.today}","カード");Metric("⭐","${s.xp}","合計XP");Metric("🔥","${s.streak}","連続日数")}};ReiseCard(Modifier.fillMaxWidth()){Text("学習の進み具合",fontWeight=FontWeight.Bold);Text("${s.learned} 枚を学習・${s.mastered} 枚が定着目安",color=c.muted);ProgressBar(s.collected.size,60);Text("現在の教材目安: A1",color=c.muted)};ProfileRow("⚙️","設定","表示・目標・通知",{vm.setPage("settings")});ProfileRow("📦","バックアップ","学習記録を保存・復元",{vm.setPage("backup")});ProfileRow("⬆️","アプリを更新","バージョン 0.1.1",updates)} }
+@Composable private fun ProfileScreen(vm:StudyViewModel,s:AppStats,export:androidx.activity.result.ActivityResultLauncher<String>,import:androidx.activity.result.ActivityResultLauncher<Array<String>>,updates:()->Unit){val c=LocalReiseColors.current;PageColumn{BunnyCard("Meine Reise 🐰","ドイツ語の旅の記録。できたことを見てみよう！");ReiseCard(Modifier.fillMaxWidth()){Text("今日の記録",fontWeight=FontWeight.Bold,fontSize=18.sp);Row(horizontalArrangement=Arrangement.spacedBy(12.dp)){Metric("📚","${s.today}","カード");Metric("⭐","${s.xp}","合計XP");Metric("🔥","${s.streak}","連続日数")}};ReiseCard(Modifier.fillMaxWidth()){Text("学習の進み具合",fontWeight=FontWeight.Bold);Text("${s.learned} 枚を学習・${s.mastered} 枚が定着目安",color=c.muted);ProgressBar(s.collected.size,vm.content.cards.count{it.kind=="PHRASE"});Text("現在の教材目安: A1",color=c.muted)};ProfileRow("⚙️","設定","表示・目標・通知",{vm.setPage("settings")});ProfileRow("📦","バックアップ","学習記録を保存・復元",{vm.setPage("backup")});ProfileRow("⬆️","アプリを更新","バージョン ${BuildConfig.VERSION_NAME}・確認して更新",updates)} }
 @Composable private fun ProfileRow(icon:String,title:String,subtitle:String,onClick:()->Unit){val c=LocalReiseColors.current;ReiseCard(Modifier.fillMaxWidth().clickable{onClick()}){Row(verticalAlignment=Alignment.CenterVertically){Text(icon,fontSize=26.sp);Column(Modifier.weight(1f).padding(horizontal=12.dp)){Text(title,fontWeight=FontWeight.Bold);Text(subtitle,color=c.muted,fontSize=12.sp)};Text("›",color=c.action,fontSize=24.sp)}}}
-@Composable private fun SettingsScreen(vm:StudyViewModel,goal:Int){val c=LocalReiseColors.current;val dark by vm.dark.collectAsState();PageColumn{BunnyCard("Einstellungen","自分のペースに合わせよう 🌼");ReiseCard(Modifier.fillMaxWidth()){Text("テーマ",fontWeight=FontWeight.Bold);Row{FilterChip(!dark,{vm.setDark(false)},{Text("☀️ Light")});Spacer(Modifier.width(8.dp));FilterChip(dark,{vm.setDark(true)},{Text("🌙 Dark")})}};ReiseCard(Modifier.fillMaxWidth()){Text("1日の目標",fontWeight=FontWeight.Bold);Row{listOf(5,10,20).forEach{FilterChip(goal==it,{vm.setGoal(it)},{Text("$it 枚")})}}};ReiseCard(Modifier.fillMaxWidth()){Text("学習記録と教材はこの端末に保存されます。オンライン同期や広告はありません。",color=c.muted)}}}
+@Composable private fun SettingsScreen(vm:StudyViewModel,goal:Int){val c=LocalReiseColors.current;val dark by vm.dark.collectAsState();val autoUpdates by vm.autoUpdates.collectAsState();PageColumn{BunnyCard("Einstellungen","自分のペースに合わせよう 🌼");ReiseCard(Modifier.fillMaxWidth()){Text("テーマ",fontWeight=FontWeight.Bold);Row{FilterChip(!dark,{vm.setDark(false)},{Text("☀️ Light")});Spacer(Modifier.width(8.dp));FilterChip(dark,{vm.setDark(true)},{Text("🌙 Dark")})}};ReiseCard(Modifier.fillMaxWidth()){Text("1日の目標",fontWeight=FontWeight.Bold);Row{listOf(5,10,20).forEach{FilterChip(goal==it,{vm.setGoal(it)},{Text("$it 枚")})}}};ReiseCard(Modifier.fillMaxWidth()){Text("更新のお知らせ",fontWeight=FontWeight.Bold);Row(verticalAlignment=Alignment.CenterVertically){Text("起動時に新しい版を確認",Modifier.weight(1f));Switch(autoUpdates,{vm.setAutoUpdates(it)})};Text("新しい版があると案内します。ダウンロードとインストールは自分で確認して進めます。",color=c.muted)};ReiseCard(Modifier.fillMaxWidth()){Text("学習記録と教材はこの端末に保存されます。オンライン同期や広告はありません。",color=c.muted)}}}
 @Composable private fun BackupScreen(onExport:()->Unit,onImport:()->Unit,onReset:()->Unit){val c=LocalReiseColors.current;var confirm by remember{mutableStateOf(false)};PageColumn{BunnyCard("データを守ろう 🧳","バックアップはJSON形式で保存されます。復元すると現在の学習記録が置き換わります。");PrimaryButton("⬇️ バックアップを書き出す",onExport);PrimaryButton("⬆️ バックアップから復元",onImport);ReiseCard(Modifier.fillMaxWidth().clickable{confirm=true}){Text("学習記録をリセット",color=c.action,fontWeight=FontWeight.Bold);Text("教材は消えません",color=c.muted)}};if(confirm)AlertDialog(onDismissRequest={confirm=false},title={Text("学習記録を消去しますか？")},text={Text("先にバックアップを保存してください。消去した記録は元に戻せません。")},confirmButton={TextButton(onClick={confirm=false;onReset()}){Text("リセット",color=c.action)}},dismissButton={TextButton(onClick={confirm=false}){Text("キャンセル")}})}
 
-@Composable private fun StudyScreen(vm:StudyViewModel,s:SessionUi,tts:TextToSpeech?){val c=LocalReiseColors.current;var inputMode by remember(s.id,s.cursor){mutableStateOf(false)};var typed by remember(s.id,s.cursor){mutableStateOf("")};val card=s.cards.getOrNull(s.cursor/2);if(card==null){EmptyMessage("🐰","学習カードがありません","コースからフレーズを選ぼう");return};val isIntro=s.cursor%2==0;val options= remember(s.id,s.cursor){vm.options(card)}
- Column(Modifier.fillMaxSize().padding(horizontal=16.dp,vertical=12.dp),verticalArrangement=Arrangement.spacedBy(12.dp)){
-  Row(Modifier.fillMaxWidth(),verticalAlignment=Alignment.CenterVertically){IconButton(onClick={vm.toast("学習中の進捗は保存されました")}){Icon(Icons.Default.Close,"閉じる",tint=c.ink)};Column(Modifier.weight(1f)){Text(s.lesson?.title?:"今日の復習",fontWeight=FontWeight.Bold);ProgressBar(s.cursor,s.cards.size*2)};Text("${s.cursor+1}/${s.cards.size*2}",color=c.muted)}
-  BunnyCard(if(isIntro)"このフレーズを覚えよう！" else "思い出してみよう 💭","ゆっくりで大丈夫。旅の準備をしよう。")
+@Composable private fun StudyScreen(vm:StudyViewModel,s:SessionUi,tts:TextToSpeech?){
+ val c=LocalReiseColors.current
+ var inputMode by remember(s.id,s.cursor){mutableStateOf(false)}
+ var typed by remember(s.id,s.cursor){mutableStateOf("")}
+ val card=s.cards.getOrNull(s.cursor/2)?:return
+ val isIntro=s.cursor%2==0
+ val question=GermanCourse.question(card.id)
+ val course=GermanCourse.unit(s.lesson?.id.orEmpty())
+ val options=remember(s.id,s.cursor){vm.options(card)}
+ Column(Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(16.dp),verticalArrangement=Arrangement.spacedBy(14.dp)){
+  Row(Modifier.fillMaxWidth(),verticalAlignment=Alignment.CenterVertically){
+   IconButton(onClick={if(course!=null)vm.openCourseUnit(course) else vm.finishReview()}){Icon(Icons.Default.Close,"閉じる",tint=c.ink)}
+   Column(Modifier.weight(1f)){Text(s.lesson?.title?:"今日の復習",fontWeight=FontWeight.Bold);ProgressBar(s.cursor,s.cards.size*2)}
+   Text("${s.cursor+1}/${s.cards.size*2}",color=c.muted)
+  }
+  if(course!=null)TextButton(onClick={vm.openCourseUnit(course)}){Text("📖 しくみの説明に戻る")}
+  BunnyCard(if(isIntro)"文の形と理由を見てみよう" else "しくみを使って考えよう 💭",if(question!=null)"主語・動詞・格に注目。答えだけでなく、なぜその形になるか考えてみよう。" else "ゆっくりで大丈夫。旅の準備をしよう。")
   if(isIntro){
-    Spacer(Modifier.height(12.dp));ReiseCard(Modifier.fillMaxWidth().weight(.6f),){Box(Modifier.fillMaxSize(),contentAlignment=Alignment.Center){Column(horizontalAlignment=Alignment.CenterHorizontally,verticalArrangement=Arrangement.spacedBy(15.dp)){Text(sceneIcon(card.scene),fontSize=48.sp);Text(card.german,fontSize=27.sp,fontWeight=FontWeight.Bold,textAlign=TextAlign.Center,color=c.ink);TextButton(onClick={tts?.speak(card.german,TextToSpeech.QUEUE_FLUSH,null,card.id)}){Text("🔊 発音を聞く")};if(s.revealed){Text(card.japanese,fontSize=20.sp,color=c.muted,textAlign=TextAlign.Center);Text(card.grammar,fontSize=14.sp,color=c.muted,textAlign=TextAlign.Center)}}}}
-    if(!s.revealed)PrimaryButton("答えを見る",vm::reveal,Modifier.fillMaxWidth()) else {Text("どれくらいわかった？",Modifier.fillMaxWidth(),color=c.muted,textAlign=TextAlign.Center);Row(horizontalArrangement=Arrangement.spacedBy(8.dp)){Assessment.values().forEach{a->val title=when(a){Assessment.DONT_KNOW->"😕\nわからない\n明日また復習";Assessment.OK->"😐\n少しわかる\n通常の間隔";Assessment.KNOW->"😊\nわかる\n間隔を延長"};val selected=s.answered;OutlinedButton(onClick={vm.saveAssessment(a)},modifier=Modifier.weight(1f).heightIn(min=92.dp),enabled=!selected,shape=RoundedCornerShape(18.dp),colors=ButtonDefaults.outlinedButtonColors(contentColor=c.ink)){Text(title,textAlign=TextAlign.Center,fontSize=12.sp)}}};if(s.answered)PrimaryButton("次へ →",vm::next,Modifier.fillMaxWidth())}
+   ReiseCard(Modifier.fillMaxWidth()){
+    Text(if(question!=null)"🌱" else sceneIcon(card.scene),fontSize=36.sp)
+    Text(card.german,fontSize=25.sp,fontWeight=FontWeight.Bold,color=c.ink)
+    TextButton(onClick={tts?.speak(card.german,TextToSpeech.QUEUE_FLUSH,null,card.id)}){Text("🔊 発音を聞く")}
+    if(s.revealed){Text(card.japanese,fontSize=19.sp,color=c.muted);Text("なぜこの形？",fontWeight=FontWeight.Bold);Text(card.grammar,fontSize=16.sp,lineHeight=26.sp)}
+   }
+   if(!s.revealed)PrimaryButton("意味と理由を見る",vm::reveal,Modifier.fillMaxWidth()) else {
+    Text("どれくらいわかった？",color=c.muted)
+    Row(horizontalArrangement=Arrangement.spacedBy(8.dp)){
+     Assessment.values().forEach{a->val title=when(a){Assessment.DONT_KNOW->"😕\nわからない";Assessment.OK->"😐\n少しわかる";Assessment.KNOW->"😊\nわかる"}
+      OutlinedButton(onClick={vm.saveAssessment(a)},modifier=Modifier.weight(1f).heightIn(min=76.dp),enabled=!s.answered&&!s.saving,shape=RoundedCornerShape(18.dp)){Text(title,textAlign=TextAlign.Center,fontSize=12.sp)}
+     }
+    }
+    if(s.answered)PrimaryButton("練習へ →",vm::next,Modifier.fillMaxWidth())
+   }
   }else{
-    ReiseCard(Modifier.fillMaxWidth()){Text("${card.japanese} をドイツ語で選ぼう",fontWeight=FontWeight.Bold,fontSize=20.sp);Text("🔊 音声を聞いて練習してみよう",color=c.muted);TextButton(onClick={tts?.speak(card.german,TextToSpeech.QUEUE_FLUSH,null,card.id)}){Text("▶ ドイツ語を聞く")}}
-    if(!inputMode)options.forEachIndexed{i,opt->val selected=s.selected==i;OutlinedButton(onClick={vm.choose(i)},modifier=Modifier.fillMaxWidth().heightIn(min=52.dp),shape=RoundedCornerShape(16.dp),border=androidx.compose.foundation.BorderStroke(if(selected)2.dp else 1.dp,if(selected)c.action else c.line),colors=ButtonDefaults.outlinedButtonColors(containerColor=if(selected)c.actionSoft else c.surface,contentColor=c.ink)){Text(opt.german,fontSize=17.sp)}}else{OutlinedTextField(typed,{typed=it},Modifier.fillMaxWidth(),label={Text("ドイツ語で答える")},placeholder={Text("フレーズを入力")},minLines=1,maxLines=3);Row(horizontalArrangement=Arrangement.spacedBy(5.dp)){listOf("ä","ö","ü","ß").forEach{letter->AssistChip(onClick={typed+=letter},label={Text(letter)})}}};TextButton(onClick={inputMode=!inputMode}){Text(if(inputMode)"選択問題で答える" else "文字で入力する",color=c.action)}
-    if(s.answered){val correct=if(inputMode)vm.grade(card,typed) else options.getOrNull(s.selected?:-1)?.id==card.id;ReiseCard(Modifier.fillMaxWidth()){Text(if(correct)"Sehr gut! 正解 🎉" else "もう一度やってみよう 🐰",fontWeight=FontWeight.Bold,color=if(correct)c.progress else c.action);Text("${card.german}\n${card.japanese}\n\n${card.grammar}",color=c.ink)};PrimaryButton("次へ →",vm::next)}else PrimaryButton("答えを確認",{vm.saveAnswer(if(inputMode)vm.grade(card,typed) else options.getOrNull(s.selected?:-1)?.id==card.id)},enabled=if(inputMode)typed.isNotBlank() else s.selected!=null)
+   ReiseCard(Modifier.fillMaxWidth()){
+    Text(question?.prompt?:"${card.japanese} をドイツ語で選ぼう",fontWeight=FontWeight.Bold,fontSize=20.sp)
+    if(inputMode&&question!=null)Text("意味：${card.japanese}\n文全体を入力してください。大文字・小文字を区別します。",color=c.muted)
+    if(question==null)TextButton(onClick={tts?.speak(card.german,TextToSpeech.QUEUE_FLUSH,null,card.id)}){Text("🔊 ドイツ語を聞く")}
+   }
+   if(!inputMode)options.forEachIndexed{i,opt->
+    val selected=s.selected==i
+    OutlinedButton(onClick={vm.choose(i)},enabled=!s.answered&&!s.saving,modifier=Modifier.fillMaxWidth().heightIn(min=54.dp),shape=RoundedCornerShape(16.dp),border=androidx.compose.foundation.BorderStroke(if(selected)2.dp else 1.dp,if(selected)c.action else c.line),colors=ButtonDefaults.outlinedButtonColors(containerColor=if(selected)c.actionSoft else c.surface,contentColor=c.ink)){Text(opt.german,fontSize=17.sp)}
+   }else{
+    OutlinedTextField(typed,{typed=it},Modifier.fillMaxWidth(),enabled=!s.answered&&!s.saving,label={Text("ドイツ語の文を入力")},minLines=1,maxLines=3)
+    Row(horizontalArrangement=Arrangement.spacedBy(6.dp)){listOf("ä","ö","ü","ß").forEach{letter->AssistChip(enabled=!s.answered&&!s.saving,onClick={typed+=letter},label={Text(letter)})}}
+   }
+   TextButton(enabled=!s.answered&&!s.saving,onClick={inputMode=!inputMode}){Text(if(inputMode)"選択問題で答える" else "文字で入力する")}
+   if(s.answered){
+    val correct=s.answerCorrect==true
+    ReiseCard(Modifier.fillMaxWidth()){
+     Text(if(correct)"Sehr gut! 正解 🎉" else "理由を読んで、もう一度 🐰",fontWeight=FontWeight.Bold,color=if(correct)c.progress else c.action)
+     Text(card.german,fontWeight=FontWeight.Bold,fontSize=20.sp)
+     Text(card.japanese,color=c.muted)
+     Text("なぜこの答え？\n${card.grammar}",lineHeight=26.sp)
+    }
+    if(course!=null&&!correct)PrimaryButton("もう一度答える",{typed="";vm.retryQuestion()},Modifier.fillMaxWidth())
+    else PrimaryButton("次へ →",vm::next,Modifier.fillMaxWidth())
+   }else PrimaryButton(if(s.saving)"保存中…" else "答えを確認",{vm.saveAnswer(if(inputMode)vm.grade(card,typed) else options.getOrNull(s.selected?:-1)?.id==card.id)},Modifier.fillMaxWidth(),enabled=!s.saving&&(if(inputMode)typed.isNotBlank() else s.selected!=null))
   }
  }
 }

@@ -19,7 +19,11 @@ Debug APK: `app/build/outputs/apk/debug/app-debug.apk`（約17 MB）。debugア�
 
 ## 配布
 
-GitHub Actionsのrelease workflowはmain push時にテスト、lint、release APK署名、checksum付き `latest.json` 生成、GitHub Release公開を行う構成です。公開には固定署名鍵をGitHub Actions Secrets (`REISE_KEYSTORE_BASE64`, `REISE_KEYSTORE_PASSWORD`, `REISE_KEY_ALIAS`, `REISE_KEY_PASSWORD`) に設定する必要があります。初回ユーザー配布リリースは署名鍵とGitHub書き込み認証が設定されるまで未公開です。
+[ReiseDeutsch 0.1.1 APKをダウンロード](https://github.com/masakasakasama/German-language/releases/download/v1/ReiseDeutsch-0.1.1.apk)（Android 8.0以上、約1.2 MB）。[公開リリース](https://github.com/masakasakasama/German-language/releases/tag/v1)にはアプリ内更新用の `latest.json` も添付しています。公開後にAPKをダウンロードし直し、署名・サイズ・SHA-256を検証済みです。実機での動作確認は未実施です。
+
+初回版はローカルで署名・検証したAPKを `release-apk` ブランチの専用GitHub Actionsで公開しました。GitHub Actionsの自動トークンを使用するため、初回版のダウンロードにCodex環境設定や個人トークン登録は不要です。
+
+main push時はテスト・lint・debugビルドを実行します。将来の署名付きビルド・公開はmainに対するworkflow_dispatchで実行し、固定署名鍵のGitHub Actions Secrets (`REISE_KEYSTORE_BASE64`, `REISE_KEYSTORE_PASSWORD`, `REISE_KEY_ALIAS`, `REISE_KEY_PASSWORD`) が必要です。既存インストールを更新するため、初回版と同じ署名鍵を使用してください。
 
 ## 設計資料
 
