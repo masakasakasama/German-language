@@ -1,0 +1,1794 @@
+{
+  "schemaVersion": 1,
+  "contentVersion": "1.0.0",
+  "language": "de",
+  "uiLanguage": "ja",
+  "cities": [
+    {
+      "id": "rd:city:1",
+      "nameDe": "Hamburg",
+      "nameJa": "Hamburg",
+      "order": 1,
+      "lessonIds": [
+        "rd:l01",
+        "rd:l02",
+        "rd:l03",
+        "rd:l04"
+      ]
+    },
+    {
+      "id": "rd:city:2",
+      "nameDe": "Berlin",
+      "nameJa": "Berlin",
+      "order": 2,
+      "lessonIds": [
+        "rd:l05",
+        "rd:l06",
+        "rd:l07",
+        "rd:l08"
+      ]
+    },
+    {
+      "id": "rd:city:3",
+      "nameDe": "Köln",
+      "nameJa": "Köln",
+      "order": 3,
+      "lessonIds": [
+        "rd:l09",
+        "rd:l10",
+        "rd:l11",
+        "rd:l12"
+      ]
+    },
+    {
+      "id": "rd:city:4",
+      "nameDe": "Frankfurt",
+      "nameJa": "Frankfurt",
+      "order": 4,
+      "lessonIds": [
+        "rd:l13",
+        "rd:l14",
+        "rd:l15",
+        "rd:l16"
+      ]
+    },
+    {
+      "id": "rd:city:5",
+      "nameDe": "München",
+      "nameJa": "München",
+      "order": 5,
+      "lessonIds": [
+        "rd:l17",
+        "rd:l18",
+        "rd:l19",
+        "rd:l20"
+      ]
+    }
+  ],
+  "lessons": [
+    {
+      "id": "rd:l01",
+      "city": "Hamburg",
+      "scene": "sightseeing",
+      "order": 1,
+      "title": "はじめの挨拶",
+      "titleJa": "はじめの挨拶",
+      "phraseCardIds": [
+        "rd:l01:p01",
+        "rd:l01:p02",
+        "rd:l01:p03"
+      ],
+      "grammar": "時間別挨拶、丁寧な挨拶"
+    },
+    {
+      "id": "rd:l02",
+      "city": "Hamburg",
+      "scene": "cafe",
+      "order": 2,
+      "title": "コーヒーを頼む",
+      "titleJa": "コーヒーを頼む",
+      "phraseCardIds": [
+        "rd:l02:p01",
+        "rd:l02:p02",
+        "rd:l02:p03"
+      ],
+      "grammar": "男性名詞の4格、定型表現"
+    },
+    {
+      "id": "rd:l03",
+      "city": "Hamburg",
+      "scene": "station",
+      "order": 3,
+      "title": "駅を探す",
+      "titleJa": "駅を探す",
+      "phraseCardIds": [
+        "rd:l03:p01",
+        "rd:l03:p02",
+        "rd:l03:p03"
+      ],
+      "grammar": "wo、sein、丁寧なIhre"
+    },
+    {
+      "id": "rd:l04",
+      "city": "Hamburg",
+      "scene": "hotel",
+      "order": 4,
+      "title": "予約を伝える",
+      "titleJa": "予約を伝える",
+      "phraseCardIds": [
+        "rd:l04:p01",
+        "rd:l04:p02",
+        "rd:l04:p03"
+      ],
+      "grammar": "haben、名前、所有詞"
+    },
+    {
+      "id": "rd:l05",
+      "city": "Berlin",
+      "scene": "sightseeing",
+      "order": 5,
+      "title": "自己紹介",
+      "titleJa": "自己紹介",
+      "phraseCardIds": [
+        "rd:l05:p01",
+        "rd:l05:p02",
+        "rd:l05:p03"
+      ],
+      "grammar": "動詞2位、Sie疑問文"
+    },
+    {
+      "id": "rd:l06",
+      "city": "Berlin",
+      "scene": "station",
+      "order": 6,
+      "title": "切符を買う",
+      "titleJa": "切符を買う",
+      "phraseCardIds": [
+        "rd:l06:p01",
+        "rd:l06:p02",
+        "rd:l06:p03"
+      ],
+      "grammar": "nach＋都市、疑問詞was"
+    },
+    {
+      "id": "rd:l07",
+      "city": "Berlin",
+      "scene": "cafe",
+      "order": 7,
+      "title": "個数と値段",
+      "titleJa": "個数と値段",
+      "phraseCardIds": [
+        "rd:l07:p01",
+        "rd:l07:p02",
+        "rd:l07:p03"
+      ],
+      "grammar": "数字、名詞の複数、wie viel"
+    },
+    {
+      "id": "rd:l08",
+      "city": "Berlin",
+      "scene": "hotel",
+      "order": 8,
+      "title": "チェックイン",
+      "titleJa": "チェックイン",
+      "phraseCardIds": [
+        "rd:l08:p01",
+        "rd:l08:p02",
+        "rd:l08:p03"
+      ],
+      "grammar": "kann/können、動詞末尾"
+    },
+    {
+      "id": "rd:l09",
+      "city": "Köln",
+      "scene": "sightseeing",
+      "order": 9,
+      "title": "道を尋ねる",
+      "titleJa": "道を尋ねる",
+      "phraseCardIds": [
+        "rd:l09:p01",
+        "rd:l09:p02",
+        "rd:l09:p03"
+      ],
+      "grammar": "zu dem→zum、否定nicht"
+    },
+    {
+      "id": "rd:l10",
+      "city": "Köln",
+      "scene": "cafe",
+      "order": 10,
+      "title": "好みを伝える",
+      "titleJa": "好みを伝える",
+      "phraseCardIds": [
+        "rd:l10:p01",
+        "rd:l10:p02",
+        "rd:l10:p03"
+      ],
+      "grammar": "mit/ohneの導入、定型句"
+    },
+    {
+      "id": "rd:l11",
+      "city": "Köln",
+      "scene": "hotel",
+      "order": 11,
+      "title": "滞在の確認",
+      "titleJa": "滞在の確認",
+      "phraseCardIds": [
+        "rd:l11:p01",
+        "rd:l11:p02",
+        "rd:l11:p03"
+      ],
+      "grammar": "wann、es gibt、数量"
+    },
+    {
+      "id": "rd:l12",
+      "city": "Köln",
+      "scene": "station",
+      "order": 12,
+      "title": "発車時刻",
+      "titleJa": "発車時刻",
+      "phraseCardIds": [
+        "rd:l12:p01",
+        "rd:l12:p02",
+        "rd:l12:p03"
+      ],
+      "grammar": "分離動詞abfahren、時刻"
+    },
+    {
+      "id": "rd:l13",
+      "city": "Frankfurt",
+      "scene": "sightseeing",
+      "order": 13,
+      "title": "見学する",
+      "titleJa": "見学する",
+      "phraseCardIds": [
+        "rd:l13:p01",
+        "rd:l13:p02",
+        "rd:l13:p03"
+      ],
+      "grammar": "können/dürfen、語順"
+    },
+    {
+      "id": "rd:l14",
+      "city": "Frankfurt",
+      "scene": "cafe",
+      "order": 14,
+      "title": "会計する",
+      "titleJa": "会計する",
+      "phraseCardIds": [
+        "rd:l14:p01",
+        "rd:l14:p02",
+        "rd:l14:p03"
+      ],
+      "grammar": "支払い表現、mit"
+    },
+    {
+      "id": "rd:l15",
+      "city": "Frankfurt",
+      "scene": "hotel",
+      "order": 15,
+      "title": "困ったことを伝える",
+      "titleJa": "困ったことを伝える",
+      "phraseCardIds": [
+        "rd:l15:p01",
+        "rd:l15:p02",
+        "rd:l15:p03"
+      ],
+      "grammar": "brauchen＋4格、mirの導入"
+    },
+    {
+      "id": "rd:l16",
+      "city": "Frankfurt",
+      "scene": "station",
+      "order": 16,
+      "title": "乗り換える",
+      "titleJa": "乗り換える",
+      "phraseCardIds": [
+        "rd:l16:p01",
+        "rd:l16:p02",
+        "rd:l16:p03"
+      ],
+      "grammar": "müssen、分離動詞ankommen"
+    },
+    {
+      "id": "rd:l17",
+      "city": "München",
+      "scene": "sightseeing",
+      "order": 17,
+      "title": "街歩きと買い物",
+      "titleJa": "街歩きと買い物",
+      "phraseCardIds": [
+        "rd:l17:p01",
+        "rd:l17:p02",
+        "rd:l17:p03"
+      ],
+      "grammar": "suchen＋4格、anprobieren"
+    },
+    {
+      "id": "rd:l18",
+      "city": "München",
+      "scene": "cafe",
+      "order": 18,
+      "title": "食事を頼む",
+      "titleJa": "食事を頼む",
+      "phraseCardIds": [
+        "rd:l18:p01",
+        "rd:l18:p02",
+        "rd:l18:p03"
+      ],
+      "grammar": "für＋4格、飲食物の注文"
+    },
+    {
+      "id": "rd:l19",
+      "city": "München",
+      "scene": "hotel",
+      "order": 19,
+      "title": "チェックアウト",
+      "titleJa": "チェックアウト",
+      "phraseCardIds": [
+        "rd:l19:p01",
+        "rd:l19:p02",
+        "rd:l19:p03"
+      ],
+      "grammar": "möchte、動詞末尾、所有詞"
+    },
+    {
+      "id": "rd:l20",
+      "city": "München",
+      "scene": "station",
+      "order": 20,
+      "title": "帰りの移動",
+      "titleJa": "帰りの移動",
+      "phraseCardIds": [
+        "rd:l20:p01",
+        "rd:l20:p02",
+        "rd:l20:p03"
+      ],
+      "grammar": "dieser、場所の質問、総復習"
+    }
+  ],
+  "cards": [
+    {
+      "id": "rd:l01:p01",
+      "kind": "PHRASE",
+      "city": "Hamburg",
+      "scene": "sightseeing",
+      "lessonId": "rd:l01",
+      "german": "Guten Morgen!",
+      "japanese": "おはようございます",
+      "speakText": "Guten Morgen!",
+      "grammar": "時間別挨拶、丁寧な挨拶",
+      "acceptedAnswers": [
+        "Guten Morgen!"
+      ]
+    },
+    {
+      "id": "rd:l01:p02",
+      "kind": "PHRASE",
+      "city": "Hamburg",
+      "scene": "sightseeing",
+      "lessonId": "rd:l01",
+      "german": "Guten Tag!",
+      "japanese": "こんにちは",
+      "speakText": "Guten Tag!",
+      "grammar": "時間別挨拶、丁寧な挨拶",
+      "acceptedAnswers": [
+        "Guten Tag!"
+      ]
+    },
+    {
+      "id": "rd:l01:p03",
+      "kind": "PHRASE",
+      "city": "Hamburg",
+      "scene": "sightseeing",
+      "lessonId": "rd:l01",
+      "german": "Auf Wiedersehen!",
+      "japanese": "さようなら",
+      "speakText": "Auf Wiedersehen!",
+      "grammar": "時間別挨拶、丁寧な挨拶",
+      "acceptedAnswers": [
+        "Auf Wiedersehen!"
+      ]
+    },
+    {
+      "id": "rd:l02:p01",
+      "kind": "PHRASE",
+      "city": "Hamburg",
+      "scene": "cafe",
+      "lessonId": "rd:l02",
+      "german": "Ich hätte gern einen Kaffee, bitte.",
+      "japanese": "コーヒーを1杯お願いします",
+      "speakText": "Ich hätte gern einen Kaffee, bitte.",
+      "grammar": "男性名詞の4格、定型表現",
+      "acceptedAnswers": [
+        "Ich hätte gern einen Kaffee, bitte."
+      ]
+    },
+    {
+      "id": "rd:l02:p02",
+      "kind": "PHRASE",
+      "city": "Hamburg",
+      "scene": "cafe",
+      "lessonId": "rd:l02",
+      "german": "Einen Tee, bitte.",
+      "japanese": "紅茶を1杯お願いします",
+      "speakText": "Einen Tee, bitte.",
+      "grammar": "男性名詞の4格、定型表現",
+      "acceptedAnswers": [
+        "Einen Tee, bitte."
+      ]
+    },
+    {
+      "id": "rd:l02:p03",
+      "kind": "PHRASE",
+      "city": "Hamburg",
+      "scene": "cafe",
+      "lessonId": "rd:l02",
+      "german": "Danke schön!",
+      "japanese": "ありがとうございます",
+      "speakText": "Danke schön!",
+      "grammar": "男性名詞の4格、定型表現",
+      "acceptedAnswers": [
+        "Danke schön!"
+      ]
+    },
+    {
+      "id": "rd:l03:p01",
+      "kind": "PHRASE",
+      "city": "Hamburg",
+      "scene": "station",
+      "lessonId": "rd:l03",
+      "german": "Wo ist der Bahnhof?",
+      "japanese": "駅はどこですか",
+      "speakText": "Wo ist der Bahnhof?",
+      "grammar": "wo、sein、丁寧なIhre",
+      "acceptedAnswers": [
+        "Wo ist der Bahnhof?"
+      ]
+    },
+    {
+      "id": "rd:l03:p02",
+      "kind": "PHRASE",
+      "city": "Hamburg",
+      "scene": "station",
+      "lessonId": "rd:l03",
+      "german": "Ist das der richtige Zug?",
+      "japanese": "これは正しい列車ですか",
+      "speakText": "Ist das der richtige Zug?",
+      "grammar": "wo、sein、丁寧なIhre",
+      "acceptedAnswers": [
+        "Ist das der richtige Zug?"
+      ]
+    },
+    {
+      "id": "rd:l03:p03",
+      "kind": "PHRASE",
+      "city": "Hamburg",
+      "scene": "station",
+      "lessonId": "rd:l03",
+      "german": "Danke für Ihre Hilfe.",
+      "japanese": "助けていただきありがとうございます",
+      "speakText": "Danke für Ihre Hilfe.",
+      "grammar": "wo、sein、丁寧なIhre",
+      "acceptedAnswers": [
+        "Danke für Ihre Hilfe."
+      ]
+    },
+    {
+      "id": "rd:l04:p01",
+      "kind": "PHRASE",
+      "city": "Hamburg",
+      "scene": "hotel",
+      "lessonId": "rd:l04",
+      "german": "Ich habe eine Reservierung.",
+      "japanese": "予約しています",
+      "speakText": "Ich habe eine Reservierung.",
+      "grammar": "haben、名前、所有詞",
+      "acceptedAnswers": [
+        "Ich habe eine Reservierung."
+      ]
+    },
+    {
+      "id": "rd:l04:p02",
+      "kind": "PHRASE",
+      "city": "Hamburg",
+      "scene": "hotel",
+      "lessonId": "rd:l04",
+      "german": "Mein Name ist Tanaka.",
+      "japanese": "名前は田中です",
+      "speakText": "Mein Name ist Tanaka.",
+      "grammar": "haben、名前、所有詞",
+      "acceptedAnswers": [
+        "Mein Name ist Tanaka."
+      ]
+    },
+    {
+      "id": "rd:l04:p03",
+      "kind": "PHRASE",
+      "city": "Hamburg",
+      "scene": "hotel",
+      "lessonId": "rd:l04",
+      "german": "Wo ist mein Zimmer?",
+      "japanese": "私の部屋はどこですか",
+      "speakText": "Wo ist mein Zimmer?",
+      "grammar": "haben、名前、所有詞",
+      "acceptedAnswers": [
+        "Wo ist mein Zimmer?"
+      ]
+    },
+    {
+      "id": "rd:l05:p01",
+      "kind": "PHRASE",
+      "city": "Berlin",
+      "scene": "sightseeing",
+      "lessonId": "rd:l05",
+      "german": "Ich komme aus Japan.",
+      "japanese": "日本から来ました",
+      "speakText": "Ich komme aus Japan.",
+      "grammar": "動詞2位、Sie疑問文",
+      "acceptedAnswers": [
+        "Ich komme aus Japan."
+      ]
+    },
+    {
+      "id": "rd:l05:p02",
+      "kind": "PHRASE",
+      "city": "Berlin",
+      "scene": "sightseeing",
+      "lessonId": "rd:l05",
+      "german": "Ich lerne Deutsch.",
+      "japanese": "ドイツ語を勉強しています",
+      "speakText": "Ich lerne Deutsch.",
+      "grammar": "動詞2位、Sie疑問文",
+      "acceptedAnswers": [
+        "Ich lerne Deutsch."
+      ]
+    },
+    {
+      "id": "rd:l05:p03",
+      "kind": "PHRASE",
+      "city": "Berlin",
+      "scene": "sightseeing",
+      "lessonId": "rd:l05",
+      "german": "Sprechen Sie Englisch?",
+      "japanese": "英語を話せますか",
+      "speakText": "Sprechen Sie Englisch?",
+      "grammar": "動詞2位、Sie疑問文",
+      "acceptedAnswers": [
+        "Sprechen Sie Englisch?"
+      ]
+    },
+    {
+      "id": "rd:l06:p01",
+      "kind": "PHRASE",
+      "city": "Berlin",
+      "scene": "station",
+      "lessonId": "rd:l06",
+      "german": "Eine Fahrkarte nach Berlin, bitte.",
+      "japanese": "ベルリン行きの切符を1枚お願いします",
+      "speakText": "Eine Fahrkarte nach Berlin, bitte.",
+      "grammar": "nach＋都市、疑問詞was",
+      "acceptedAnswers": [
+        "Eine Fahrkarte nach Berlin, bitte."
+      ]
+    },
+    {
+      "id": "rd:l06:p02",
+      "kind": "PHRASE",
+      "city": "Berlin",
+      "scene": "station",
+      "lessonId": "rd:l06",
+      "german": "Nur hin, bitte.",
+      "japanese": "片道でお願いします",
+      "speakText": "Nur hin, bitte.",
+      "grammar": "nach＋都市、疑問詞was",
+      "acceptedAnswers": [
+        "Nur hin, bitte."
+      ]
+    },
+    {
+      "id": "rd:l06:p03",
+      "kind": "PHRASE",
+      "city": "Berlin",
+      "scene": "station",
+      "lessonId": "rd:l06",
+      "german": "Was kostet die Fahrkarte?",
+      "japanese": "切符はいくらですか",
+      "speakText": "Was kostet die Fahrkarte?",
+      "grammar": "nach＋都市、疑問詞was",
+      "acceptedAnswers": [
+        "Was kostet die Fahrkarte?"
+      ]
+    },
+    {
+      "id": "rd:l07:p01",
+      "kind": "PHRASE",
+      "city": "Berlin",
+      "scene": "cafe",
+      "lessonId": "rd:l07",
+      "german": "Zwei Brötchen, bitte.",
+      "japanese": "パンを2つお願いします",
+      "speakText": "Zwei Brötchen, bitte.",
+      "grammar": "数字、名詞の複数、wie viel",
+      "acceptedAnswers": [
+        "Zwei Brötchen, bitte."
+      ]
+    },
+    {
+      "id": "rd:l07:p02",
+      "kind": "PHRASE",
+      "city": "Berlin",
+      "scene": "cafe",
+      "lessonId": "rd:l07",
+      "german": "Wie viel kostet das?",
+      "japanese": "これはいくらですか",
+      "speakText": "Wie viel kostet das?",
+      "grammar": "数字、名詞の複数、wie viel",
+      "acceptedAnswers": [
+        "Wie viel kostet das?"
+      ]
+    },
+    {
+      "id": "rd:l07:p03",
+      "kind": "PHRASE",
+      "city": "Berlin",
+      "scene": "cafe",
+      "lessonId": "rd:l07",
+      "german": "Das ist alles, danke.",
+      "japanese": "以上です、ありがとう",
+      "speakText": "Das ist alles, danke.",
+      "grammar": "数字、名詞の複数、wie viel",
+      "acceptedAnswers": [
+        "Das ist alles, danke."
+      ]
+    },
+    {
+      "id": "rd:l08:p01",
+      "kind": "PHRASE",
+      "city": "Berlin",
+      "scene": "hotel",
+      "lessonId": "rd:l08",
+      "german": "Kann ich jetzt einchecken?",
+      "japanese": "今チェックインできますか",
+      "speakText": "Kann ich jetzt einchecken?",
+      "grammar": "kann/können、動詞末尾",
+      "acceptedAnswers": [
+        "Kann ich jetzt einchecken?"
+      ]
+    },
+    {
+      "id": "rd:l08:p02",
+      "kind": "PHRASE",
+      "city": "Berlin",
+      "scene": "hotel",
+      "lessonId": "rd:l08",
+      "german": "Hier ist mein Pass.",
+      "japanese": "こちらがパスポートです",
+      "speakText": "Hier ist mein Pass.",
+      "grammar": "kann/können、動詞末尾",
+      "acceptedAnswers": [
+        "Hier ist mein Pass."
+      ]
+    },
+    {
+      "id": "rd:l08:p03",
+      "kind": "PHRASE",
+      "city": "Berlin",
+      "scene": "hotel",
+      "lessonId": "rd:l08",
+      "german": "Können Sie das bitte wiederholen?",
+      "japanese": "もう一度言っていただけますか",
+      "speakText": "Können Sie das bitte wiederholen?",
+      "grammar": "kann/können、動詞末尾",
+      "acceptedAnswers": [
+        "Können Sie das bitte wiederholen?"
+      ]
+    },
+    {
+      "id": "rd:l09:p01",
+      "kind": "PHRASE",
+      "city": "Köln",
+      "scene": "sightseeing",
+      "lessonId": "rd:l09",
+      "german": "Wie komme ich zum Dom?",
+      "japanese": "大聖堂へはどう行けばいいですか",
+      "speakText": "Wie komme ich zum Dom?",
+      "grammar": "zu dem→zum、否定nicht",
+      "acceptedAnswers": [
+        "Wie komme ich zum Dom?"
+      ]
+    },
+    {
+      "id": "rd:l09:p02",
+      "kind": "PHRASE",
+      "city": "Köln",
+      "scene": "sightseeing",
+      "lessonId": "rd:l09",
+      "german": "Ist es weit von hier?",
+      "japanese": "ここから遠いですか",
+      "speakText": "Ist es weit von hier?",
+      "grammar": "zu dem→zum、否定nicht",
+      "acceptedAnswers": [
+        "Ist es weit von hier?"
+      ]
+    },
+    {
+      "id": "rd:l09:p03",
+      "kind": "PHRASE",
+      "city": "Köln",
+      "scene": "sightseeing",
+      "lessonId": "rd:l09",
+      "german": "Ich verstehe nicht.",
+      "japanese": "わかりません",
+      "speakText": "Ich verstehe nicht.",
+      "grammar": "zu dem→zum、否定nicht",
+      "acceptedAnswers": [
+        "Ich verstehe nicht."
+      ]
+    },
+    {
+      "id": "rd:l10:p01",
+      "kind": "PHRASE",
+      "city": "Köln",
+      "scene": "cafe",
+      "lessonId": "rd:l10",
+      "german": "Ohne Milch, bitte.",
+      "japanese": "牛乳なしでお願いします",
+      "speakText": "Ohne Milch, bitte.",
+      "grammar": "mit/ohneの導入、定型句",
+      "acceptedAnswers": [
+        "Ohne Milch, bitte."
+      ]
+    },
+    {
+      "id": "rd:l10:p02",
+      "kind": "PHRASE",
+      "city": "Köln",
+      "scene": "cafe",
+      "lessonId": "rd:l10",
+      "german": "Mit Zucker, bitte.",
+      "japanese": "砂糖入りでお願いします",
+      "speakText": "Mit Zucker, bitte.",
+      "grammar": "mit/ohneの導入、定型句",
+      "acceptedAnswers": [
+        "Mit Zucker, bitte."
+      ]
+    },
+    {
+      "id": "rd:l10:p03",
+      "kind": "PHRASE",
+      "city": "Köln",
+      "scene": "cafe",
+      "lessonId": "rd:l10",
+      "german": "Zum Mitnehmen, bitte.",
+      "japanese": "持ち帰りでお願いします",
+      "speakText": "Zum Mitnehmen, bitte.",
+      "grammar": "mit/ohneの導入、定型句",
+      "acceptedAnswers": [
+        "Zum Mitnehmen, bitte."
+      ]
+    },
+    {
+      "id": "rd:l11:p01",
+      "kind": "PHRASE",
+      "city": "Köln",
+      "scene": "hotel",
+      "lessonId": "rd:l11",
+      "german": "Ist das Frühstück inklusive?",
+      "japanese": "朝食は含まれていますか",
+      "speakText": "Ist das Frühstück inklusive?",
+      "grammar": "wann、es gibt、数量",
+      "acceptedAnswers": [
+        "Ist das Frühstück inklusive?"
+      ]
+    },
+    {
+      "id": "rd:l11:p02",
+      "kind": "PHRASE",
+      "city": "Köln",
+      "scene": "hotel",
+      "lessonId": "rd:l11",
+      "german": "Wann gibt es Frühstück?",
+      "japanese": "朝食は何時ですか",
+      "speakText": "Wann gibt es Frühstück?",
+      "grammar": "wann、es gibt、数量",
+      "acceptedAnswers": [
+        "Wann gibt es Frühstück?"
+      ]
+    },
+    {
+      "id": "rd:l11:p03",
+      "kind": "PHRASE",
+      "city": "Köln",
+      "scene": "hotel",
+      "lessonId": "rd:l11",
+      "german": "Ich bleibe zwei Nächte.",
+      "japanese": "2泊します",
+      "speakText": "Ich bleibe zwei Nächte.",
+      "grammar": "wann、es gibt、数量",
+      "acceptedAnswers": [
+        "Ich bleibe zwei Nächte."
+      ]
+    },
+    {
+      "id": "rd:l12:p01",
+      "kind": "PHRASE",
+      "city": "Köln",
+      "scene": "station",
+      "lessonId": "rd:l12",
+      "german": "Wann fährt der Zug ab?",
+      "japanese": "列車はいつ出発しますか",
+      "speakText": "Wann fährt der Zug ab?",
+      "grammar": "分離動詞abfahren、時刻",
+      "acceptedAnswers": [
+        "Wann fährt der Zug ab?"
+      ]
+    },
+    {
+      "id": "rd:l12:p02",
+      "kind": "PHRASE",
+      "city": "Köln",
+      "scene": "station",
+      "lessonId": "rd:l12",
+      "german": "Von welchem Gleis?",
+      "japanese": "何番線からですか",
+      "speakText": "Von welchem Gleis?",
+      "grammar": "分離動詞abfahren、時刻",
+      "acceptedAnswers": [
+        "Von welchem Gleis?"
+      ]
+    },
+    {
+      "id": "rd:l12:p03",
+      "kind": "PHRASE",
+      "city": "Köln",
+      "scene": "station",
+      "lessonId": "rd:l12",
+      "german": "Hat der Zug Verspätung?",
+      "japanese": "列車は遅れていますか",
+      "speakText": "Hat der Zug Verspätung?",
+      "grammar": "分離動詞abfahren、時刻",
+      "acceptedAnswers": [
+        "Hat der Zug Verspätung?"
+      ]
+    },
+    {
+      "id": "rd:l13:p01",
+      "kind": "PHRASE",
+      "city": "Frankfurt",
+      "scene": "sightseeing",
+      "lessonId": "rd:l13",
+      "german": "Wo kann ich eine Eintrittskarte kaufen?",
+      "japanese": "入場券はどこで買えますか",
+      "speakText": "Wo kann ich eine Eintrittskarte kaufen?",
+      "grammar": "können/dürfen、語順",
+      "acceptedAnswers": [
+        "Wo kann ich eine Eintrittskarte kaufen?"
+      ]
+    },
+    {
+      "id": "rd:l13:p02",
+      "kind": "PHRASE",
+      "city": "Frankfurt",
+      "scene": "sightseeing",
+      "lessonId": "rd:l13",
+      "german": "Darf ich hier fotografieren?",
+      "japanese": "ここで写真を撮ってもいいですか",
+      "speakText": "Darf ich hier fotografieren?",
+      "grammar": "können/dürfen、語順",
+      "acceptedAnswers": [
+        "Darf ich hier fotografieren?"
+      ]
+    },
+    {
+      "id": "rd:l13:p03",
+      "kind": "PHRASE",
+      "city": "Frankfurt",
+      "scene": "sightseeing",
+      "lessonId": "rd:l13",
+      "german": "Wann öffnet das Museum?",
+      "japanese": "博物館はいつ開きますか",
+      "speakText": "Wann öffnet das Museum?",
+      "grammar": "können/dürfen、語順",
+      "acceptedAnswers": [
+        "Wann öffnet das Museum?"
+      ]
+    },
+    {
+      "id": "rd:l14:p01",
+      "kind": "PHRASE",
+      "city": "Frankfurt",
+      "scene": "cafe",
+      "lessonId": "rd:l14",
+      "german": "Die Rechnung, bitte.",
+      "japanese": "お会計をお願いします",
+      "speakText": "Die Rechnung, bitte.",
+      "grammar": "支払い表現、mit",
+      "acceptedAnswers": [
+        "Die Rechnung, bitte."
+      ]
+    },
+    {
+      "id": "rd:l14:p02",
+      "kind": "PHRASE",
+      "city": "Frankfurt",
+      "scene": "cafe",
+      "lessonId": "rd:l14",
+      "german": "Kann ich mit Karte bezahlen?",
+      "japanese": "カードで払えますか",
+      "speakText": "Kann ich mit Karte bezahlen?",
+      "grammar": "支払い表現、mit",
+      "acceptedAnswers": [
+        "Kann ich mit Karte bezahlen?"
+      ]
+    },
+    {
+      "id": "rd:l14:p03",
+      "kind": "PHRASE",
+      "city": "Frankfurt",
+      "scene": "cafe",
+      "lessonId": "rd:l14",
+      "german": "Kann ich bar bezahlen?",
+      "japanese": "現金で払えますか",
+      "speakText": "Kann ich bar bezahlen?",
+      "grammar": "支払い表現、mit",
+      "acceptedAnswers": [
+        "Kann ich bar bezahlen?"
+      ]
+    },
+    {
+      "id": "rd:l15:p01",
+      "kind": "PHRASE",
+      "city": "Frankfurt",
+      "scene": "hotel",
+      "lessonId": "rd:l15",
+      "german": "Das WLAN funktioniert nicht.",
+      "japanese": "Wi-Fiが使えません",
+      "speakText": "Das WLAN funktioniert nicht.",
+      "grammar": "brauchen＋4格、mirの導入",
+      "acceptedAnswers": [
+        "Das WLAN funktioniert nicht."
+      ]
+    },
+    {
+      "id": "rd:l15:p02",
+      "kind": "PHRASE",
+      "city": "Frankfurt",
+      "scene": "hotel",
+      "lessonId": "rd:l15",
+      "german": "Ich brauche ein Handtuch.",
+      "japanese": "タオルが必要です",
+      "speakText": "Ich brauche ein Handtuch.",
+      "grammar": "brauchen＋4格、mirの導入",
+      "acceptedAnswers": [
+        "Ich brauche ein Handtuch."
+      ]
+    },
+    {
+      "id": "rd:l15:p03",
+      "kind": "PHRASE",
+      "city": "Frankfurt",
+      "scene": "hotel",
+      "lessonId": "rd:l15",
+      "german": "Können Sie mir bitte helfen?",
+      "japanese": "助けていただけますか",
+      "speakText": "Können Sie mir bitte helfen?",
+      "grammar": "brauchen＋4格、mirの導入",
+      "acceptedAnswers": [
+        "Können Sie mir bitte helfen?"
+      ]
+    },
+    {
+      "id": "rd:l16:p01",
+      "kind": "PHRASE",
+      "city": "Frankfurt",
+      "scene": "station",
+      "lessonId": "rd:l16",
+      "german": "Muss ich umsteigen?",
+      "japanese": "乗り換えが必要ですか",
+      "speakText": "Muss ich umsteigen?",
+      "grammar": "müssen、分離動詞ankommen",
+      "acceptedAnswers": [
+        "Muss ich umsteigen?"
+      ]
+    },
+    {
+      "id": "rd:l16:p02",
+      "kind": "PHRASE",
+      "city": "Frankfurt",
+      "scene": "station",
+      "lessonId": "rd:l16",
+      "german": "Wo muss ich umsteigen?",
+      "japanese": "どこで乗り換えますか",
+      "speakText": "Wo muss ich umsteigen?",
+      "grammar": "müssen、分離動詞ankommen",
+      "acceptedAnswers": [
+        "Wo muss ich umsteigen?"
+      ]
+    },
+    {
+      "id": "rd:l16:p03",
+      "kind": "PHRASE",
+      "city": "Frankfurt",
+      "scene": "station",
+      "lessonId": "rd:l16",
+      "german": "Wann kommen wir an?",
+      "japanese": "いつ到着しますか",
+      "speakText": "Wann kommen wir an?",
+      "grammar": "müssen、分離動詞ankommen",
+      "acceptedAnswers": [
+        "Wann kommen wir an?"
+      ]
+    },
+    {
+      "id": "rd:l17:p01",
+      "kind": "PHRASE",
+      "city": "München",
+      "scene": "sightseeing",
+      "lessonId": "rd:l17",
+      "german": "Wo ist der Marienplatz?",
+      "japanese": "マリエン広場はどこですか",
+      "speakText": "Wo ist der Marienplatz?",
+      "grammar": "suchen＋4格、anprobieren",
+      "acceptedAnswers": [
+        "Wo ist der Marienplatz?"
+      ]
+    },
+    {
+      "id": "rd:l17:p02",
+      "kind": "PHRASE",
+      "city": "München",
+      "scene": "sightseeing",
+      "lessonId": "rd:l17",
+      "german": "Ich suche ein Souvenir.",
+      "japanese": "お土産を探しています",
+      "speakText": "Ich suche ein Souvenir.",
+      "grammar": "suchen＋4格、anprobieren",
+      "acceptedAnswers": [
+        "Ich suche ein Souvenir."
+      ]
+    },
+    {
+      "id": "rd:l17:p03",
+      "kind": "PHRASE",
+      "city": "München",
+      "scene": "sightseeing",
+      "lessonId": "rd:l17",
+      "german": "Kann ich das anprobieren?",
+      "japanese": "これを試着できますか",
+      "speakText": "Kann ich das anprobieren?",
+      "grammar": "suchen＋4格、anprobieren",
+      "acceptedAnswers": [
+        "Kann ich das anprobieren?"
+      ]
+    },
+    {
+      "id": "rd:l18:p01",
+      "kind": "PHRASE",
+      "city": "München",
+      "scene": "cafe",
+      "lessonId": "rd:l18",
+      "german": "Einen Tisch für zwei Personen, bitte.",
+      "japanese": "2人用の席をお願いします",
+      "speakText": "Einen Tisch für zwei Personen, bitte.",
+      "grammar": "für＋4格、飲食物の注文",
+      "acceptedAnswers": [
+        "Einen Tisch für zwei Personen, bitte."
+      ]
+    },
+    {
+      "id": "rd:l18:p02",
+      "kind": "PHRASE",
+      "city": "München",
+      "scene": "cafe",
+      "lessonId": "rd:l18",
+      "german": "Haben Sie etwas ohne Fleisch?",
+      "japanese": "肉を使っていないものはありますか",
+      "speakText": "Haben Sie etwas ohne Fleisch?",
+      "grammar": "für＋4格、飲食物の注文",
+      "acceptedAnswers": [
+        "Haben Sie etwas ohne Fleisch?"
+      ]
+    },
+    {
+      "id": "rd:l18:p03",
+      "kind": "PHRASE",
+      "city": "München",
+      "scene": "cafe",
+      "lessonId": "rd:l18",
+      "german": "Ein Wasser, bitte.",
+      "japanese": "水を1つお願いします",
+      "speakText": "Ein Wasser, bitte.",
+      "grammar": "für＋4格、飲食物の注文",
+      "acceptedAnswers": [
+        "Ein Wasser, bitte."
+      ]
+    },
+    {
+      "id": "rd:l19:p01",
+      "kind": "PHRASE",
+      "city": "München",
+      "scene": "hotel",
+      "lessonId": "rd:l19",
+      "german": "Ich möchte auschecken.",
+      "japanese": "チェックアウトしたいです",
+      "speakText": "Ich möchte auschecken.",
+      "grammar": "möchte、動詞末尾、所有詞",
+      "acceptedAnswers": [
+        "Ich möchte auschecken."
+      ]
+    },
+    {
+      "id": "rd:l19:p02",
+      "kind": "PHRASE",
+      "city": "München",
+      "scene": "hotel",
+      "lessonId": "rd:l19",
+      "german": "Kann ich mein Gepäck hier lassen?",
+      "japanese": "ここに荷物を置いておけますか",
+      "speakText": "Kann ich mein Gepäck hier lassen?",
+      "grammar": "möchte、動詞末尾、所有詞",
+      "acceptedAnswers": [
+        "Kann ich mein Gepäck hier lassen?"
+      ]
+    },
+    {
+      "id": "rd:l19:p03",
+      "kind": "PHRASE",
+      "city": "München",
+      "scene": "hotel",
+      "lessonId": "rd:l19",
+      "german": "Vielen Dank für alles.",
+      "japanese": "いろいろありがとうございました",
+      "speakText": "Vielen Dank für alles.",
+      "grammar": "möchte、動詞末尾、所有詞",
+      "acceptedAnswers": [
+        "Vielen Dank für alles."
+      ]
+    },
+    {
+      "id": "rd:l20:p01",
+      "kind": "PHRASE",
+      "city": "München",
+      "scene": "station",
+      "lessonId": "rd:l20",
+      "german": "Wie komme ich zum Flughafen?",
+      "japanese": "空港へはどう行けばいいですか",
+      "speakText": "Wie komme ich zum Flughafen?",
+      "grammar": "dieser、場所の質問、総復習",
+      "acceptedAnswers": [
+        "Wie komme ich zum Flughafen?"
+      ]
+    },
+    {
+      "id": "rd:l20:p02",
+      "kind": "PHRASE",
+      "city": "München",
+      "scene": "station",
+      "lessonId": "rd:l20",
+      "german": "Ist dieser Platz frei?",
+      "japanese": "この席は空いていますか",
+      "speakText": "Ist dieser Platz frei?",
+      "grammar": "dieser、場所の質問、総復習",
+      "acceptedAnswers": [
+        "Ist dieser Platz frei?"
+      ]
+    },
+    {
+      "id": "rd:l20:p03",
+      "kind": "PHRASE",
+      "city": "München",
+      "scene": "station",
+      "lessonId": "rd:l20",
+      "german": "Entschuldigung, ich brauche Hilfe.",
+      "japanese": "すみません、助けが必要です",
+      "speakText": "Entschuldigung, ich brauche Hilfe.",
+      "grammar": "dieser、場所の質問、総復習",
+      "acceptedAnswers": [
+        "Entschuldigung, ich brauche Hilfe."
+      ]
+    },
+    {
+      "id": "rd:v:Kaffee",
+      "kind": "VOCAB",
+      "german": "der Kaffee",
+      "plural": "die Kaffees",
+      "japanese": "コーヒー",
+      "speakText": "der Kaffee",
+      "acceptedAnswers": [
+        "der Kaffee"
+      ]
+    },
+    {
+      "id": "rd:v:Tee",
+      "kind": "VOCAB",
+      "german": "der Tee",
+      "plural": "die Tees",
+      "japanese": "紅茶・茶",
+      "speakText": "der Tee",
+      "acceptedAnswers": [
+        "der Tee"
+      ]
+    },
+    {
+      "id": "rd:v:Brötchen",
+      "kind": "VOCAB",
+      "german": "das Brötchen",
+      "plural": "die Brötchen",
+      "japanese": "小型のパン",
+      "speakText": "das Brötchen",
+      "acceptedAnswers": [
+        "das Brötchen"
+      ]
+    },
+    {
+      "id": "rd:v:Milch",
+      "kind": "VOCAB",
+      "german": "die Milch",
+      "plural": "通常、複数形なし",
+      "japanese": "牛乳",
+      "speakText": "die Milch",
+      "acceptedAnswers": [
+        "die Milch"
+      ]
+    },
+    {
+      "id": "rd:v:Zucker",
+      "kind": "VOCAB",
+      "german": "der Zucker",
+      "plural": "通常、複数形なし",
+      "japanese": "砂糖",
+      "speakText": "der Zucker",
+      "acceptedAnswers": [
+        "der Zucker"
+      ]
+    },
+    {
+      "id": "rd:v:Rechnung",
+      "kind": "VOCAB",
+      "german": "die Rechnung",
+      "plural": "die Rechnungen",
+      "japanese": "会計・請求書",
+      "speakText": "die Rechnung",
+      "acceptedAnswers": [
+        "die Rechnung"
+      ]
+    },
+    {
+      "id": "rd:v:Karte",
+      "kind": "VOCAB",
+      "german": "die Karte",
+      "plural": "die Karten",
+      "japanese": "カード",
+      "speakText": "die Karte",
+      "acceptedAnswers": [
+        "die Karte"
+      ]
+    },
+    {
+      "id": "rd:v:Wasser",
+      "kind": "VOCAB",
+      "german": "das Wasser",
+      "plural": "ここでは飲み物の非可算名詞",
+      "japanese": "水",
+      "speakText": "das Wasser",
+      "acceptedAnswers": [
+        "das Wasser"
+      ]
+    },
+    {
+      "id": "rd:v:Tisch",
+      "kind": "VOCAB",
+      "german": "der Tisch",
+      "plural": "die Tische",
+      "japanese": "テーブル",
+      "speakText": "der Tisch",
+      "acceptedAnswers": [
+        "der Tisch"
+      ]
+    },
+    {
+      "id": "rd:v:Bahnhof",
+      "kind": "VOCAB",
+      "german": "der Bahnhof",
+      "plural": "die Bahnhöfe",
+      "japanese": "駅",
+      "speakText": "der Bahnhof",
+      "acceptedAnswers": [
+        "der Bahnhof"
+      ]
+    },
+    {
+      "id": "rd:v:Zug",
+      "kind": "VOCAB",
+      "german": "der Zug",
+      "plural": "die Züge",
+      "japanese": "列車",
+      "speakText": "der Zug",
+      "acceptedAnswers": [
+        "der Zug"
+      ]
+    },
+    {
+      "id": "rd:v:Fahrkarte",
+      "kind": "VOCAB",
+      "german": "die Fahrkarte",
+      "plural": "die Fahrkarten",
+      "japanese": "切符",
+      "speakText": "die Fahrkarte",
+      "acceptedAnswers": [
+        "die Fahrkarte"
+      ]
+    },
+    {
+      "id": "rd:v:Gleis",
+      "kind": "VOCAB",
+      "german": "das Gleis",
+      "plural": "die Gleise",
+      "japanese": "番線・線路",
+      "speakText": "das Gleis",
+      "acceptedAnswers": [
+        "das Gleis"
+      ]
+    },
+    {
+      "id": "rd:v:Verspätung",
+      "kind": "VOCAB",
+      "german": "die Verspätung",
+      "plural": "die Verspätungen",
+      "japanese": "遅れ",
+      "speakText": "die Verspätung",
+      "acceptedAnswers": [
+        "die Verspätung"
+      ]
+    },
+    {
+      "id": "rd:v:Flughafen",
+      "kind": "VOCAB",
+      "german": "der Flughafen",
+      "plural": "die Flughäfen",
+      "japanese": "空港",
+      "speakText": "der Flughafen",
+      "acceptedAnswers": [
+        "der Flughafen"
+      ]
+    },
+    {
+      "id": "rd:v:Platz",
+      "kind": "VOCAB",
+      "german": "der Platz",
+      "plural": "die Plätze",
+      "japanese": "席・場所",
+      "speakText": "der Platz",
+      "acceptedAnswers": [
+        "der Platz"
+      ]
+    },
+    {
+      "id": "rd:v:Zimmer",
+      "kind": "VOCAB",
+      "german": "das Zimmer",
+      "plural": "die Zimmer",
+      "japanese": "部屋",
+      "speakText": "das Zimmer",
+      "acceptedAnswers": [
+        "das Zimmer"
+      ]
+    },
+    {
+      "id": "rd:v:Reservierung",
+      "kind": "VOCAB",
+      "german": "die Reservierung",
+      "plural": "die Reservierungen",
+      "japanese": "予約",
+      "speakText": "die Reservierung",
+      "acceptedAnswers": [
+        "die Reservierung"
+      ]
+    },
+    {
+      "id": "rd:v:Pass",
+      "kind": "VOCAB",
+      "german": "der Pass",
+      "plural": "die Pässe",
+      "japanese": "パスポート",
+      "speakText": "der Pass",
+      "acceptedAnswers": [
+        "der Pass"
+      ]
+    },
+    {
+      "id": "rd:v:Handtuch",
+      "kind": "VOCAB",
+      "german": "das Handtuch",
+      "plural": "die Handtücher",
+      "japanese": "タオル",
+      "speakText": "das Handtuch",
+      "acceptedAnswers": [
+        "das Handtuch"
+      ]
+    },
+    {
+      "id": "rd:v:Gepäck",
+      "kind": "VOCAB",
+      "german": "das Gepäck",
+      "plural": "通常、複数形なし",
+      "japanese": "荷物",
+      "speakText": "das Gepäck",
+      "acceptedAnswers": [
+        "das Gepäck"
+      ]
+    },
+    {
+      "id": "rd:v:Museum",
+      "kind": "VOCAB",
+      "german": "das Museum",
+      "plural": "die Museen",
+      "japanese": "博物館",
+      "speakText": "das Museum",
+      "acceptedAnswers": [
+        "das Museum"
+      ]
+    },
+    {
+      "id": "rd:v:Eintrittskarte",
+      "kind": "VOCAB",
+      "german": "die Eintrittskarte",
+      "plural": "die Eintrittskarten",
+      "japanese": "入場券",
+      "speakText": "die Eintrittskarte",
+      "acceptedAnswers": [
+        "die Eintrittskarte"
+      ]
+    },
+    {
+      "id": "rd:v:Souvenir",
+      "kind": "VOCAB",
+      "german": "das Souvenir",
+      "plural": "die Souvenirs",
+      "japanese": "お土産",
+      "speakText": "das Souvenir",
+      "acceptedAnswers": [
+        "das Souvenir"
+      ]
+    },
+    {
+      "id": "rd:v:sein",
+      "kind": "VERB",
+      "german": "sein",
+      "japanese": "〜である",
+      "speakText": "sein",
+      "acceptedAnswers": [
+        "sein"
+      ]
+    },
+    {
+      "id": "rd:v:haben",
+      "kind": "VERB",
+      "german": "haben",
+      "japanese": "持っている",
+      "speakText": "haben",
+      "acceptedAnswers": [
+        "haben"
+      ]
+    },
+    {
+      "id": "rd:v:sprechen",
+      "kind": "VERB",
+      "german": "sprechen",
+      "japanese": "話す",
+      "speakText": "sprechen",
+      "acceptedAnswers": [
+        "sprechen"
+      ]
+    },
+    {
+      "id": "rd:v:kaufen",
+      "kind": "VERB",
+      "german": "kaufen",
+      "japanese": "買う",
+      "speakText": "kaufen",
+      "acceptedAnswers": [
+        "kaufen"
+      ]
+    },
+    {
+      "id": "rd:v:bezahlen",
+      "kind": "VERB",
+      "german": "bezahlen",
+      "japanese": "支払う",
+      "speakText": "bezahlen",
+      "acceptedAnswers": [
+        "bezahlen"
+      ]
+    },
+    {
+      "id": "rd:v:helfen",
+      "kind": "VERB",
+      "german": "helfen",
+      "japanese": "助ける",
+      "speakText": "helfen",
+      "acceptedAnswers": [
+        "helfen"
+      ]
+    }
+  ],
+  "conversations": [
+    {
+      "id": "cafe-01",
+      "scene": "cafe",
+      "titleJa": "カフェで注文",
+      "turns": [
+        {
+          "speaker": "STAFF",
+          "german": "Was kann ich für Sie tun?",
+          "japanese": "ご注文はお決まりですか？"
+        },
+        {
+          "speaker": "LEARNER",
+          "cardId": "rd:l02:p01",
+          "german": "Ich hätte gern einen Kaffee, bitte.",
+          "japanese": "コーヒーを1杯お願いします"
+        },
+        {
+          "speaker": "STAFF",
+          "german": "Sehr gern!",
+          "japanese": "はい、かしこまりました。"
+        }
+      ]
+    },
+    {
+      "id": "cafe-02",
+      "scene": "cafe",
+      "titleJa": "カフェで注文",
+      "turns": [
+        {
+          "speaker": "STAFF",
+          "german": "Möchten Sie Milch dazu?",
+          "japanese": "ご注文はお決まりですか？"
+        },
+        {
+          "speaker": "LEARNER",
+          "cardId": "rd:l10:p01",
+          "german": "Ohne Milch, bitte.",
+          "japanese": "牛乳なしでお願いします"
+        },
+        {
+          "speaker": "STAFF",
+          "german": "Natürlich.",
+          "japanese": "はい、かしこまりました。"
+        }
+      ]
+    },
+    {
+      "id": "cafe-03",
+      "scene": "cafe",
+      "titleJa": "カフェで注文",
+      "turns": [
+        {
+          "speaker": "STAFF",
+          "german": "Wie möchten Sie bezahlen?",
+          "japanese": "お支払い方法はいかがなさいますか？"
+        },
+        {
+          "speaker": "LEARNER",
+          "cardId": "rd:l14:p02",
+          "german": "Kann ich mit Karte bezahlen?",
+          "japanese": "カードで払えますか"
+        },
+        {
+          "speaker": "STAFF",
+          "german": "Mit Karte, das geht.",
+          "japanese": "カードでお支払いいただけます。"
+        }
+      ]
+    },
+    {
+      "id": "station-01",
+      "scene": "station",
+      "titleJa": "駅で移動",
+      "turns": [
+        {
+          "speaker": "STAFF",
+          "german": "Wohin möchten Sie fahren?",
+          "japanese": "どちらまで行かれますか？"
+        },
+        {
+          "speaker": "LEARNER",
+          "cardId": "rd:l06:p01",
+          "german": "Eine Fahrkarte nach Berlin, bitte.",
+          "japanese": "ベルリン行きの切符を1枚お願いします"
+        },
+        {
+          "speaker": "STAFF",
+          "german": "Einfach oder hin und zurück?",
+          "japanese": "はい、かしこまりました。"
+        }
+      ]
+    },
+    {
+      "id": "station-02",
+      "scene": "station",
+      "titleJa": "駅で移動",
+      "turns": [
+        {
+          "speaker": "STAFF",
+          "german": "Fährt der Zug pünktlich ab?",
+          "japanese": "出発は定刻ですか？"
+        },
+        {
+          "speaker": "LEARNER",
+          "cardId": "rd:l12:p01",
+          "german": "Wann fährt der Zug ab?",
+          "japanese": "列車はいつ出発しますか"
+        },
+        {
+          "speaker": "STAFF",
+          "german": "Ja, er fährt gleich ab.",
+          "japanese": "はい、まもなく出発します。"
+        }
+      ]
+    },
+    {
+      "id": "station-03",
+      "scene": "station",
+      "titleJa": "駅で移動",
+      "turns": [
+        {
+          "speaker": "STAFF",
+          "german": "Kann ich Ihnen helfen?",
+          "japanese": "どちらまで行かれますか？"
+        },
+        {
+          "speaker": "LEARNER",
+          "cardId": "rd:l16:p01",
+          "german": "Muss ich umsteigen?",
+          "japanese": "乗り換えが必要ですか"
+        },
+        {
+          "speaker": "STAFF",
+          "german": "Ja, einmal in Nürnberg.",
+          "japanese": "はい、かしこまりました。"
+        }
+      ]
+    },
+    {
+      "id": "hotel-01",
+      "scene": "hotel",
+      "titleJa": "ホテルで宿泊",
+      "turns": [
+        {
+          "speaker": "STAFF",
+          "german": "Guten Tag! Wie kann ich Ihnen helfen?",
+          "japanese": "いらっしゃいませ。ご用件を伺います。"
+        },
+        {
+          "speaker": "LEARNER",
+          "cardId": "rd:l04:p01",
+          "german": "Ich habe eine Reservierung.",
+          "japanese": "予約しています"
+        },
+        {
+          "speaker": "STAFF",
+          "german": "Auf welchen Namen?",
+          "japanese": "はい、かしこまりました。"
+        }
+      ]
+    },
+    {
+      "id": "hotel-02",
+      "scene": "hotel",
+      "titleJa": "ホテルで宿泊",
+      "turns": [
+        {
+          "speaker": "STAFF",
+          "german": "Haben Sie noch eine Frage?",
+          "japanese": "いらっしゃいませ。ご用件を伺います。"
+        },
+        {
+          "speaker": "LEARNER",
+          "cardId": "rd:l11:p02",
+          "german": "Wann gibt es Frühstück?",
+          "japanese": "朝食は何時ですか"
+        },
+        {
+          "speaker": "STAFF",
+          "german": "Von sieben bis zehn Uhr.",
+          "japanese": "はい、かしこまりました。"
+        }
+      ]
+    },
+    {
+      "id": "hotel-03",
+      "scene": "hotel",
+      "titleJa": "ホテルで宿泊",
+      "turns": [
+        {
+          "speaker": "STAFF",
+          "german": "Möchten Sie auschecken?",
+          "japanese": "いらっしゃいませ。ご用件を伺います。"
+        },
+        {
+          "speaker": "LEARNER",
+          "cardId": "rd:l19:p01",
+          "german": "Ich möchte auschecken.",
+          "japanese": "チェックアウトしたいです"
+        },
+        {
+          "speaker": "STAFF",
+          "german": "Sehr gern. Haben Sie den Schlüssel?",
+          "japanese": "はい、かしこまりました。"
+        }
+      ]
+    },
+    {
+      "id": "sightseeing-01",
+      "scene": "sightseeing",
+      "titleJa": "街を観光",
+      "turns": [
+        {
+          "speaker": "STAFF",
+          "german": "Kann ich Ihnen helfen?",
+          "japanese": "何かお手伝いしましょうか？"
+        },
+        {
+          "speaker": "LEARNER",
+          "cardId": "rd:l09:p01",
+          "german": "Wie komme ich zum Dom?",
+          "japanese": "大聖堂へはどう行けばいいですか"
+        },
+        {
+          "speaker": "STAFF",
+          "german": "Gehen Sie geradeaus.",
+          "japanese": "はい、かしこまりました。"
+        }
+      ]
+    },
+    {
+      "id": "sightseeing-02",
+      "scene": "sightseeing",
+      "titleJa": "街を観光",
+      "turns": [
+        {
+          "speaker": "STAFF",
+          "german": "Haben Sie eine Frage?",
+          "japanese": "何かお手伝いしましょうか？"
+        },
+        {
+          "speaker": "LEARNER",
+          "cardId": "rd:l13:p02",
+          "german": "Darf ich hier fotografieren?",
+          "japanese": "ここで写真を撮ってもいいですか"
+        },
+        {
+          "speaker": "STAFF",
+          "german": "Ja, aber bitte ohne Blitz.",
+          "japanese": "はい、かしこまりました。"
+        }
+      ]
+    },
+    {
+      "id": "sightseeing-03",
+      "scene": "sightseeing",
+      "titleJa": "街を観光",
+      "turns": [
+        {
+          "speaker": "STAFF",
+          "german": "Suchen Sie etwas Bestimmtes?",
+          "japanese": "何かお手伝いしましょうか？"
+        },
+        {
+          "speaker": "LEARNER",
+          "cardId": "rd:l17:p02",
+          "german": "Ich suche ein Souvenir.",
+          "japanese": "お土産を探しています"
+        },
+        {
+          "speaker": "STAFF",
+          "german": "Schauen Sie gern hier.",
+          "japanese": "はい、かしこまりました。"
+        }
+      ]
+    }
+  ]
+}

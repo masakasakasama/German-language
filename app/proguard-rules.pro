@@ -1,0 +1,3 @@
+-keepattributes Signature,*Annotation*
+-keep class com.masakasakasama.reisedeutsch.data.** { *; }
+-keep class com.masakasakasama.reisedeutsch.BuildConfig { *; }
