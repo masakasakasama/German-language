@@ -1,13 +1,13 @@
 {
   "schemaVersion": 1,
   "packageName": "com.masakasakasama.reisedeutsch",
-  "versionCode": 1,
-  "versionName": "0.1.1",
+  "versionCode": 2,
+  "versionName": "0.1.2",
   "minSdk": 26,
-  "sourceCommit": "00af5f587c8ad2cf419937551d2fdffec373534d",
-  "releasePageUrl": "https://github.com/masakasakasama/German-language/releases/tag/v1",
-  "apkUrl": "https://github.com/masakasakasama/German-language/releases/download/v1/ReiseDeutsch-0.1.1.apk",
-  "sha256": "9739506516e92a04811fb17a13ffad2830dedea1930b9a6f0c159d065aa5bd23",
-  "sizeBytes": 1254740,
-  "notes": "ReiseDeutsch Android初回リリース。ドイツ語学習、間隔反復、会話練習、学習記録、端末内バックアップを含みます。"
+  "sourceCommit": "7312329561ec8cf6442ee1c9b0c926658658188a",
+  "releasePageUrl": "https://github.com/masakasakasama/German-language/releases/tag/v2",
+  "apkUrl": "https://github.com/masakasakasama/German-language/releases/download/v2/ReiseDeutsch-0.1.2.apk",
+  "sha256": "201aab3088587cef2251056cac9f8bd78c41fb60f11e6988ff2b01088317ba82",
+  "sizeBytes": 1287508,
+  "notes": "ゼロから理解するドイツ語基礎コース14課・42問を追加。文の分解、理由付き解説、誤答の再挑戦、既存SRSへの復習連携。起動時の更新確認と案内を追加。インストールはAndroidの確認画面で実行します。"
 }
