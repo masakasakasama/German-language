@@ -73,12 +73,13 @@ object UpdateRepository{
     @Suppress("DEPRECATION")
     private fun verifyApk(context:Context,file:File,release:ReleaseInfo){
         val pm=context.packageManager
-        val archive=(if(Build.VERSION.SDK_INT>=33)pm.getPackageArchiveInfo(file.path,PackageManager.PackageInfoFlags.of(PackageManager.GET_SIGNING_CERTIFICATES.toLong())) else pm.getPackageArchiveInfo(file.path,PackageManager.GET_SIGNATURES))
+        val signingFlags=if(Build.VERSION.SDK_INT>=28)PackageManager.GET_SIGNING_CERTIFICATES else PackageManager.GET_SIGNATURES
+        val archive=(if(Build.VERSION.SDK_INT>=33)pm.getPackageArchiveInfo(file.path,PackageManager.PackageInfoFlags.of(signingFlags.toLong())) else pm.getPackageArchiveInfo(file.path,signingFlags))
             ?:throw UpdateException("APKとして読み取れません")
         if(archive.packageName!=release.packageName)throw UpdateException("異なるアプリのAPKです")
         val code=if(Build.VERSION.SDK_INT>=28)archive.longVersionCode.toInt() else archive.versionCode
         if(code!=release.versionCode)throw UpdateException("APKの版数が一致しません")
-        val installed=if(Build.VERSION.SDK_INT>=33)pm.getPackageInfo(context.packageName,PackageManager.PackageInfoFlags.of(PackageManager.GET_SIGNING_CERTIFICATES.toLong())) else pm.getPackageInfo(context.packageName,PackageManager.GET_SIGNATURES)
+        val installed=if(Build.VERSION.SDK_INT>=33)pm.getPackageInfo(context.packageName,PackageManager.PackageInfoFlags.of(signingFlags.toLong())) else pm.getPackageInfo(context.packageName,signingFlags)
         val installedSigners=if(Build.VERSION.SDK_INT>=28)installed.signingInfo?.apkContentsSigners else installed.signatures
         val archivedSigners=if(Build.VERSION.SDK_INT>=28)archive.signingInfo?.apkContentsSigners else archive.signatures
         val expected=installedSigners.orEmpty().map{MessageDigest.getInstance("SHA-256").digest(it.toByteArray()).joinToString(""){b->"%02x".format(b)}}.toSet()
