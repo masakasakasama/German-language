@@ -1,0 +1,13 @@
+{
+  "schemaVersion": 1,
+  "packageName": "com.masakasakasama.reisedeutsch",
+  "versionCode": 1,
+  "versionName": "0.1.1",
+  "minSdk": 26,
+  "sourceCommit": "00af5f587c8ad2cf419937551d2fdffec373534d",
+  "releasePageUrl": "https://github.com/masakasakasama/German-language/releases/tag/v1",
+  "apkUrl": "https://github.com/masakasakasama/German-language/releases/download/v1/ReiseDeutsch-0.1.1.apk",
+  "sha256": "9739506516e92a04811fb17a13ffad2830dedea1930b9a6f0c159d065aa5bd23",
+  "sizeBytes": 1254740,
+  "notes": "ReiseDeutsch Android初回リリース。ドイツ語学習、間隔反復、会話練習、学習記録、端末内バックアップを含みます。"
+}

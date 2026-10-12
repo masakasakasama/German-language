@@ -1,0 +1,44 @@
+name: Publish signed ReiseDeutsch APK
+
+on:
+  push:
+    branches: [release-apk]
+
+permissions:
+  contents: write
+
+concurrency:
+  group: publish-reisedeutsch-v1
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Verify release artifact and metadata
+        run: |
+          python3 - <<'PY'
+          import hashlib, json, pathlib
+          feed = json.loads(pathlib.Path('distribution/latest.json').read_text())
+          apk = pathlib.Path('distribution/ReiseDeutsch-0.1.1.apk').read_bytes()
+          assert feed['sourceCommit'] == '00af5f587c8ad2cf419937551d2fdffec373534d'
+          assert feed['packageName'] == 'com.masakasakasama.reisedeutsch'
+          assert feed['versionCode'] == 1 and feed['versionName'] == '0.1.1'
+          assert feed['sha256'] == hashlib.sha256(apk).hexdigest() == '9739506516e92a04811fb17a13ffad2830dedea1930b9a6f0c159d065aa5bd23'
+          assert feed['sizeBytes'] == len(apk) == 1254740
+          assert feed['apkUrl'] == 'https://github.com/masakasakasama/German-language/releases/download/v1/ReiseDeutsch-0.1.1.apk'
+          print('Verified signed APK bytes and update metadata')
+          PY
+      - name: Upload APK and publish release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+        run: |
+          set -eu
+          if ! gh release view v1 >/dev/null 2>&1; then
+            gh release create v1 --draft --target 00af5f587c8ad2cf419937551d2fdffec373534d --title 'ReiseDeutsch 0.1.1' --notes 'ドイツ語学習Androidアプリ。署名済みAPKとアプリ内更新用latest.jsonを配布します。ソースcommit: 00af5f587c8ad2cf419937551d2fdffec373534d。単体テスト・lint・releaseビルド・APK署名検証済み。実機での動作確認は未実施です。'
+          fi
+          gh release upload v1 distribution/ReiseDeutsch-0.1.1.apk distribution/latest.json --clobber
+          gh release edit v1 --draft=false
+          gh release view v1 --json url,assets
