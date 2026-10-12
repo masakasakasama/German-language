@@ -23,6 +23,8 @@ jobs:
           distribution: temurin
           java-version: '17'
       - uses: android-actions/setup-android@v3
+        with:
+          packages: 'platform-tools platforms;android-35 build-tools;35.0.0'
       - name: Check source, tests, lint and debug APK
         run: ./gradlew testDebugUnitTest lintDebug assembleDebug --no-daemon
   release:
@@ -37,6 +39,8 @@ jobs:
           distribution: temurin
           java-version: '17'
       - uses: android-actions/setup-android@v3
+        with:
+          packages: 'platform-tools platforms;android-35 build-tools;35.0.0'
       - name: Validate version and signing configuration
         env:
           KEYSTORE_B64: ${{ secrets.REISE_KEYSTORE_BASE64 }}
