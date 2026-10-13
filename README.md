@@ -30,6 +30,8 @@ main push時はテスト・lint・debugビルドを実行します。将来の�
 
 GitHub Releaseからのダウンロードが止まる端末向け：[0.1.2の直接ダウンロード](https://raw.githubusercontent.com/masakasakasama/German-language/e10543846b60828419111ad94c6e1574b8eb7deb/distribution/ReiseDeutsch-0.1.2.apk)。0.1.1のAndroid 9〜12ではアプリ内更新の署名取得に不具合があるため、このリンクから更新してください。旧版のアンインストールは不要です。
 
+APKのダウンロードが完了しない端末向け：[ZIP形式でダウンロード](https://raw.githubusercontent.com/masakasakasama/German-language/231865a2a889e6bbaff77062e4a8fedfe43a7db2/distribution/ReiseDeutsch.zip)。スマホの「ファイル」または「マイファイル」→「ダウンロード」でZIPを展開し、中の `ReiseDeutsch-0.1.2.apk` を開いてください。公開済みAPKと同一のファイルであることを、公開ZIPの展開とSHA-256照合で確認済みです。
+
 ## 設計資料
 
 [基礎コースの内容と更新の動作](docs/design/foundations-course.md)。仕様・根拠・画面設計は [docs/design](docs/design/) にあります。Notion共通設計の指定ページはHTTP 403で取得できていないため、本文準拠を主張せず、確認できた既存GitHub実装を基にしています。

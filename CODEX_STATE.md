@@ -42,3 +42,7 @@ Goal: ReiseDeutsch, a German-only Android learning app based on the approved des
 2. Securely register `.local-release/` signing values as repository Actions secrets for later signed workflow releases.
 3. Install/test the APK on a real Android device, including the update flow.
 4. Revisit Notion-backed common design/update guidance once page access is available.
+
+## ZIP download fallback (2026-10-13)
+
+User reports APK downloads do not finish on phone. Added `distribution/ReiseDeutsch.zip` on release-apk commit `231865a2a889e6bbaff77062e4a8fedfe43a7db2`. Public ZIP is 1,095,939 bytes and contains only the exact signed 0.1.2 APK. Downloaded public ZIP and verified archive integrity and extracted APK SHA-256. Device-specific cause remains undiagnosed; do not claim the alternate format is confirmed working on the phone. A separate publisher adds the ZIP to Release v2 without replacing APK or latest.json.
