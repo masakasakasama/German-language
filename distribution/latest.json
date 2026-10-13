@@ -1,13 +1,13 @@
 {
   "schemaVersion": 1,
   "packageName": "com.masakasakasama.reisedeutsch",
-  "versionCode": 3,
-  "versionName": "0.1.3",
+  "versionCode": 4,
+  "versionName": "0.1.4",
   "minSdk": 26,
-  "sourceCommit": "bf5c6eea415fd661d31f528dd9d8cfde6aadd269",
-  "releasePageUrl": "https://github.com/masakasakasama/German-language/releases/tag/v3",
-  "apkUrl": "https://github.com/masakasakasama/German-language/releases/download/v3/ReiseDeutsch-0.1.3.apk",
-  "sha256": "334407d19528913707d6a0410f7a199f0e01eda9e8865fc44e4ee9cfb7d9f782",
-  "sizeBytes": 1303892,
-  "notes": "基礎コース14課に28の図解を追加。主語・動詞・対格・与格などを色分けし、役割を選んで強調できます。例文28個も意味ごとの箱に分解。語順や冠詞の変化を上下の図で比較できます。"
+  "sourceCommit": "a019de01da63c9ae1b43f66a73aa55d0e314fa58",
+  "releasePageUrl": "https://github.com/masakasakasama/German-language/releases/tag/v4",
+  "apkUrl": "https://github.com/masakasakasama/German-language/releases/download/v4/ReiseDeutsch-0.1.4.apk",
+  "sha256": "f0ccf1ec69c644c0a0374ec683652ee7d90b3cf981cff1e27ba167dc23a846c9",
+  "sizeBytes": 1320316,
+  "notes": "戻るジェスチャーでアプリが閉じる問題を修正。全画面で前の画面へ戻り、ホームでは終了を確認します。学習中の入力・選択・表示状態を保持し、説明へ戻っても練習を再開できます。完了後は終了した問題画面へ戻りません。"
 }

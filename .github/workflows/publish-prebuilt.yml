@@ -9,7 +9,7 @@ permissions:
   contents: write
 
 concurrency:
-  group: publish-reisedeutsch-v3
+  group: publish-reisedeutsch-v4
   cancel-in-progress: false
 
 jobs:
@@ -22,13 +22,13 @@ jobs:
           python3 - <<'PY'
           import hashlib, json, pathlib
           feed = json.loads(pathlib.Path('distribution/latest.json').read_text())
-          apk = pathlib.Path('distribution/ReiseDeutsch-0.1.3.apk').read_bytes()
-          assert feed['sourceCommit'] == 'bf5c6eea415fd661d31f528dd9d8cfde6aadd269'
+          apk = pathlib.Path('distribution/ReiseDeutsch-0.1.4.apk').read_bytes()
+          assert feed['sourceCommit'] == 'a019de01da63c9ae1b43f66a73aa55d0e314fa58'
           assert feed['packageName'] == 'com.masakasakasama.reisedeutsch'
-          assert feed['versionCode'] == 3 and feed['versionName'] == '0.1.3'
-          assert feed['sha256'] == hashlib.sha256(apk).hexdigest() == '334407d19528913707d6a0410f7a199f0e01eda9e8865fc44e4ee9cfb7d9f782'
-          assert feed['sizeBytes'] == len(apk) == 1303892
-          assert feed['apkUrl'] == 'https://github.com/masakasakasama/German-language/releases/download/v3/ReiseDeutsch-0.1.3.apk'
+          assert feed['versionCode'] == 4 and feed['versionName'] == '0.1.4'
+          assert feed['sha256'] == hashlib.sha256(apk).hexdigest() == 'f0ccf1ec69c644c0a0374ec683652ee7d90b3cf981cff1e27ba167dc23a846c9'
+          assert feed['sizeBytes'] == len(apk) == 1320316
+          assert feed['apkUrl'] == 'https://github.com/masakasakasama/German-language/releases/download/v4/ReiseDeutsch-0.1.4.apk'
           print('Verified signed APK bytes and update metadata')
           PY
       - name: Upload APK and publish release
@@ -37,9 +37,9 @@ jobs:
           GH_REPO: ${{ github.repository }}
         run: |
           set -eu
-          if ! gh release view v3 >/dev/null 2>&1; then
-            gh release create v3 --draft --target bf5c6eea415fd661d31f528dd9d8cfde6aadd269 --title 'ReiseDeutsch 0.1.3' --notes '基礎コース14課に28の図解を追加。主語・動詞・対格・与格などを色分けし、役割を選んで強調できます。例文28個も意味ごとの箱に分解。語順や冠詞の変化を上下の図で比較できます。 単体テスト9件・lint・releaseビルド・旧版との署名一致を検証済み。実機表示は未確認です。'
+          if ! gh release view v4 >/dev/null 2>&1; then
+            gh release create v4 --draft --target a019de01da63c9ae1b43f66a73aa55d0e314fa58 --title 'ReiseDeutsch 0.1.4' --notes '戻るジェスチャーでアプリが閉じる問題を修正。全画面で前の画面へ戻り、ホームでは終了を確認します。学習中の入力・選択・表示状態を保持し、説明へ戻っても練習を再開できます。完了後は終了した問題画面へ戻りません。 単体テスト15件・lint・署名付きビルド・旧版との署名一致を検証済み。実機ジェスチャー確認は未実施です。'
           fi
-          gh release upload v3 distribution/ReiseDeutsch-0.1.3.apk distribution/latest.json --clobber
-          gh release edit v3 --draft=false
-          gh release view v3 --json url,assets
+          gh release upload v4 distribution/ReiseDeutsch-0.1.4.apk distribution/latest.json --clobber
+          gh release edit v4 --draft=false
+          gh release view v4 --json url,assets
