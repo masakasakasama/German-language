@@ -1,13 +1,13 @@
 {
   "schemaVersion": 1,
   "packageName": "com.masakasakasama.reisedeutsch",
-  "versionCode": 2,
-  "versionName": "0.1.2",
+  "versionCode": 3,
+  "versionName": "0.1.3",
   "minSdk": 26,
-  "sourceCommit": "7312329561ec8cf6442ee1c9b0c926658658188a",
-  "releasePageUrl": "https://github.com/masakasakasama/German-language/releases/tag/v2",
-  "apkUrl": "https://github.com/masakasakasama/German-language/releases/download/v2/ReiseDeutsch-0.1.2.apk",
-  "sha256": "201aab3088587cef2251056cac9f8bd78c41fb60f11e6988ff2b01088317ba82",
-  "sizeBytes": 1287508,
-  "notes": "ゼロから理解するドイツ語基礎コース14課・42問を追加。文の分解、理由付き解説、誤答の再挑戦、既存SRSへの復習連携。起動時の更新確認と案内を追加。インストールはAndroidの確認画面で実行します。"
+  "sourceCommit": "bf5c6eea415fd661d31f528dd9d8cfde6aadd269",
+  "releasePageUrl": "https://github.com/masakasakasama/German-language/releases/tag/v3",
+  "apkUrl": "https://github.com/masakasakasama/German-language/releases/download/v3/ReiseDeutsch-0.1.3.apk",
+  "sha256": "334407d19528913707d6a0410f7a199f0e01eda9e8865fc44e4ee9cfb7d9f782",
+  "sizeBytes": 1303892,
+  "notes": "基礎コース14課に28の図解を追加。主語・動詞・対格・与格などを色分けし、役割を選んで強調できます。例文28個も意味ごとの箱に分解。語順や冠詞の変化を上下の図で比較できます。"
 }
