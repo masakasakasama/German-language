@@ -1,0 +1,29 @@
+name: Publish ZIP download for Android
+on:
+  push:
+    branches: [release-apk]
+    paths: [distribution/ReiseDeutsch.zip]
+permissions:
+  contents: write
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Verify ZIP contains the published signed APK
+        run: |
+          python3 - <<'PY'
+          import hashlib, zipfile
+          with zipfile.ZipFile('distribution/ReiseDeutsch.zip') as z:
+              assert z.testzip() is None
+              assert z.namelist() == ['ReiseDeutsch-0.1.2.apk']
+              apk = z.read('ReiseDeutsch-0.1.2.apk')
+              assert len(apk) == 1287508
+              assert hashlib.sha256(apk).hexdigest() == '201aab3088587cef2251056cac9f8bd78c41fb60f11e6988ff2b01088317ba82'
+          print('ZIP contains the exact published APK')
+          PY
+      - name: Add ZIP download to the existing release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+        run: gh release upload v2 distribution/ReiseDeutsch.zip

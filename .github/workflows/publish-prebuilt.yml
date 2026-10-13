@@ -3,6 +3,7 @@ name: Publish signed ReiseDeutsch APK
 on:
   push:
     branches: [release-apk]
+    paths: [distribution/latest.json]
 
 permissions:
   contents: write
