@@ -34,7 +34,7 @@ Goal: ReiseDeutsch, a German-only Android learning app based on the approved des
 
 - The current GitHub API identity can push code but cannot manage Actions secrets (403). Signing secrets are not set; the long-lived key and credentials are stored in ignored, owner-only `.local-release/` files in the workspace.
 - The unapplied Codex credential/network draft is unnecessary for the published initial release; do not request a personal GitHub token for downloading it.
-- The requested Notion page returned HTTP 403; common Notion principles and update process remain unverified.
+- 2026-10-13 Notion retry: URL and content endpoints are HTTP 200, but content records are empty and public page metadata reports `publicAccessRole: none`. The specific page is inaccessible without authenticated access; common Notion principles/update process remain unverified. Need published link, authenticated connector, or supplied text. Network 403 is no longer the current diagnosis.
 
 ## Continue
 
