@@ -51,8 +51,8 @@ private val navItems=listOf("home" to ("ホーム" to Icons.Default.Home),"lesso
 @Composable fun ReiseApp(vm:StudyViewModel= viewModel()){
  val page by vm.page.collectAsState();val stats by vm.stats.collectAsState();val session by vm.session.collectAsState();val dark by vm.dark.collectAsState();val notice by vm.notice.collectAsState();val goal by vm.goal.collectAsState();val update by vm.update.collectAsState()
  val courseUnit by vm.courseUnit.collectAsState()
- BackHandler(enabled=page in setOf("course","course-unit","course-complete")){vm.setPage(if(page=="course")"home" else "course")}
- val context= LocalContext.current;val scope= rememberCoroutineScope();var drawer by remember{mutableStateOf(false)};var showUpdate by remember{mutableStateOf(false)}
+ val context= LocalContext.current;val scope= rememberCoroutineScope();var drawer by remember{mutableStateOf(false)};var showUpdate by remember{mutableStateOf(false)};var showExit by remember{mutableStateOf(false)}
+ BackHandler(enabled=!drawer&&!showUpdate&&!showExit){if(!vm.goBack())showExit=true}
  LaunchedEffect(update.release?.versionCode){if(update.release!=null)showUpdate=true}
  var tts by remember{mutableStateOf<TextToSpeech?>(null)}
  DisposableEffect(context){val engine=TextToSpeech(context){status->if(status==TextToSpeech.SUCCESS)tts?.language=Locale.GERMANY};tts=engine;onDispose{engine.stop();engine.shutdown()}}
@@ -70,7 +70,7 @@ private val navItems=listOf("home" to ("ホーム" to Icons.Default.Home),"lesso
   Scaffold(snackbarHost={SnackbarHost(snackbar)},containerColor=c.paper,topBar={
    if(page !in setOf("study","complete","conversation-detail"))TopAppBar(
     title={Text(if(page=="home")"ReiseDeutsch" else navItems.firstOrNull{it.first==page}?.second?.first?:when(page){"settings"->"設定";"backup"->"データ管理";"course"->"ドイツ語の基礎";"course-unit"->"しくみを学ぶ";"course-complete"->"基礎レッスン完了";else->"ReiseDeutsch"},fontWeight=FontWeight.Bold,color=c.ink)},
-    navigationIcon={IconButton(onClick={when(page){"settings","backup"->vm.setPage("profile");"course-unit","course-complete"->vm.setPage("course");"course"->vm.setPage("home");else->drawer=true}}){Icon(if(page in setOf("settings","backup","course","course-unit","course-complete"))Icons.Default.ArrowBack else Icons.Default.Menu,null,tint=c.ink)}},
+    navigationIcon={IconButton(onClick={if(page in setOf("settings","backup","course","course-unit","course-complete"))vm.goBack() else drawer=true}){Icon(if(page in setOf("settings","backup","course","course-unit","course-complete"))Icons.Default.ArrowBack else Icons.Default.Menu,null,tint=c.ink)}},
     actions={if(page=="home")IconButton(onClick=vm::dueClick){Icon(Icons.Default.Notifications,null,tint=c.ink)};if(page=="lessons")IconButton(onClick={vm.setPage("map")}){Icon(Icons.Default.Explore,null,tint=c.ink)}} ,colors=TopAppBarDefaults.topAppBarColors(containerColor=c.paper))
   },bottomBar={if(page in setOf("home","lessons","map","conversation","collection","profile"))NavigationBar(containerColor=c.surface,tonalElevation=2.dp){navItems.forEach{(id,pair)->NavigationBarItem(selected=page==id||id=="lessons"&&page=="map",onClick={vm.setPage(id)},icon={Icon(pair.second,null)},label={Text(pair.first,maxLines=1,fontSize=10.sp)},colors=NavigationBarItemDefaults.colors(selectedIconColor=c.action,selectedTextColor=c.action,indicatorColor=c.actionSoft,unselectedIconColor=c.muted,unselectedTextColor=c.muted))}}}){padding->
    Box(Modifier.fillMaxSize().padding(padding)){
@@ -92,6 +92,7 @@ private val navItems=listOf("home" to ("ホーム" to Icons.Default.Home),"lesso
     }
    }
   }
+  if(showExit)AlertDialog(onDismissRequest={showExit=false},title={Text("アプリを閉じますか？")},text={Text("学習済みの記録は端末に保存されています。")},confirmButton={TextButton(onClick={showExit=false;(context as? android.app.Activity)?.finish()}){Text("閉じる")}},dismissButton={TextButton(onClick={showExit=false}){Text("学習を続ける")}})
   if(drawer)AlertDialog(onDismissRequest={drawer=false},title={Text("ReiseDeutsch 🐰")},text={Text("旅するように、ドイツ語を。\n短い練習を積み重ねて、旅のフレーズを覚えよう。")},confirmButton={TextButton(onClick={drawer=false;vm.setPage("settings")}){Text("設定")}},dismissButton={TextButton(onClick={drawer=false}){Text("閉じる")}})
   if(showUpdate)AlertDialog(onDismissRequest={showUpdate=false},title={Text("アプリの更新")},text={Column(verticalArrangement=Arrangement.spacedBy(8.dp)){Text(if(update.checking)"GitHub Releasesを確認しています…" else update.error?:update.release?.let{"ReiseDeutsch ${it.versionName}\n${it.notes}\n${it.sizeBytes/1024/1024} MB"}?:"更新を確認できませんでした");if(update.downloading)LinearProgressIndicator(Modifier.fillMaxWidth())}},confirmButton={TextButton(enabled=!update.checking&&!update.downloading,onClick={when{update.apkPath!=null->vm.installUpdate(context);update.release!=null->vm.downloadUpdate(context);else->vm.checkUpdate()}}){Text(when{update.apkPath!=null->"インストール";update.release!=null->if(update.downloading)"取得中…" else "ダウンロード";else->"もう一度確認"})}},dismissButton={TextButton(onClick={showUpdate=false}){Text("閉じる")}})
  }
@@ -159,16 +160,16 @@ private fun sceneTitle(scene:String)=when(scene){"cafe"->"Café";"station"->"Am 
 
 @Composable private fun StudyScreen(vm:StudyViewModel,s:SessionUi,tts:TextToSpeech?){
  val c=LocalReiseColors.current
- var inputMode by remember(s.id,s.cursor){mutableStateOf(false)}
- var typed by remember(s.id,s.cursor){mutableStateOf("")}
+ val inputMode=s.inputMode
+ val typed=s.typed
  val card=s.cards.getOrNull(s.cursor/2)?:return
  val isIntro=s.cursor%2==0
  val question=GermanCourse.question(card.id)
  val course=GermanCourse.unit(s.lesson?.id.orEmpty())
- val options=remember(s.id,s.cursor){vm.options(card)}
+ val options=remember(s.id,s.cursor){vm.options(card,(s.id+":"+s.cursor).hashCode())}
  Column(Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(16.dp),verticalArrangement=Arrangement.spacedBy(14.dp)){
   Row(Modifier.fillMaxWidth(),verticalAlignment=Alignment.CenterVertically){
-   IconButton(onClick={if(course!=null)vm.openCourseUnit(course) else vm.finishReview()}){Icon(Icons.Default.Close,"閉じる",tint=c.ink)}
+   IconButton(onClick={vm.goBack()}){Icon(Icons.Default.Close,"閉じる",tint=c.ink)}
    Column(Modifier.weight(1f)){Text(s.lesson?.title?:"今日の復習",fontWeight=FontWeight.Bold);ProgressBar(s.cursor,s.cards.size*2)}
    Text("${s.cursor+1}/${s.cards.size*2}",color=c.muted)
   }
@@ -200,10 +201,10 @@ private fun sceneTitle(scene:String)=when(scene){"cafe"->"Café";"station"->"Am 
     val selected=s.selected==i
     OutlinedButton(onClick={vm.choose(i)},enabled=!s.answered&&!s.saving,modifier=Modifier.fillMaxWidth().heightIn(min=54.dp),shape=RoundedCornerShape(16.dp),border=androidx.compose.foundation.BorderStroke(if(selected)2.dp else 1.dp,if(selected)c.action else c.line),colors=ButtonDefaults.outlinedButtonColors(containerColor=if(selected)c.actionSoft else c.surface,contentColor=c.ink)){Text(opt.german,fontSize=17.sp)}
    }else{
-    OutlinedTextField(typed,{typed=it},Modifier.fillMaxWidth(),enabled=!s.answered&&!s.saving,label={Text("ドイツ語の文を入力")},minLines=1,maxLines=3)
-    Row(horizontalArrangement=Arrangement.spacedBy(6.dp)){listOf("ä","ö","ü","ß").forEach{letter->AssistChip(enabled=!s.answered&&!s.saving,onClick={typed+=letter},label={Text(letter)})}}
+    OutlinedTextField(typed,vm::typeAnswer,Modifier.fillMaxWidth(),enabled=!s.answered&&!s.saving,label={Text("ドイツ語の文を入力")},minLines=1,maxLines=3)
+    Row(horizontalArrangement=Arrangement.spacedBy(6.dp)){listOf("ä","ö","ü","ß").forEach{letter->AssistChip(enabled=!s.answered&&!s.saving,onClick={vm.typeAnswer(typed+letter)},label={Text(letter)})}}
    }
-   TextButton(enabled=!s.answered&&!s.saving,onClick={inputMode=!inputMode}){Text(if(inputMode)"選択問題で答える" else "文字で入力する")}
+   TextButton(enabled=!s.answered&&!s.saving,onClick=vm::toggleInputMode){Text(if(inputMode)"選択問題で答える" else "文字で入力する")}
    if(s.answered){
     val correct=s.answerCorrect==true
     ReiseCard(Modifier.fillMaxWidth()){
@@ -212,7 +213,7 @@ private fun sceneTitle(scene:String)=when(scene){"cafe"->"Café";"station"->"Am 
      Text(card.japanese,color=c.muted)
      Text("なぜこの答え？\n${card.grammar}",lineHeight=26.sp)
     }
-    if(course!=null&&!correct)PrimaryButton("もう一度答える",{typed="";vm.retryQuestion()},Modifier.fillMaxWidth())
+    if(course!=null&&!correct)PrimaryButton("もう一度答える",vm::retryQuestion,Modifier.fillMaxWidth())
     else PrimaryButton("次へ →",vm::next,Modifier.fillMaxWidth())
    }else PrimaryButton(if(s.saving)"保存中…" else "答えを確認",{vm.saveAnswer(if(inputMode)vm.grade(card,typed) else options.getOrNull(s.selected?:-1)?.id==card.id)},Modifier.fillMaxWidth(),enabled=!s.saving&&(if(inputMode)typed.isNotBlank() else s.selected!=null))
   }
