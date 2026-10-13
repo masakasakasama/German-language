@@ -8,6 +8,8 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -55,6 +57,8 @@ import com.masakasakasama.reisedeutsch.data.GrammarVisuals
 }
 
 @Composable fun CourseUnitScreen(vm: StudyViewModel, unit: GrammarUnit, tts: TextToSpeech?) {
+    val session by vm.session.collectAsState()
+    val resumable = session?.lesson?.id == unit.id
     CoursePage {
         BunnyCard(unit.title, "今日できるようになること：${unit.goal}")
         val visuals = GrammarVisuals.byUnit[unit.id].orEmpty()
@@ -79,7 +83,7 @@ import com.masakasakasama.reisedeutsch.data.GrammarVisuals
         }
         BunnyCard("考える順番 💡", unit.tip)
         Text("練習では、答えを見る → わかる度合いを選ぶ → 理由を考えて答える。間違えたら解説を読んで再挑戦します。名詞の大文字も確認するため、基礎コースの入力問題では大文字・小文字を区別します。", color = LocalReiseColors.current.muted)
-        PrimaryButton("理解チェックと練習へ →", { vm.startLesson(unit.practiceLesson()) }, Modifier.fillMaxWidth())
+        PrimaryButton(if (resumable) "途中から練習を再開 →" else "理解チェックと練習へ →", { vm.startLesson(unit.practiceLesson()) }, Modifier.fillMaxWidth())
         TextButton(onClick = { vm.setPage("course") }) { Text("コース一覧へ戻る") }
     }
 }

@@ -11,10 +11,13 @@ import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
 
 data class DashboardStats(val due:Int,val weak:Int,val xp:Int,val learned:Int,val mastered:Int,val streak:Int,val today:Int,val doneLessons:Int)
 
 class StudyRepository(val db:StudyDatabase,val content:ContentPack,private val clock:Clock=Clock.systemDefaultZone()){
+    private val sessionMutex=Mutex()
     val dao=db.dao()
     val states=dao.watchCards()
     val events=dao.watchEvents()
@@ -79,10 +82,16 @@ class StudyRepository(val db:StudyDatabase,val content:ContentPack,private val c
         }
     }
 
-    suspend fun saveSession(lesson:Lesson,cursor:Int){
-        val now=timestamp();val old=dao.session();val id=old?.sessionId?:"active"
-        if(cursor>=6)db.withTransaction{dao.putSession(SessionEntity(id,lesson.id,cursor,old?.createdAt?:now,now));dao.clearSession()}
-        else dao.putSession(SessionEntity(id,lesson.id,cursor,old?.createdAt?:now,now))
+    suspend fun saveSession(lesson:Lesson,cursor:Int,sessionId:String?=null)=sessionMutex.withLock{
+        db.withTransaction {
+            val now=timestamp();val old=dao.session();val id=sessionId?:old?.sessionId?:"active"
+            if(cursor>=6){if(old?.sessionId==id)dao.clearSession()}
+            else {
+                val created=old?.takeIf{it.sessionId==id}?.createdAt?:now
+                dao.clearSession()
+                dao.putSession(SessionEntity(id,lesson.id,cursor,created,now))
+            }
+        }
     }
     suspend fun session()=dao.session()
     suspend fun dueCards():List<PhraseCard>{val d=date();val state=dao.cards().filter{LocalDate.parse(it.dueLocalDate)<=d}.map{it.cardId}.toSet();return content.cards.filter{it.id in state&&it.kind=="PHRASE"}}
