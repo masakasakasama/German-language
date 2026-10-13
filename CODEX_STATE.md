@@ -1,7 +1,7 @@
 # CODEX_STATE
 
 Updated at: 2026-10-13 (Asia/Tokyo)
-Status: Android v2 (0.1.2) published; foundations course and update notifications implemented; public APK and old/new signing compatibility verified.
+Status: Android v3 (0.1.3) published with 28 interactive grammar diagrams and 28 boxed examples; public APK/ZIP/metadata verified; original signing key retained.
 Goal: ReiseDeutsch, a German-only Android learning app based on the approved design, existing SRS behavior, and reviewed cross-app design references.
 
 ## Delivered in the repository
@@ -46,3 +46,11 @@ Goal: ReiseDeutsch, a German-only Android learning app based on the approved des
 ## ZIP download fallback (2026-10-13)
 
 User reports APK downloads do not finish on phone. Added `distribution/ReiseDeutsch.zip` on release-apk commit `231865a2a889e6bbaff77062e4a8fedfe43a7db2`. Public ZIP is 1,095,939 bytes and contains only the exact signed 0.1.2 APK. Downloaded public ZIP and verified archive integrity and extracted APK SHA-256. Device-specific cause remains undiagnosed; do not claim the alternate format is confirmed working on the phone. A separate publisher adds the ZIP to Release v2 without replacing APK or latest.json.
+
+## Diagram course release v3 (2026-10-13)
+
+- Source commit `bf5c6eea415fd661d31f528dd9d8cfde6aadd269`. All 14 units have two diagrams, 28 total. Roles are explicitly authored; learners can emphasize a role through filters. Word-box wrapping supports narrow screens; role labels accompany colors. All 28 examples now show their decomposed phrases as boxes.
+- Existing lesson/card IDs and database schema are unchanged. Tests (9), debug lint/build, release lint/build passed. Main CI run `38341198442` passed.
+- Public release v3: https://github.com/masakasakasama/German-language/releases/tag/v3. Publishers `38341516847` (APK/feed) and `38341516837` (ZIP) passed.
+- APK: 1,303,892 bytes, SHA-256 `334407d19528913707d6a0410f7a199f0e01eda9e8865fc44e4ee9cfb7d9f782`. Public APK signature matches the original signing certificate. Public ZIP download (1,117,961 bytes) extracted and verified against the same hash. GitHub latest redirects to v3.
+- APK and ZIP direct links use distribution commit `a07a2fef1b995044a1f9a7bbccc66560525ab838`; ZIP is versioned `ReiseDeutsch-0.1.3.zip` to distinguish it from earlier downloads. Real-device rendering, installer behavior and resolution of the user’s phone download issue remain unverified. Notion page access remains restricted as documented above.
