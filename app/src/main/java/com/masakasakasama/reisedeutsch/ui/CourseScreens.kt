@@ -16,6 +16,7 @@ import com.masakasakasama.reisedeutsch.AppStats
 import com.masakasakasama.reisedeutsch.StudyViewModel
 import com.masakasakasama.reisedeutsch.data.GermanCourse
 import com.masakasakasama.reisedeutsch.data.GrammarUnit
+import com.masakasakasama.reisedeutsch.data.GrammarVisuals
 
 @Composable private fun CoursePage(content: @Composable ColumnScope.() -> Unit) {
     Column(Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(16.dp),
@@ -26,7 +27,7 @@ import com.masakasakasama.reisedeutsch.data.GrammarUnit
     val done = GermanCourse.units.count { it.id in stats.completedLessons }
     ReiseCard(Modifier.fillMaxWidth().clickable { vm.setPage("course") }) {
         Text("🌱 ゼロからわかるドイツ語", fontWeight = FontWeight.Bold, fontSize = 21.sp)
-        Text("丸暗記の前に、文を作るしくみを知ろう。14課・42問・理由つき解説。", color = LocalReiseColors.current.muted)
+        Text("丸暗記の前に、文を作るしくみを知ろう。14課・42問・28の図解。", color = LocalReiseColors.current.muted)
         ProgressBar(done, GermanCourse.units.size)
         PrimaryButton(if (done == 0) "基礎コースをはじめる →" else "基礎コースを続ける →", { vm.setPage("course") })
     }
@@ -56,18 +57,20 @@ import com.masakasakasama.reisedeutsch.data.GrammarUnit
 @Composable fun CourseUnitScreen(vm: StudyViewModel, unit: GrammarUnit, tts: TextToSpeech?) {
     CoursePage {
         BunnyCard(unit.title, "今日できるようになること：${unit.goal}")
-        unit.sections.forEach { section ->
+        val visuals = GrammarVisuals.byUnit[unit.id].orEmpty()
+        unit.sections.forEachIndexed { index, section ->
             ReiseCard(Modifier.fillMaxWidth()) {
                 Text(section.title, fontSize = 20.sp, fontWeight = FontWeight.Bold)
                 Text(section.body, fontSize = 16.sp, lineHeight = 27.sp)
             }
+            visuals.getOrNull(index)?.let { GrammarDiagram(it) }
         }
         Text("🔎 例文を分解してみよう", fontSize = 21.sp, fontWeight = FontWeight.Bold)
         unit.examples.forEachIndexed { index, example ->
             ReiseCard(Modifier.fillMaxWidth()) {
                 Text(example.german, fontWeight = FontWeight.Bold, fontSize = 22.sp)
                 Text(example.japanese, color = LocalReiseColors.current.muted)
-                Text(example.parts, fontWeight = FontWeight.SemiBold, lineHeight = 25.sp)
+                ExampleWordBoxes(example)
                 Text("なぜこの形？\n${example.reason}", lineHeight = 25.sp)
                 TextButton(onClick = { tts?.speak(example.german, TextToSpeech.QUEUE_FLUSH, null, "${unit.id}-example-$index") }) {
                     Text("🔊 例文の音を聞く")
