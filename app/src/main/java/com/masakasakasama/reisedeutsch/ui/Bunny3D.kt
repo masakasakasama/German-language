@@ -114,7 +114,7 @@ private class BunnyRenderer(private val context: Context, private val failure: (
             """.trimIndent())
             val fragment = shader(GL_FRAGMENT_SHADER, """
                 precision mediump float; varying vec3 vNormal; uniform vec4 uColor;
-                void main(){float light=0.60+0.40*max(dot(normalize(vNormal),normalize(vec3(-0.5,0.8,1.0))),0.0); gl_FragColor=vec4(uColor.rgb*light,1.0);}
+                void main(){float light=0.83+0.17*max(dot(normalize(vNormal),normalize(vec3(-0.5,0.8,1.0))),0.0); gl_FragColor=vec4(uColor.rgb*light,1.0);}
             """.trimIndent())
             program = glCreateProgram(); glAttachShader(program, vertex); glAttachShader(program, fragment)
             glBindAttribLocation(program, 0, "aPosition"); glBindAttribLocation(program, 1, "aNormal"); glLinkProgram(program)
@@ -150,7 +150,7 @@ private class BunnyRenderer(private val context: Context, private val failure: (
         System.arraycopy(model,0,arm,0,16)
         val waveTime=(now-waveAt)/1000f
         val angle=if(moving && waveTime in 0f..1.6f) 24f*sin(waveTime*12f)*sin(waveTime/1.6f*3.14159f) else 0f
-        Matrix.translateM(arm,0,-.48f,1.22f,0f); Matrix.rotateM(arm,0,angle,0f,0f,1f); Matrix.translateM(arm,0,.48f,-1.22f,0f)
+        Matrix.translateM(arm,0,-.48f,.8784f,0f); Matrix.rotateM(arm,0,angle,0f,0f,1f); Matrix.translateM(arm,0,.48f,-.8784f,0f)
         glUseProgram(program); glBindBuffer(GL_ARRAY_BUFFER,buffer)
         glEnableVertexAttribArray(0); glEnableVertexAttribArray(1)
         glVertexAttribPointer(0,3,GL_FLOAT,false,24,0); glVertexAttribPointer(1,3,GL_FLOAT,false,24,12)

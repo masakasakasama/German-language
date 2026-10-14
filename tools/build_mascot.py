@@ -4,7 +4,7 @@ from pathlib import Path
 from mathutils import Vector
 ROOT=Path(__file__).resolve().parents[1]; ART=ROOT/'art/mascot'; ASSET=ROOT/'app/src/main/assets/mascot'
 bpy.ops.object.select_all(action='SELECT'); bpy.ops.object.delete(use_global=False)
-colors={'fur':'fff6df','pink':'efac9e','red':'c63f45','blue':'234f72','gold':'e3b363','ink':'273344','brown':'9a633e','white':'ffffff','black':'20252c','yellow':'f4bf48'}
+colors={'fur':'fff6df','pink':'f4b4b5','red':'d95560','blue':'507999','gold':'e7c58d','ink':'55413c','brown':'9a633e','white':'ffffff','black':'20252c','yellow':'f4bf48'}
 mats={}
 for name,h in colors.items():
  m=bpy.data.materials.new(name); m.diffuse_color=tuple(int(h[i:i+2],16)/255 for i in (0,2,4))+(1,); m.use_nodes=True; p=m.node_tree.nodes.get('Principled BSDF'); p.inputs['Base Color'].default_value=m.diffuse_color; p.inputs['Roughness'].default_value=.72; mats[name]=m
@@ -33,22 +33,41 @@ ball('WaveSleeve',(-.64,0,1.40),(.17,.18,.30),'blue',-.7,arm)
 ball('WaveCuff',(-.79,-.01,1.58),(.16,.18,.075),'gold',-.7,arm)
 ball('WavePaw',(-.85,-.01,1.72),(.17,.14,.20),'fur',-.3,arm)
 ball('PawPad',(-.85,-.145,1.72),(.075,.018,.09),'pink',0,arm)
-ball('Head',(0,-.035,1.81),(.59,.40,.52),'fur')
-for x,a in [(-.29,-.22),(.30,.30)]:
- ball('Ear',(x,.015,2.45),(.18,.12,.53),'fur',a)
- ball('InnerEar',(x,-.103,2.46),(.105,.025,.39),'pink',a)
-ball('BeretBand',(0,-.025,2.14),(.58,.39,.095),'red')
-ball('Beret',(-.075,.01,2.27),(.52,.36,.17),'red',-.14)
-ball('BeretStem',(.12,0,2.44),(.055,.05,.10),'red',.3)
-for x in [-.235,.235]:
- # Happy curved eyes made from small overlapping spheres, no texture dependency.
- for i in range(9):
-  t=math.pi*i/8; ball('HappyEye',(x+.073*math.cos(t),-.410,1.85+.047*math.sin(t)),(.018,.019,.019),'ink')
- ball('Blush',(x*1.48,-.37,1.70),(.105,.035,.06),'pink')
-ball('Muzzle',(0,-.41,1.68),(.22,.06,.13),'fur')
-ball('Smile',(0,-.470,1.67),(.082,.018,.072),'ink')
-ball('Tongue',(0,-.49,1.635),(.048,.009,.027),'pink')
-ball('Nose',(0,-.477,1.76),(.046,.025,.031),'pink')
+# Short, soft body and an oversized face, matching the illustrated mascot.
+for o in parts:
+ if o.parent==arm: o.location.z*=.72
+ else: o.location.z*=.72
+ o.scale.z*=.72
+arm.location.z*=.72
+ball('Head',(0,-.035,1.55),(.70,.43,.59),'fur')
+for x,a in [(-.29,-.25),(.30,.34)]:
+ ball('Ear',(x,.015,2.22),(.18,.12,.48),'fur',a)
+ ball('InnerEar',(x,-.103,2.23),(.10,.025,.34),'pink',a)
+ball('BeretBand',(0,-.025,1.99),(.60,.39,.065),'red')
+ball('Beret',(-.075,.01,2.10),(.56,.36,.16),'red',-.14)
+ball('BeretStem',(.12,0,2.26),(.04,.04,.075),'red',.3)
+def front(x,z):
+ return -.035-.43*math.sqrt(max(.001,1-(x/.70)**2-((z-1.55)/.59)**2))-.006
+def face_dot(name,x,z,r,material):
+ return ball(name,(x,front(x,z),z),(r,r*.5,r),material)
+def cheek(x,z):
+ # A curved color patch sits flush on the face: no raised cheeks or muzzle.
+ verts=[(x,front(x,z)-.001,z)]
+ for i in range(33):
+  t=i*2*math.pi/32; xx=x+.105*math.cos(t); zz=z+.044*math.sin(t)
+  verts.append((xx,front(xx,zz)-.001,zz))
+ mesh=bpy.data.meshes.new('BlushPatch'); mesh.from_pydata(verts,[],[(0,i+1,i+2) for i in range(32)]);mesh.update()
+ ob=bpy.data.objects.new('Blush',mesh);bpy.context.collection.objects.link(ob);ob.parent=root;ob.data.materials.append(mats['pink'])
+ for poly in mesh.polygons:poly.use_smooth=True
+ parts.append(ob)
+for x in [-.23,.23]:
+ for i in range(17):
+  t=math.pi*i/16;face_dot('HappyEye',x+.065*math.cos(t),1.55+.042*math.sin(t),.014,'ink')
+ cheek(x*1.48,1.43)
+# A small drawn smile instead of an open dark circular mouth.
+for i in range(25):
+ t=math.pi+math.pi*i/24;face_dot('Smile',.072*math.cos(t),1.40+.042*math.sin(t),.008,'ink')
+face_dot('Nose',0,1.45,.022,'pink')
 # Rounded red travel case, handle and wheels.
 ball('Suitcase',(.88,0,.46),(.27,.19,.35),'red',-.08)
 for x in [.73,1.02]:ball('CaseWheel',(x,.02,.135),(.07,.08,.07),'ink')
@@ -67,7 +86,7 @@ for o in parts:
    blob.extend(struct.pack('<6f',v.x,v.z,-v.y,n.x,n.z,-n.y))
  ranges.append({'name':o.name,'first':start,'count':len(blob)//24-start,'color':list(o.data.materials[0].diffuse_color),'wave':o.parent==arm})
 ASSET.mkdir(parents=True,exist_ok=True); (ASSET/'bunny.bin').write_bytes(blob)
-(ASSET/'bunny.json').write_text(json.dumps({'format':1,'stride':24,'wavePivot':[-.48,1.22,0],'parts':ranges},separators=(',',':')))
+(ASSET/'bunny.json').write_text(json.dumps({'format':1,'stride':24,'wavePivot':[-.48,.8784,0],'parts':ranges},separators=(',',':')))
 # Two reusable glTF animation clips, object-node rig (no skinning required).
 for ob,name,prop,keys in [(root,'Idle','location',[(1,(0,0,0)),(31,(0,0,.035)),(61,(0,0,0))]),(arm,'Wave','rotation_euler',[(1,(0,0,0)),(9,(0,-.38,0)),(17,(0,.18,0)),(25,(0,-.38,0)),(33,(0,.18,0)),(41,(0,0,0))])]:
  for frame,value in keys:setattr(ob,prop,value); ob.keyframe_insert(data_path=prop,frame=frame)
@@ -84,6 +103,6 @@ bpy.ops.mesh.primitive_plane_add(size=200,location=(0,0,.02)); floor=bpy.context
 bpy.ops.object.camera_add(location=(4,-9,4.1)); cam=bpy.context.object; cam.rotation_euler=(Vector((.1,0,1.45))-cam.location).to_track_quat('-Z','Y').to_euler(); cam.data.type='ORTHO'; cam.data.ortho_scale=3.65; scene.camera=cam
 for loc,power,size in [((-3,-4,7),500,5),((4,-1,5),350,4),((0,4,6),500,3)]:
  bpy.ops.object.light_add(type='AREA',location=loc); l=bpy.context.object; l.data.energy=power; l.data.shape='DISK'; l.data.size=size; l.rotation_euler=(Vector((0,0,1))-l.location).to_track_quat('-Z','Y').to_euler()
-scene.render.engine='CYCLES'; scene.cycles.samples=24; scene.cycles.use_denoising=False; scene.render.resolution_x=800; scene.render.resolution_y=800; scene.render.resolution_percentage=100; scene.world.color=(.32,.32,.32); scene.view_settings.view_transform='Standard'; scene.render.filepath=str(ART/'preview.png')
+scene.render.engine='CYCLES'; scene.cycles.samples=64; scene.cycles.use_denoising=False; scene.render.resolution_x=800; scene.render.resolution_y=800; scene.render.resolution_percentage=100; scene.world.color=(.32,.32,.32); scene.view_settings.view_transform='AgX'; scene.render.filepath=str(ART/'preview.png')
 bpy.ops.wm.save_as_mainfile(filepath=str(ART/'reise-bunny.blend')); bpy.ops.render.render(write_still=True)
 print('Exported',len(parts),'parts',len(blob)//72,'triangles')
