@@ -2,6 +2,8 @@ package com.masakasakasama.reisedeutsch.ui
 
 import android.animation.ValueAnimator
 import android.content.Context
+import android.graphics.BitmapFactory
+import android.opengl.GLUtils
 import android.opengl.GLES20.*
 import android.opengl.GLSurfaceView
 import android.opengl.Matrix
@@ -79,7 +81,7 @@ private class BunnyRenderer(private val context: Context, private val failure: (
     @Volatile var moving = true
     @Volatile private var waveAt = -10000L
     fun wave() { if (moving) waveAt = SystemClock.uptimeMillis() }
-    private data class Part(val first: Int, val count: Int, val color: FloatArray, val wave: Boolean)
+    private data class Part(val first: Int, val count: Int, val color: FloatArray, val wave: Boolean, val texture: String)
     private var parts = emptyList<Part>()
     private var program = 0
     private var buffer = 0
@@ -87,6 +89,8 @@ private class BunnyRenderer(private val context: Context, private val failure: (
     private var mvpLocation = 0
     private var modelLocation = 0
     private var colorLocation = 0
+    private var texturedLocation = 0
+    private val textures = mutableMapOf<String, Int>()
     private val projection = FloatArray(16)
     private val camera = FloatArray(16)
     private val vp = FloatArray(16)
@@ -100,28 +104,48 @@ private class BunnyRenderer(private val context: Context, private val failure: (
         try {
             val bytes = context.assets.open("mascot/bunny.bin").use { it.readBytes() }
             val scene = JSONObject(context.assets.open("mascot/bunny.json").bufferedReader().use { it.readText() })
-            require(scene.getInt("format") == 1 && bytes.size % 24 == 0)
+            require(scene.getInt("format") == 2 && bytes.size % 32 == 0)
             val array = scene.getJSONArray("parts")
             parts = (0 until array.length()).map { i ->
                 val p = array.getJSONObject(i); val c = p.getJSONArray("color")
-                Part(p.getInt("first"), p.getInt("count"), FloatArray(4) { c.getDouble(it).toFloat() }, p.getBoolean("wave"))
+                Part(p.getInt("first"), p.getInt("count"), FloatArray(4) { c.getDouble(it).toFloat() }, p.getBoolean("wave"), p.getString("texture"))
             }
-            require(parts.all { it.first >= 0 && it.count > 0 && (it.first + it.count) * 24 <= bytes.size })
+            require(parts.all { it.first >= 0 && it.count > 0 && (it.first + it.count) * 32 <= bytes.size })
             val vertex = shader(GL_VERTEX_SHADER, """
-                attribute vec3 aPosition; attribute vec3 aNormal;
+                attribute vec3 aPosition; attribute vec3 aNormal; attribute vec2 aUv; varying vec2 vUv;
                 uniform mat4 uMvp; uniform mat4 uModel; varying vec3 vNormal;
-                void main(){ gl_Position=uMvp*vec4(aPosition,1.0); vNormal=mat3(uModel)*aNormal; }
+                void main(){ gl_Position=uMvp*vec4(aPosition,1.0); vNormal=mat3(uModel)*aNormal; vUv=aUv; }
             """.trimIndent())
             val fragment = shader(GL_FRAGMENT_SHADER, """
-                precision mediump float; varying vec3 vNormal; uniform vec4 uColor;
-                void main(){float light=0.83+0.17*max(dot(normalize(vNormal),normalize(vec3(-0.5,0.8,1.0))),0.0); gl_FragColor=vec4(uColor.rgb*light,1.0);}
+                precision mediump float; varying vec3 vNormal; varying vec2 vUv; uniform vec4 uColor; uniform sampler2D uTexture; uniform float uTextured;
+                void main(){float light=0.72+0.28*max(dot(normalize(vNormal),normalize(vec3(-0.5,0.8,1.0))),0.0); vec3 base=mix(uColor.rgb,texture2D(uTexture,vUv).rgb,uTextured); float rim=pow(1.0-abs(normalize(vNormal).z),3.0)*0.07; gl_FragColor=vec4(base*light+rim,1.0);}
             """.trimIndent())
             program = glCreateProgram(); glAttachShader(program, vertex); glAttachShader(program, fragment)
-            glBindAttribLocation(program, 0, "aPosition"); glBindAttribLocation(program, 1, "aNormal"); glLinkProgram(program)
+            glBindAttribLocation(program, 0, "aPosition"); glBindAttribLocation(program, 1, "aNormal"); glBindAttribLocation(program, 2, "aUv"); glLinkProgram(program)
             val status = IntArray(1); glGetProgramiv(program, GL_LINK_STATUS, status, 0)
             check(status[0] != 0) { glGetProgramInfoLog(program) }
             glDeleteShader(vertex); glDeleteShader(fragment)
             mvpLocation=glGetUniformLocation(program,"uMvp"); modelLocation=glGetUniformLocation(program,"uModel"); colorLocation=glGetUniformLocation(program,"uColor")
+            texturedLocation=glGetUniformLocation(program,"uTextured")
+            glUseProgram(program); glUniform1i(glGetUniformLocation(program,"uTexture"),0)
+            textures.clear()
+            for (name in parts.map { it.texture }.distinct() + listOf("")) {
+                if (textures.containsKey(name)) continue
+                val textureId=IntArray(1); glGenTextures(1,textureId,0); glBindTexture(GL_TEXTURE_2D,textureId[0])
+                glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR)
+                glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR)
+                glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_WRAP_S,GL_REPEAT)
+                glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_WRAP_T,GL_REPEAT)
+                if(name.isNotEmpty()) {
+                    val bitmap=context.assets.open("mascot/$name").use { BitmapFactory.decodeStream(it) }
+                    requireNotNull(bitmap)
+                    GLUtils.texImage2D(GL_TEXTURE_2D,0,bitmap,0); bitmap.recycle()
+                } else {
+                    val white=ByteBuffer.allocateDirect(4).put(byteArrayOf(-1,-1,-1,-1)); white.position(0)
+                    glTexImage2D(GL_TEXTURE_2D,0,GL_RGBA,1,1,0,GL_RGBA,GL_UNSIGNED_BYTE,white)
+                }
+                textures[name]=textureId[0]
+            }
             val ids=IntArray(1); glGenBuffers(1,ids,0); buffer=ids[0]; glBindBuffer(GL_ARRAY_BUFFER,buffer)
             val data=ByteBuffer.allocateDirect(bytes.size).order(ByteOrder.nativeOrder()); data.put(bytes).position(0)
             glBufferData(GL_ARRAY_BUFFER,bytes.size,data,GL_STATIC_DRAW)
@@ -152,12 +176,13 @@ private class BunnyRenderer(private val context: Context, private val failure: (
         val angle=if(moving && waveTime in 0f..1.6f) 24f*sin(waveTime*12f)*sin(waveTime/1.6f*3.14159f) else 0f
         Matrix.translateM(arm,0,-.48f,.8784f,0f); Matrix.rotateM(arm,0,angle,0f,0f,1f); Matrix.translateM(arm,0,.48f,-.8784f,0f)
         glUseProgram(program); glBindBuffer(GL_ARRAY_BUFFER,buffer)
-        glEnableVertexAttribArray(0); glEnableVertexAttribArray(1)
-        glVertexAttribPointer(0,3,GL_FLOAT,false,24,0); glVertexAttribPointer(1,3,GL_FLOAT,false,24,12)
+        glEnableVertexAttribArray(0); glEnableVertexAttribArray(1); glEnableVertexAttribArray(2)
+        glVertexAttribPointer(0,3,GL_FLOAT,false,32,0); glVertexAttribPointer(1,3,GL_FLOAT,false,32,12); glVertexAttribPointer(2,2,GL_FLOAT,false,32,24)
         for(part in parts) {
             val transform=if(part.wave) arm else model
             Matrix.multiplyMM(mvp,0,vp,0,transform,0)
             glUniformMatrix4fv(mvpLocation,1,false,mvp,0); glUniformMatrix4fv(modelLocation,1,false,transform,0)
+            glActiveTexture(GL_TEXTURE0); glBindTexture(GL_TEXTURE_2D,textures.getValue(part.texture)); glUniform1f(texturedLocation,if(part.texture.isEmpty()) 0f else 1f)
             glUniform4fv(colorLocation,1,part.color,0); glDrawArrays(GL_TRIANGLES,part.first,part.count)
         }
     }
