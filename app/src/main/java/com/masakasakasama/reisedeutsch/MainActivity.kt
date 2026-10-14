@@ -103,6 +103,7 @@ private val navItems=listOf("home" to ("ホーム" to Icons.Default.Home),"lesso
  val c=LocalReiseColors.current;val hour=java.time.LocalTime.now().hour;val greeting=when(hour){in 5..10->"Guten Morgen!";in 11..17->"Guten Tag!";else->"Guten Abend!"}
  PageColumn{
   ReiseCard(Modifier.fillMaxWidth().heightIn(min=130.dp)){Row(Modifier.fillMaxWidth(),horizontalArrangement=Arrangement.SpaceBetween,verticalAlignment=Alignment.CenterVertically){Column(Modifier.weight(1f),verticalArrangement=Arrangement.spacedBy(8.dp)){Text(greeting,fontSize=25.sp,fontWeight=FontWeight.ExtraBold,color=c.ink);Text("今日も一歩、ドイツ語で新しい世界に近づこう！",color=c.muted);TextButton(onClick={tts?.speak("Guten Morgen",TextToSpeech.QUEUE_FLUSH,null,"greeting")}){Text("🔊 こんにちはを聞く")}};TravelBunny(Modifier.size(82.dp))}}
+  Bunny3DCard()
   CourseEntry(vm,s)
   ReiseCard(Modifier.fillMaxWidth()){Row(verticalAlignment=Alignment.CenterVertically){Text("🎯",fontSize=34.sp);Column(Modifier.weight(1f).padding(horizontal=12.dp)){Text("今日のミッション",color=c.action,fontWeight=FontWeight.Bold);Text(if(s.today>=3)"今日の目標クリア！旅を続けよう 🐰" else "カフェで注文するフレーズを3つ練習しよう！",fontWeight=FontWeight.SemiBold);ProgressBar(s.today.coerceAtMost(3),3)};PrimaryButton("→",onClick={if(s.due>0)vm.dueClick() else onLessons()},Modifier.width(64.dp))}}
   ReiseCard(Modifier.fillMaxWidth()){Row(Modifier.fillMaxWidth(),horizontalArrangement=Arrangement.SpaceBetween){Text("今日の目標",fontWeight=FontWeight.Bold);Text("${s.today.coerceAtMost(goal)} / $goal 枚",color=c.muted)};ProgressBar(s.today,goal)}
