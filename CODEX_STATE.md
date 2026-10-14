@@ -1,7 +1,7 @@
 # CODEX_STATE
 
 Updated at: 2026-10-13 (Asia/Tokyo)
-Status: Android v3 (0.1.3) published with 28 interactive grammar diagrams and 28 boxed examples; public APK/ZIP/metadata verified; original signing key retained.
+Status: Android v4 (0.1.4) published with system Back handling on every screen, Home exit confirmation and paused study state retention. Public APK/ZIP/feed verified; original signing key retained.
 Goal: ReiseDeutsch, a German-only Android learning app based on the approved design, existing SRS behavior, and reviewed cross-app design references.
 
 ## Delivered in the repository
@@ -54,3 +54,12 @@ User reports APK downloads do not finish on phone. Added `distribution/ReiseDeut
 - Public release v3: https://github.com/masakasakasama/German-language/releases/tag/v3. Publishers `38341516847` (APK/feed) and `38341516837` (ZIP) passed.
 - APK: 1,303,892 bytes, SHA-256 `334407d19528913707d6a0410f7a199f0e01eda9e8865fc44e4ee9cfb7d9f782`. Public APK signature matches the original signing certificate. Public ZIP download (1,117,961 bytes) extracted and verified against the same hash. GitHub latest redirects to v3.
 - APK and ZIP direct links use distribution commit `a07a2fef1b995044a1f9a7bbccc66560525ab838`; ZIP is versioned `ReiseDeutsch-0.1.3.zip` to distinguish it from earlier downloads. Real-device rendering, installer behavior and resolution of the user’s phone download issue remain unverified. Notion page access remains restricted as documented above.
+
+## Back gesture fix v4 (2026-10-13)
+
+- Source `a019de01da63c9ae1b43f66a73aa55d0e314fa58`. v3 registered BackHandler only on three course pages, so other pages fell through to Activity exit. v4 uses one BackHandler for all screens and NavigationHistory with course/conversation IDs. Home requests explicit exit confirmation; dialogs dismiss first.
+- Paused study retains typed text, input mode, selection, revealed/answered state; lesson entry resumes the active lesson. Choice order is seeded by session ID/step. Completion replaces the study history entry. Session IDs are persisted consistently and session writes serialized; only one active session is stored and old completion does not delete a newer session.
+- 15 JVM tests pass, including 6 navigation regression tests. Debug tests/lint/build and release tests/lint/build pass. Main CI `38343045521` passed. Manifest BackInvoked flag is present and true in APK.
+- Public v4 release: https://github.com/masakasakasama/German-language/releases/tag/v4. Publishers `38343398154` (APK/feed) and `38343398135` (ZIP) passed.
+- APK size 1,320,316 bytes; SHA-256 `f0ccf1ec69c644c0a0374ec683652ee7d90b3cf981cff1e27ba167dc23a846c9`. Signing certificate matches prior versions. ZIP size 1,121,040 bytes; public ZIP downloaded, extracted and checked. Public release APK/feed downloaded and checked; latest resolves to v4. Direct distribution commit `1e14ec0c98cf929c449f404f655b61a4009ace33`.
+- Actual edge gesture, dialog behavior and navigation on a physical device remain untested. Navigation regression tests verify application history logic, not Android gesture rendering.
