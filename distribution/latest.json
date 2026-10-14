@@ -1,13 +1,13 @@
 {
   "schemaVersion": 1,
   "packageName": "com.masakasakasama.reisedeutsch",
-  "versionCode": 4,
-  "versionName": "0.1.4",
+  "versionCode": 5,
+  "versionName": "0.1.5",
   "minSdk": 26,
-  "sourceCommit": "a019de01da63c9ae1b43f66a73aa55d0e314fa58",
-  "releasePageUrl": "https://github.com/masakasakasama/German-language/releases/tag/v4",
-  "apkUrl": "https://github.com/masakasakasama/German-language/releases/download/v4/ReiseDeutsch-0.1.4.apk",
-  "sha256": "f0ccf1ec69c644c0a0374ec683652ee7d90b3cf981cff1e27ba167dc23a846c9",
-  "sizeBytes": 1320316,
-  "notes": "戻るジェスチャーでアプリが閉じる問題を修正。全画面で前の画面へ戻り、ホームでは終了を確認します。学習中の入力・選択・表示状態を保持し、説明へ戻っても練習を再開できます。完了後は終了した問題画面へ戻りません。"
+  "sourceCommit": "797252cd87fcca7cbb6f23a59d4e449b57fb4a92",
+  "releasePageUrl": "https://github.com/masakasakasama/German-language/releases/tag/v5",
+  "apkUrl": "https://github.com/masakasakasama/German-language/releases/download/v5/ReiseDeutsch-0.1.5.apk",
+  "sha256": "8116a6d6d1640975db5b70e43473587f3a32d27164a0349428666107303c90f1",
+  "sizeBytes": 1716899,
+  "notes": "旅のうさぎを3D化。ホームでゆっくり揺れ、ボタンで手を振ります。動きの停止とバックグラウンド描画停止に対応。編集可能なBlender・GLBモデルも公開。"
 }

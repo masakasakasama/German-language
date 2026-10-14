@@ -9,7 +9,7 @@ permissions:
   contents: write
 
 concurrency:
-  group: publish-reisedeutsch-v4
+  group: publish-reisedeutsch-v5
   cancel-in-progress: false
 
 jobs:
@@ -22,13 +22,13 @@ jobs:
           python3 - <<'PY'
           import hashlib, json, pathlib
           feed = json.loads(pathlib.Path('distribution/latest.json').read_text())
-          apk = pathlib.Path('distribution/ReiseDeutsch-0.1.4.apk').read_bytes()
-          assert feed['sourceCommit'] == 'a019de01da63c9ae1b43f66a73aa55d0e314fa58'
+          apk = pathlib.Path('distribution/ReiseDeutsch-0.1.5.apk').read_bytes()
+          assert feed['sourceCommit'] == '797252cd87fcca7cbb6f23a59d4e449b57fb4a92'
           assert feed['packageName'] == 'com.masakasakasama.reisedeutsch'
-          assert feed['versionCode'] == 4 and feed['versionName'] == '0.1.4'
-          assert feed['sha256'] == hashlib.sha256(apk).hexdigest() == 'f0ccf1ec69c644c0a0374ec683652ee7d90b3cf981cff1e27ba167dc23a846c9'
-          assert feed['sizeBytes'] == len(apk) == 1320316
-          assert feed['apkUrl'] == 'https://github.com/masakasakasama/German-language/releases/download/v4/ReiseDeutsch-0.1.4.apk'
+          assert feed['versionCode'] == 5 and feed['versionName'] == '0.1.5'
+          assert feed['sha256'] == hashlib.sha256(apk).hexdigest() == '8116a6d6d1640975db5b70e43473587f3a32d27164a0349428666107303c90f1'
+          assert feed['sizeBytes'] == len(apk) == 1716899
+          assert feed['apkUrl'] == 'https://github.com/masakasakasama/German-language/releases/download/v5/ReiseDeutsch-0.1.5.apk'
           print('Verified signed APK bytes and update metadata')
           PY
       - name: Upload APK and publish release
@@ -37,9 +37,9 @@ jobs:
           GH_REPO: ${{ github.repository }}
         run: |
           set -eu
-          if ! gh release view v4 >/dev/null 2>&1; then
-            gh release create v4 --draft --target a019de01da63c9ae1b43f66a73aa55d0e314fa58 --title 'ReiseDeutsch 0.1.4' --notes '戻るジェスチャーでアプリが閉じる問題を修正。全画面で前の画面へ戻り、ホームでは終了を確認します。学習中の入力・選択・表示状態を保持し、説明へ戻っても練習を再開できます。完了後は終了した問題画面へ戻りません。 単体テスト15件・lint・署名付きビルド・旧版との署名一致を検証済み。実機ジェスチャー確認は未実施です。'
+          if ! gh release view v5 >/dev/null 2>&1; then
+            gh release create v5 --draft --target 797252cd87fcca7cbb6f23a59d4e449b57fb4a92 --title 'ReiseDeutsch 0.1.5' --notes '旅のうさぎを3D化。ホームでゆっくり揺れ、ボタンで手を振ります。動きの停止とバックグラウンド描画停止に対応。編集可能なBlender・GLBモデルも公開。 テスト・lint・署名検証・オフスクリーン3D描画を確認済み。Android実機動作は未検証です。'
           fi
-          gh release upload v4 distribution/ReiseDeutsch-0.1.4.apk distribution/latest.json --clobber
-          gh release edit v4 --draft=false
-          gh release view v4 --json url,assets
+          gh release upload v5 distribution/ReiseDeutsch-0.1.5.apk distribution/latest.json art/mascot/reise-bunny-data.zip art/mascot/reise-bunny.glb --clobber
+          gh release edit v5 --draft=false
+          gh release view v5 --json url,assets
