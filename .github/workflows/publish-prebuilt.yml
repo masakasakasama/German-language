@@ -9,7 +9,7 @@ permissions:
   contents: write
 
 concurrency:
-  group: publish-reisedeutsch-v7
+  group: publish-reisedeutsch-v8
   cancel-in-progress: false
 
 jobs:
@@ -22,13 +22,13 @@ jobs:
           python3 - <<'PY'
           import hashlib, json, pathlib
           feed = json.loads(pathlib.Path('distribution/latest.json').read_text())
-          apk = pathlib.Path('distribution/ReiseDeutsch-0.1.7.apk').read_bytes()
-          assert feed['sourceCommit'] == 'b6cbc6868a5070f56dbb236ddf2250f7a5315ac7'
+          apk = pathlib.Path('distribution/ReiseDeutsch-0.1.8.apk').read_bytes()
+          assert feed['sourceCommit'] == '9f7900db84dbe825527562311a15bd7a74dab39c'
           assert feed['packageName'] == 'com.masakasakasama.reisedeutsch'
-          assert feed['versionCode'] == 7 and feed['versionName'] == '0.1.7'
-          assert feed['sha256'] == hashlib.sha256(apk).hexdigest() == '3c7ae40aa7cc94698650cb1400f51e5e0fd31c6480d680324ac73a7cc8dca429'
-          assert feed['sizeBytes'] == len(apk) == 4514345
-          assert feed['apkUrl'] == 'https://github.com/masakasakasama/German-language/releases/download/v7/ReiseDeutsch-0.1.7.apk'
+          assert feed['versionCode'] == 8 and feed['versionName'] == '0.1.8'
+          assert feed['sha256'] == hashlib.sha256(apk).hexdigest() == 'e633cdd804dbf4bbe1ef90b14d9cda6bae12369bad5624075879c0370c80b267'
+          assert feed['sizeBytes'] == len(apk) == 4497961
+          assert feed['apkUrl'] == 'https://github.com/masakasakasama/German-language/releases/download/v8/ReiseDeutsch-0.1.8.apk'
           print('Verified signed APK bytes and update metadata')
           PY
       - name: Upload APK and publish release
@@ -37,9 +37,9 @@ jobs:
           GH_REPO: ${{ github.repository }}
         run: |
           set -eu
-          if ! gh release view v7 >/dev/null 2>&1; then
-            gh release create v7 --draft --target b6cbc6868a5070f56dbb236ddf2250f7a5315ac7 --title 'ReiseDeutsch 0.1.7' --notes 'すべてのうさぎを採用画像に統一。コース・会話・完了画面・地図・アプリアイコンも変更。端末の自動アニメーションがOFFでも再生ボタンで動かせます。待機とタップの動きを見やすくしました。 テスト・lint・ビルド・署名を確認。実機確認は未実施です。'
+          if ! gh release view v8 >/dev/null 2>&1; then
+            gh release create v8 --draft --target 9f7900db84dbe825527562311a15bd7a74dab39c --title 'ReiseDeutsch 0.1.8' --notes '画像全体の傾きを廃止。接続した2Dメッシュで胸の呼吸、頭と耳の追従、肩・肘・手首の手振りを実装。全画面のうさぎに適用。足踏みと、沈み込み・跳躍・着地のジャンプを追加。 テスト・lint・ビルド・署名を確認。実機確認は未実施です。'
           fi
-          gh release upload v7 distribution/ReiseDeutsch-0.1.7.apk distribution/latest.json --clobber
-          gh release edit v7 --draft=false
-          gh release view v7 --json url,assets
+          gh release upload v8 distribution/ReiseDeutsch-0.1.8.apk distribution/latest.json --clobber
+          gh release edit v8 --draft=false
+          gh release view v8 --json url,assets

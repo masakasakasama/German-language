@@ -1,13 +1,13 @@
 {
   "schemaVersion": 1,
   "packageName": "com.masakasakasama.reisedeutsch",
-  "versionCode": 7,
-  "versionName": "0.1.7",
+  "versionCode": 8,
+  "versionName": "0.1.8",
   "minSdk": 26,
-  "sourceCommit": "b6cbc6868a5070f56dbb236ddf2250f7a5315ac7",
-  "releasePageUrl": "https://github.com/masakasakasama/German-language/releases/tag/v7",
-  "apkUrl": "https://github.com/masakasakasama/German-language/releases/download/v7/ReiseDeutsch-0.1.7.apk",
-  "sha256": "3c7ae40aa7cc94698650cb1400f51e5e0fd31c6480d680324ac73a7cc8dca429",
-  "sizeBytes": 4514345,
-  "notes": "すべてのうさぎを採用画像に統一。コース・会話・完了画面・地図・アプリアイコンも変更。端末の自動アニメーションがOFFでも再生ボタンで動かせます。待機とタップの動きを見やすくしました。"
+  "sourceCommit": "9f7900db84dbe825527562311a15bd7a74dab39c",
+  "releasePageUrl": "https://github.com/masakasakasama/German-language/releases/tag/v8",
+  "apkUrl": "https://github.com/masakasakasama/German-language/releases/download/v8/ReiseDeutsch-0.1.8.apk",
+  "sha256": "e633cdd804dbf4bbe1ef90b14d9cda6bae12369bad5624075879c0370c80b267",
+  "sizeBytes": 4497961,
+  "notes": "画像全体の傾きを廃止。接続した2Dメッシュで胸の呼吸、頭と耳の追従、肩・肘・手首の手振りを実装。全画面のうさぎに適用。足踏みと、沈み込み・跳躍・着地のジャンプを追加。"
 }
