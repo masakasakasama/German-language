@@ -2,13 +2,17 @@ package com.masakasakasama.reisedeutsch.ui
 
 import kotlin.math.*
 
+enum class CompanionAction { IDLE, WAVE, WALK, JUMP }
+
 data class CompanionPose(val breath: Float = 0f, val head: Float = 0f, val ear: Float = 0f,
-                         val shoulder: Float = 0f, val elbow: Float = 0f, val wrist: Float = 0f)
+                         val shoulder: Float = 0f, val elbow: Float = 0f, val wrist: Float = 0f,
+                         val leftStep: Float = 0f, val rightStep: Float = 0f,
+                         val crouch: Float = 0f, val jumpHeight: Float = 0f, val bodyBob: Float = 0f)
 fun companionRuns(active: Boolean, paused: Boolean, systemMotion: Boolean, manualPlay: Boolean) =
     active && !paused && (systemMotion || manualPlay)
 
 /** Continuous breathing plus a softly eased two-second greeting, never whole-image rotation. */
-fun companionPose(seconds: Float, waveAge: Float = -1f): CompanionPose {
+fun companionPose(seconds: Float, waveAge: Float = -1f, action: CompanionAction = CompanionAction.IDLE, actionAge: Float = 0f): CompanionPose {
     val phase = seconds * (2f * PI.toFloat() / 3.6f)
     val autoAge = seconds % 9f - 2f
     val age = if (waveAge >= 0f) waveAge else autoAge
@@ -16,9 +20,21 @@ fun companionPose(seconds: Float, waveAge: Float = -1f): CompanionPose {
         val envelope = sin(PI.toFloat() * age / 2.4f).pow(2)
         envelope * sin(age * 2f * PI.toFloat() * 1.65f)
     } else 0f
+    val walking = action == CompanionAction.WALK && actionAge in 0f..4f
+    val stride = if (walking) sin(actionAge * 2f * PI.toFloat()) * sin(PI.toFloat()*actionAge/4f).pow(2) else 0f
+    val jumping = action == CompanionAction.JUMP && actionAge in 0f..1.35f
+    val crouch = when {
+        jumping && actionAge in 0f.. .35f -> sin(PI.toFloat()*actionAge/.35f).pow(2)
+        jumping && actionAge in .95f..1.35f -> .7f*sin(PI.toFloat()*(actionAge-.95f)/.4f).pow(2)
+        else -> 0f
+    }
+    val flight = if (jumping && actionAge in .35f.. .95f) (actionAge-.35f)/.6f else 0f
+    val jump = .10f*4f*flight*(1f-flight)
+    val activeWave = if (walking || jumping) 0f else wave
     return CompanionPose(sin(phase), .012f * sin(phase * .5f),
-        .024f * (sin(phase * .5f - .45f) + sin(.45f)),
-        .035f * wave, .10f * wave, .20f * wave)
+        .024f * (sin(phase * .5f - .45f) + sin(.45f)) + .055f*crouch - .18f*jump,
+        .035f * activeWave - .025f*stride, .10f * activeWave, .20f * activeWave,
+        stride, -stride, crouch + jump*2f, jump, if (walking) -.006f*abs(stride) else 0f)
 }
 
 private const val ART_ASPECT = 1374f / 1145f
@@ -70,6 +86,18 @@ fun deformCompanionMesh(p: CompanionPose, columns: Int = 48, rows: Int = 48): Fl
         rotate(.235f,.40f,p.wrist,hand)
         // Cloth follows breathing rather than moving as a rigid slab.
         py+=.002f*p.breath*oval(x,y,.36f,.68f,.09f,.10f)
+        // Hip, knee and ankle follow opposite phases during the in-place stepping action.
+        val leftLeg=oval(x,y,.35f,.82f,.20f,.19f)
+        val rightLeg=oval(x,y,.56f,.86f,.13f,.17f)
+        rotate(.45f,.74f,.14f*p.leftStep-.045f*p.crouch,leftLeg)
+        rotate(.35f,.81f,-.10f*p.leftStep+.06f*p.crouch,oval(x,y,.29f,.86f,.13f,.13f))
+        rotate(.53f,.76f,.12f*p.rightStep+.045f*p.crouch,rightLeg)
+        rotate(.57f,.85f,-.08f*p.rightStep-.06f*p.crouch,oval(x,y,.56f,.92f,.10f,.08f))
+        // Compression is strongest above the planted feet; takeoff then follows a ballistic arc.
+        val rabbit=smoothWeight(((x-.64f)/.13f).coerceAtLeast(0f))
+        py+=.055f*p.crouch*(.94f-y).coerceAtLeast(0f)*rabbit
+        px+=(x-.48f)*.018f*p.crouch*chest
+        py+=p.bodyBob*rabbit-p.jumpHeight
         result[index++]=px; result[index++]=py
     }
     return result

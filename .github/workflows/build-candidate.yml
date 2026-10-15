@@ -1,4 +1,5 @@
 name: Build unsigned release candidate
+# Includes stepping and jump actions.
 on:
   push:
     branches: [main]
