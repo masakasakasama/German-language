@@ -10,7 +10,7 @@ jobs:
   candidate:
     runs-on: ubuntu-latest
     env:
-      BUILD_NUMBER: '6'
+      BUILD_NUMBER: '7'
       BUILD_SHA: ${{ github.sha }}
     steps:
       - uses: actions/checkout@v4
@@ -31,6 +31,6 @@ jobs:
           cp -r app/build/test-results/testDebugUnitTest candidate/test-results
       - uses: actions/upload-artifact@v4
         with:
-          name: unsigned-v6-${{ github.sha }}
+          name: unsigned-v7-${{ github.sha }}
           path: candidate/
           retention-days: 7
