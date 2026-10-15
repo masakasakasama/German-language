@@ -70,3 +70,11 @@ OSから戻っただけで更新済みにしない。次回起動のBuildConfig.
 ## 共通デザイン更新
 
 pinは `reference/sources.json` のcommit。新revisionは専用branchでvendor生成物とhashを更新し、ホーム/会話/地図のLight/Dark比較、build/testを行う。素材の個性と共通tokenの変更を別に説明する。共有repoへの直接push、実行時remote tokenの取得、自動mergeは採用しない。Homeへの新Appタイル追加は別repoへの変更なので、本Appの初版完成条件には含めず必要時に別途実施する。
+
+## Candidate signing without local Android SDK (v6)
+
+If the temporary SDK/toolchain is absent, `.github/workflows/build-candidate.yml` builds the unsigned release on GitHub Actions (currently BUILD_NUMBER=6; change deliberately for a new release). It runs tests/lint and packages the unsigned APK, exact source SHA, test results and the official SDK's apksigner.jar. Existing fixed signing key stays local under ignored `.local-release/`; never add it to artifacts or Git.
+
+Download the candidate via `gh run download`. In the current environment the artifact storage host returned Forbidden. For v6, `.github/workflows/stage-candidate-v6.yml` used Actions' artifact download to attach this same candidate bundle to the precreated **draft** v6 release. Downloaded it via `gh release download`, verified source/version/accepted artwork, signed locally with the original key using environment-based password arguments to apksigner.jar, verified certificate, then removed the unsigned draft asset **before** publishing the final signed APK. No personal token or environment settings change was required. This staging workflow is pinned to the v6 source/run and is not a general-purpose publisher.
+
+The existing release-apk publisher verifies signed APK hash/size/feed and publishes APK plus latest.json, with a separate ZIP publisher. Never publish the unsigned staging bundle as a user release. Main source tag and release feed source SHA must identify the built source, not a later docs/distribution commit.

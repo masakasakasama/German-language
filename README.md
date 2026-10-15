@@ -14,7 +14,7 @@
 - 0.1.2以降は起動時に新しい版を自動確認して案内（設定でOFF可）。ダウンロードとOSによるインストールは利用者の確認で実行
 - 0.1.4では全画面の戻るジェスチャー/戻るボタンを処理。ホームでは終了を確認し、学習中に戻っても入力・選択・問題の状態を保持して再開
 
-- 0.1.5ではホームに動く3Dうさぎを追加。待機・手振り・動きの停止。アプリ外では描画停止
+- 0.1.6では選ばれたうさぎ画像をホームでアニメーション。ゆっくり揺れる待機動作とタップで弾む反応。停止ボタン・端末のアニメーション無効設定・バックグラウンド停止に対応。画像を一体で動かす方式です
 
 Android SDK 35とJava 17以上が必要です。
 
@@ -26,22 +26,26 @@ Debug APK: `app/build/outputs/apk/debug/app-debug.apk`（約17 MB）。debugア�
 
 ## 配布
 
-[ReiseDeutsch 0.1.5 APKをダウンロード](https://github.com/masakasakasama/German-language/releases/download/v5/ReiseDeutsch-0.1.5.apk)（Android 8.0以上、約1.7 MB）。[公開リリース](https://github.com/masakasakasama/German-language/releases/tag/v5)にはアプリ内更新用の `latest.json` も添付しています。公開後にAPKをダウンロードし直し、署名・サイズ・SHA-256を検証済みです。実機での動作確認は未実施です。
+[ReiseDeutsch 0.1.6 APKをダウンロード](https://github.com/masakasakasama/German-language/releases/download/v6/ReiseDeutsch-0.1.6.apk)（Android 8.0以上、約4.5 MB）。[公開リリース](https://github.com/masakasakasama/German-language/releases/tag/v6)にはアプリ内更新用の `latest.json` も添付しています。公開後にAPKをダウンロードし直し、署名・サイズ・SHA-256を検証済みです。実機での動作確認は未実施です。
 
-0.1.1〜0.1.5はローカルで署名・検証したAPKを `release-apk` ブランチの専用GitHub Actionsで公開しました。GitHub Actionsの自動トークンを使用するため、ダウンロードにCodex環境設定や個人トークン登録は不要です。初回版と同じ署名で、既存の学習データを残して上書き更新できます。
+0.1.1〜0.1.6はローカルで署名・検証したAPKを `release-apk` ブランチの専用GitHub Actionsで公開しました。GitHub Actionsの自動トークンを使用するため、ダウンロードにCodex環境設定や個人トークン登録は不要です。初回版と同じ署名で、既存の学習データを残して上書き更新できます。
 
 main push時はテスト・lint・debugビルドを実行します。将来の署名付きビルド・公開はmainに対するworkflow_dispatchで実行し、固定署名鍵のGitHub Actions Secrets (`REISE_KEYSTORE_BASE64`, `REISE_KEYSTORE_PASSWORD`, `REISE_KEY_ALIAS`, `REISE_KEY_PASSWORD`) が必要です。既存インストールを更新するため、初回版と同じ署名鍵を使用してください。
 
-GitHub Releaseからのダウンロードが止まる端末向け：[0.1.5の直接ダウンロード](https://raw.githubusercontent.com/masakasakasama/German-language/ea63c83232ae45ed8dde1f865271e5bd98775996/distribution/ReiseDeutsch-0.1.5.apk)。0.1.1のAndroid 9〜12ではアプリ内更新の署名取得に不具合があるため、このリンクから更新してください。旧版のアンインストールは不要です。
+GitHub Releaseからのダウンロードが止まる端末向け：[0.1.6の直接ダウンロード](https://raw.githubusercontent.com/masakasakasama/German-language/4ea4dfb1be374488405bebb89ce412df4924758c/distribution/ReiseDeutsch-0.1.6.apk)。0.1.1のAndroid 9〜12ではアプリ内更新の署名取得に不具合があるため、このリンクから更新してください。旧版のアンインストールは不要です。
 
-APKのダウンロードが完了しない端末向け：[ZIP形式でダウンロード](https://raw.githubusercontent.com/masakasakasama/German-language/ea63c83232ae45ed8dde1f865271e5bd98775996/distribution/ReiseDeutsch-0.1.5.zip)。スマホの「ファイル」または「マイファイル」→「ダウンロード」でZIPを展開し、中の `ReiseDeutsch-0.1.5.apk` を開いてください。公開済みAPKと同一のファイルであることを、公開ZIPの展開とSHA-256照合で確認済みです。
+APKのダウンロードが完了しない端末向け：[ZIP形式でダウンロード](https://raw.githubusercontent.com/masakasakasama/German-language/4ea4dfb1be374488405bebb89ce412df4924758c/distribution/ReiseDeutsch-0.1.6.zip)。スマホの「ファイル」または「マイファイル」→「ダウンロード」でZIPを展開し、中の `ReiseDeutsch-0.1.6.apk` を開いてください。公開済みAPKと同一のファイルであることを、公開ZIPの展開とSHA-256照合で確認済みです。
 
 ## 設計資料
 
 [基礎コースの内容と更新の動作](docs/design/foundations-course.md)、[戻るジェスチャーの修正](docs/design/back-navigation.md)。仕様・根拠・画面設計は [docs/design](docs/design/) にあります。Notion共通設計の指定ページは公開権限がなく本文を取得できていないため、本文準拠を主張せず、確認できた既存GitHub実装を基にしています。
 
-## 3Dキャラクターデータ
+## 過去の3D試作データ（現在のホームでは未使用）
 
 [編集用データ一式（Blender・GLB・プレビュー）](https://raw.githubusercontent.com/masakasakasama/German-language/797252cd87fcca7cbb6f23a59d4e449b57fb4a92/art/mascot/reise-bunny-data.zip)。[制作・再生成・検証方法](art/mascot/README.md)。61パーツ、32,208ポリゴンのオリジナルモデル。Idle/Waveを含むオブジェクト階層のアニメーションです。
 
 ![アプリ用メッシュの描画プレビュー（実機画面ではありません）](art/mascot/runtime-idle.png)
+
+## 採用キャラクター
+
+[選ばれたリアルな画像](art/mascot/accepted-reference.png)を基に背景透過した `app/src/main/res/drawable-nodpi/travel_companion.png` を使用。Composeで画像全体を動かすため、腕やかばんが分離しません。これは3Dメッシュのアニメーションではありません。
