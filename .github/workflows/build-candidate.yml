@@ -10,7 +10,7 @@ jobs:
   candidate:
     runs-on: ubuntu-latest
     env:
-      BUILD_NUMBER: '7'
+      BUILD_NUMBER: '8'
       BUILD_SHA: ${{ github.sha }}
     steps:
       - uses: actions/checkout@v4
@@ -29,8 +29,9 @@ jobs:
           cp "$ANDROID_HOME/build-tools/35.0.0/lib/apksigner.jar" candidate/
           printf '%s\n' "$BUILD_SHA" > candidate/source-commit.txt
           cp -r app/build/test-results/testDebugUnitTest candidate/test-results
+          cp app/build/motion-preview.json candidate/
       - uses: actions/upload-artifact@v4
         with:
-          name: unsigned-v7-${{ github.sha }}
+          name: unsigned-v8-${{ github.sha }}
           path: candidate/
           retention-days: 7

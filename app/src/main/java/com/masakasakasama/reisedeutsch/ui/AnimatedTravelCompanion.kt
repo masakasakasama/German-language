@@ -1,7 +1,9 @@
 package com.masakasakasama.reisedeutsch.ui
 
 import android.animation.ValueAnimator
-import androidx.compose.foundation.Image
+import android.graphics.BitmapFactory
+import android.graphics.Paint
+import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.Text
@@ -9,10 +11,12 @@ import androidx.compose.material3.TextButton
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.graphicsLayer
-import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.graphics.drawscope.drawIntoCanvas
+import androidx.compose.ui.graphics.nativeCanvas
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
@@ -23,7 +27,7 @@ import com.masakasakasama.reisedeutsch.R
     ReiseCard(Modifier.fillMaxWidth()) { CompanionCharacter(Modifier.fillMaxWidth().height(290.dp), controls = true) }
 }
 
-/** One accepted character asset for every screen. Tap explicitly enables motion even if auto motion is off. */
+/** Connected 2D puppet mesh of the accepted art; local joints, not whole-image transforms. */
 @Composable fun CompanionCharacter(modifier: Modifier = Modifier, controls: Boolean = false) {
     val lifecycle = LocalLifecycleOwner.current.lifecycle
     var active by remember { mutableStateOf(lifecycle.currentState.isAtLeast(Lifecycle.State.RESUMED)) }
@@ -32,7 +36,12 @@ import com.masakasakasama.reisedeutsch.R
     var manualPlay by rememberSaveable { mutableStateOf(false) }
     var request by remember { mutableIntStateOf(0) }
     var consumedRequest by remember { mutableIntStateOf(0) }
-    var pose by remember { mutableStateOf(CompanionPose(0f, 0f, 1f)) }
+    var pose by remember { mutableStateOf(CompanionPose()) }
+    var sceneSeconds by remember { mutableFloatStateOf(0f) }
+    val context = LocalContext.current
+    val bitmap = remember(context) { BitmapFactory.decodeResource(context.resources, R.drawable.travel_companion) }
+    val paint = remember { Paint(Paint.ANTI_ALIAS_FLAG or Paint.FILTER_BITMAP_FLAG) }
+    val vertices = remember { FloatArray(49 * 49 * 2) }
     DisposableEffect(lifecycle) {
         val observer = LifecycleEventObserver { _, event ->
             if (event == Lifecycle.Event.ON_RESUME) {
@@ -46,38 +55,43 @@ import com.masakasakasama.reisedeutsch.R
     }
     val running = companionRuns(active, paused, systemMotion, manualPlay)
     LaunchedEffect(running, request) {
-        pose = CompanionPose(0f, 0f, 1f)
         if (running) {
             val react = request != consumedRequest
             consumedRequest = request
+            val baseTime = sceneSeconds
             val start = withFrameNanos { it }
             while (true) {
-                withFrameNanos { now -> pose = companionPose((now - start) / 1_000_000_000f, react) }
+                withFrameNanos { now ->
+                    val elapsed = (now - start) / 1_000_000_000f
+                    sceneSeconds = baseTime + elapsed
+                    pose = companionPose(sceneSeconds, if (react && elapsed <= 2.4f) elapsed else -1f)
+                }
             }
         }
     }
     val play: () -> Unit = { paused = false; manualPlay = true; request++ }
-    Image(
-        painterResource(R.drawable.travel_companion),
-        contentDescription = "旅のうさぎ。タップして動かす",
-        contentScale = ContentScale.Fit,
-        modifier = modifier.padding(if (controls) 28.dp else 4.dp)
-            .graphicsLayer {
-                val amplitude = if (controls) 1f else .32f
-                translationY = -pose.lift * amplitude * density
-                rotationZ = pose.tilt
-                scaleX = pose.scale
-                scaleY = pose.scale
-            }
-            .clickable(enabled = active, role = Role.Button, onClickLabel = "うさぎを動かす", onClick = play)
-    )
+    Canvas(modifier = modifier.padding(if (controls) 18.dp else 3.dp)
+        .semantics { contentDescription = "旅のうさぎ。タップで手を振ります" }
+        .clickable(enabled = active, role = Role.Button, onClickLabel = "うさぎが手を振る", onClick = play)) {
+        val scale = minOf(size.width / bitmap.width, size.height / bitmap.height)
+        val width = bitmap.width * scale
+        val height = bitmap.height * scale
+        val left = (size.width - width) / 2f
+        val top = (size.height - height) / 2f
+        val mesh = deformCompanionMesh(pose)
+        for (i in mesh.indices step 2) {
+            vertices[i] = left + mesh[i] * width
+            vertices[i+1] = top + mesh[i+1] * height
+        }
+        drawIntoCanvas { it.nativeCanvas.drawBitmapMesh(bitmap, 48, 48, vertices, 0, null, 0, paint) }
+    }
     if (controls) {
         Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceEvenly) {
-            TextButton(onClick = play, enabled = active) { Text("▶ うさぎを動かす") }
+            TextButton(onClick = play, enabled = active) { Text("👋 手を振って！") }
             TextButton(onClick = { if (running) paused = true else play() }, enabled = active) {
                 Text(if (running) "動きを止める" else "動きを再開")
             }
         }
-        if (!systemMotion && !manualPlay) Text("自動の動きはOFFです。「うさぎを動かす」で再生できます。")
+        if (!systemMotion && !manualPlay) Text("自動の動きはOFFです。「手を振って！」で再生できます。")
     }
 }
