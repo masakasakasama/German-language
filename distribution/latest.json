@@ -1,13 +1,13 @@
 {
   "schemaVersion": 1,
   "packageName": "com.masakasakasama.reisedeutsch",
-  "versionCode": 6,
-  "versionName": "0.1.6",
+  "versionCode": 7,
+  "versionName": "0.1.7",
   "minSdk": 26,
-  "sourceCommit": "ae3711f0da355ba434f7402c4c63dcccd48c28a6",
-  "releasePageUrl": "https://github.com/masakasakasama/German-language/releases/tag/v6",
-  "apkUrl": "https://github.com/masakasakasama/German-language/releases/download/v6/ReiseDeutsch-0.1.6.apk",
-  "sha256": "7034ba05a9bd6f5793a50bd904a647a44aa972603d8a823e819be1368dfa36ef",
-  "sizeBytes": 4514289,
-  "notes": "選んだリアルなうさぎ画像をホームに採用。ゆったり揺れる待機動作と、タップで弾む反応を追加。動きの停止・バックグラウンド停止に対応。画像を使ったアニメーションです。"
+  "sourceCommit": "b6cbc6868a5070f56dbb236ddf2250f7a5315ac7",
+  "releasePageUrl": "https://github.com/masakasakasama/German-language/releases/tag/v7",
+  "apkUrl": "https://github.com/masakasakasama/German-language/releases/download/v7/ReiseDeutsch-0.1.7.apk",
+  "sha256": "3c7ae40aa7cc94698650cb1400f51e5e0fd31c6480d680324ac73a7cc8dca429",
+  "sizeBytes": 4514345,
+  "notes": "すべてのうさぎを採用画像に統一。コース・会話・完了画面・地図・アプリアイコンも変更。端末の自動アニメーションがOFFでも再生ボタンで動かせます。待機とタップの動きを見やすくしました。"
 }
