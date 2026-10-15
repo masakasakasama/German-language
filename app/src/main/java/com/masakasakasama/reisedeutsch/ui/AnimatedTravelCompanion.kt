@@ -35,6 +35,7 @@ import com.masakasakasama.reisedeutsch.R
     var paused by rememberSaveable { mutableStateOf(false) }
     var manualPlay by rememberSaveable { mutableStateOf(false) }
     var request by remember { mutableIntStateOf(0) }
+    var action by remember { mutableStateOf(CompanionAction.IDLE) }
     var consumedRequest by remember { mutableIntStateOf(0) }
     var pose by remember { mutableStateOf(CompanionPose()) }
     var sceneSeconds by remember { mutableFloatStateOf(0f) }
@@ -64,20 +65,23 @@ import com.masakasakasama.reisedeutsch.R
                 withFrameNanos { now ->
                     val elapsed = (now - start) / 1_000_000_000f
                     sceneSeconds = baseTime + elapsed
-                    pose = companionPose(sceneSeconds, if (react && elapsed <= 2.4f) elapsed else -1f)
+                    pose = companionPose(sceneSeconds,
+                        if (react && action == CompanionAction.WAVE && elapsed <= 2.4f) elapsed else -1f,
+                        if (react) action else CompanionAction.IDLE, elapsed)
                 }
             }
         }
     }
-    val play: () -> Unit = { paused = false; manualPlay = true; request++ }
+    val perform: (CompanionAction) -> Unit = { next -> action = next; paused = false; manualPlay = true; request++ }
+    val play: () -> Unit = { perform(CompanionAction.WAVE) }
     Canvas(modifier = modifier.padding(if (controls) 18.dp else 3.dp)
         .semantics { contentDescription = "旅のうさぎ。タップで手を振ります" }
         .clickable(enabled = active, role = Role.Button, onClickLabel = "うさぎが手を振る", onClick = play)) {
-        val scale = minOf(size.width / bitmap.width, size.height / bitmap.height)
+        val scale = minOf(size.width / bitmap.width, size.height / bitmap.height) * .88f
         val width = bitmap.width * scale
         val height = bitmap.height * scale
         val left = (size.width - width) / 2f
-        val top = (size.height - height) / 2f
+        val top = size.height - height
         val mesh = deformCompanionMesh(pose)
         for (i in mesh.indices step 2) {
             vertices[i] = left + mesh[i] * width
@@ -87,11 +91,15 @@ import com.masakasakasama.reisedeutsch.R
     }
     if (controls) {
         Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceEvenly) {
-            TextButton(onClick = play, enabled = active) { Text("👋 手を振って！") }
+            TextButton(onClick = play, enabled = active) { Text("手を振る") }
+            TextButton(onClick = { perform(CompanionAction.WALK) }, enabled = active) { Text("足踏み") }
+            TextButton(onClick = { perform(CompanionAction.JUMP) }, enabled = active) { Text("ジャンプ") }
+        }
+        Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
             TextButton(onClick = { if (running) paused = true else play() }, enabled = active) {
                 Text(if (running) "動きを止める" else "動きを再開")
             }
         }
-        if (!systemMotion && !manualPlay) Text("自動の動きはOFFです。「手を振って！」で再生できます。")
+        if (!systemMotion && !manualPlay) Text("自動の動きはOFFです。「手を振る」で再生できます。")
     }
 }
