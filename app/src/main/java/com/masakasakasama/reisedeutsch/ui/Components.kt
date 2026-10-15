@@ -27,25 +27,8 @@ import com.masakasakasama.designsystem.TatsuButton
 @Composable fun PhraseTile(card:PhraseCard,onClick:()->Unit,assessment:String?=null){val c=LocalReiseColors.current;ReiseCard(Modifier.fillMaxWidth().heightIn(min=112.dp)){Row(Modifier.fillMaxWidth(),horizontalArrangement=Arrangement.SpaceBetween,verticalAlignment=Alignment.Top){Text(sceneIcon(card.scene),fontSize=30.sp);Text(assessmentLabel(assessment),color=c.muted,fontSize=12.sp)};Text(card.german,fontSize=17.sp,fontWeight=FontWeight.Bold);Text(card.japanese,color=c.muted,fontSize=13.sp);TextButton(onClick=onClick){Text("フレーズを見る →",color=c.action)}}}
 @Composable fun BunnyCard(title:String,body:String,modifier:Modifier=Modifier){val c=LocalReiseColors.current;ReiseCard(modifier.fillMaxWidth()){Row(verticalAlignment=Alignment.CenterVertically,horizontalArrangement=Arrangement.spacedBy(14.dp)){TravelBunny(Modifier.size(64.dp));Column(verticalArrangement=Arrangement.spacedBy(4.dp)){Text(title,fontWeight=FontWeight.Bold,color=c.ink);Text(body,color=c.muted,style=MaterialTheme.typography.bodyMedium)}}}}
 @Composable fun ProgressBar(done:Int,total:Int){val c=LocalReiseColors.current;Column(verticalArrangement=Arrangement.spacedBy(5.dp)){LinearProgressIndicator(progress={if(total<=0)0f else(done.toFloat()/total).coerceIn(0f,1f)},modifier=Modifier.fillMaxWidth().height(9.dp).clip(RoundedCornerShape(9.dp)),color=c.progress,trackColor=c.line);Text("$done / $total",style=MaterialTheme.typography.labelSmall,color=c.muted)}}
-@Composable fun EmptyMessage(icon:String,title:String,body:String){Column(Modifier.fillMaxWidth().padding(28.dp),horizontalAlignment=Alignment.CenterHorizontally,verticalArrangement=Arrangement.spacedBy(8.dp)){Text(icon,fontSize=42.sp);Text(title,fontWeight=FontWeight.Bold);Text(body,color=LocalReiseColors.current.muted,textAlign=TextAlign.Center)}}
+@Composable fun EmptyMessage(icon:String,title:String,body:String){Column(Modifier.fillMaxWidth().padding(28.dp),horizontalAlignment=Alignment.CenterHorizontally,verticalArrangement=Arrangement.spacedBy(8.dp)){if(icon=="companion")TravelBunny(Modifier.size(96.dp)) else Text(icon,fontSize=42.sp);Text(title,fontWeight=FontWeight.Bold);Text(body,color=LocalReiseColors.current.muted,textAlign=TextAlign.Center)}}
 fun sceneIcon(scene:String)=when(scene){"cafe"->"☕";"station"->"🚆";"hotel"->"🛎️";"sightseeing"->"🏰";else->"🇩🇪"}
 fun assessmentLabel(value:String?)=when(value){"KNOW"->"😊 わかる";"OK"->"😐 少しわかる";"DONT_KNOW"->"😕 わからない";else->"未評価"}
 
-@Composable fun TravelBunny(modifier:Modifier=Modifier){
-    Canvas(modifier.size(72.dp)){val w=size.width;val h=size.height
-        val coat=Color(0xFF254E69);val fur=Color(0xFFFFFEF7);val red=Color(0xFFBA363B);val ink=Color(0xFF17384B);val pink=Color(0xFFF6B8AB)
-        drawOval(fur,Offset(w*.27f,h*.00f),androidx.compose.ui.geometry.Size(w*.20f,h*.49f))
-        drawOval(fur,Offset(w*.55f,h*.00f),androidx.compose.ui.geometry.Size(w*.20f,h*.49f))
-        drawOval(pink,Offset(w*.32f,h*.07f),androidx.compose.ui.geometry.Size(w*.09f,h*.30f))
-        drawOval(pink,Offset(w*.61f,h*.07f),androidx.compose.ui.geometry.Size(w*.09f,h*.30f))
-        drawCircle(coat,w*.29f,Offset(w*.51f,h*.73f))
-        drawRoundRect(red,Offset(w*.68f,h*.58f),androidx.compose.ui.geometry.Size(w*.21f,h*.31f),androidx.compose.ui.geometry.CornerRadius(w*.05f))
-        drawCircle(fur,w*.33f,Offset(w*.50f,h*.45f))
-        drawOval(red,Offset(w*.22f,h*.19f),androidx.compose.ui.geometry.Size(w*.57f,h*.23f))
-        drawCircle(red,w*.18f,Offset(w*.50f,h*.19f))
-        drawCircle(ink,w*.025f,Offset(w*.40f,h*.46f));drawCircle(ink,w*.025f,Offset(w*.59f,h*.46f))
-        drawCircle(pink,w*.045f,Offset(w*.34f,h*.53f));drawCircle(pink,w*.045f,Offset(w*.65f,h*.53f))
-        val smile=Path().apply{moveTo(w*.44f,h*.55f);cubicTo(w*.46f,h*.60f,w*.54f,h*.60f,w*.56f,h*.55f)}
-        drawPath(smile,ink,style=Stroke(w*.018f,cap=androidx.compose.ui.graphics.StrokeCap.Round))
-    }
-}
+@Composable fun TravelBunny(modifier:Modifier=Modifier){ CompanionCharacter(modifier.size(72.dp)) }

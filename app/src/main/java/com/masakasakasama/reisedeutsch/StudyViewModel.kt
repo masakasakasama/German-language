@@ -84,7 +84,7 @@ class StudyViewModel(application:Application):AndroidViewModel(application){
     fun resumeStudy(){val s=_session.value?:return;navigate(AppDestination("study",GermanCourse.unit(s.lesson?.id.orEmpty())?.id))}
     fun setAutoUpdates(value:Boolean){_autoUpdates.value=value;preferences.edit().putBoolean("auto-updates",value).apply()}
     fun dueClick(){viewModelScope.launch{val due=repository.dueCards();if(due.isEmpty())toast("今日の復習はありません ☀️")else startReview(due)}}
-    fun weakClick(){viewModelScope.launch{val weak=repository.weakCards();if(weak.isEmpty())toast("苦手カードはありません 🐰")else startReview(weak)}}
+    fun weakClick(){viewModelScope.launch{val weak=repository.weakCards();if(weak.isEmpty())toast("苦手カードはありません")else startReview(weak)}}
     private fun startReview(cards:List<PhraseCard>){_session.value=SessionUi("review-${System.currentTimeMillis()}",null,cards,fromReview=true);navigate(AppDestination("study"))}
     fun startLesson(lesson:Lesson){
         if(_session.value?.lesson?.id==lesson.id){resumeStudy();return}
@@ -104,7 +104,7 @@ class StudyViewModel(application:Application):AndroidViewModel(application){
     fun retryQuestion(){val s=_session.value?:return;if(s.answered&&s.answerCorrect==false)_session.value=s.copy(answered=false,selected=null,answerCorrect=null,attempt=s.attempt+1,typed="")}
     fun saveAssessment(value:Assessment){val s=_session.value?:return;val card=s.cards.getOrNull(s.cursor/2)?:return
         if(s.answered||s.saving)return;_session.value=s.copy(saving=true)
-        viewModelScope.launch{runCatching{repository.assess("${s.id}:${s.cursor}:assessment",s.id,s.cursor,card,value);if(s.lesson!=null)repository.markLessonStep(s.lesson,card.id,s.cursor)}.onSuccess{_session.value=_session.value?.copy(answered=true,saving=false);toast("次回の復習を設定しました 🐰")}.onFailure{_session.value=_session.value?.copy(saving=false);toast("保存できませんでした。もう一度お試しください")}}
+        viewModelScope.launch{runCatching{repository.assess("${s.id}:${s.cursor}:assessment",s.id,s.cursor,card,value);if(s.lesson!=null)repository.markLessonStep(s.lesson,card.id,s.cursor)}.onSuccess{_session.value=_session.value?.copy(answered=true,saving=false);toast("次回の復習を設定しました")}.onFailure{_session.value=_session.value?.copy(saving=false);toast("保存できませんでした。もう一度お試しください")}}
     }
     fun saveAnswer(correct:Boolean){val s=_session.value?:return;val card=s.cards.getOrNull(s.cursor/2)?:return
         if(s.answered||s.saving)return;_session.value=s.copy(saving=true)
