@@ -1,0 +1,29 @@
+name: Stage v7 unsigned build in draft release
+on:
+  push:
+    branches: [release-apk]
+    paths: [.github/workflows/stage-candidate-v7.yml]
+permissions:
+  contents: write
+  actions: read
+jobs:
+  stage:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: unsigned-v7-b6cbc6868a5070f56dbb236ddf2250f7a5315ac7
+          run-id: 38746696857
+          github-token: ${{ github.token }}
+          path: candidate
+      - name: Stage verified source candidate in draft only
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+        run: |
+          test "$(cat candidate/source-commit.txt)" = b6cbc6868a5070f56dbb236ddf2250f7a5315ac7
+          test "$(gh release view v7 --json isDraft --jq .isDraft)" = true
+          cd candidate
+          zip -qr ../ReiseDeutsch-v7-unsigned-build.zip .
+          cd ..
+          gh release upload v7 ReiseDeutsch-v7-unsigned-build.zip
