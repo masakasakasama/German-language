@@ -12,13 +12,34 @@ class CompanionMotionTest {
         assertFalse(companionRuns(false, false, true, true))
         assertFalse(companionRuns(true, true, true, true))
     }
-    @Test fun idleFramesVisiblyDifferAndLoop() {
-        assertTrue(companionPose(.6f, false).lift > 7f)
-        assertTrue(companionPose(1.8f, false).lift < -7f)
-        assertEquals(companionPose(0f, false).lift, companionPose(2.4f, false).lift, .001f)
+    @Test fun jointsEaseInAndOut() {
+        assertEquals(0f, companionPose(0f, 0f).wrist, .0001f)
+        assertEquals(0f, companionPose(0f, 2.4f).wrist, .0001f)
+        assertTrue(kotlin.math.abs(companionPose(0f, 1.05f).wrist) > .1f)
+        assertTrue(companionPose(.9f).breath > .99f)
     }
-    @Test fun tapHasExtraBounceAndSettles() {
-        assertTrue(companionPose(.3f, true).lift > companionPose(.3f, false).lift + 15f)
-        assertEquals(companionPose(1.3f, false), companionPose(1.3f, true))
+    @Test fun feetStayPlantedWhileChestAndHandMove() {
+        val rest = deformCompanionMesh(CompanionPose())
+        val moved = deformCompanionMesh(CompanionPose(1f,.012f,.025f,.035f,.10f,.20f))
+        fun at(x:Int,y:Int) = (y*49+x)*2
+        for ((x,y) in listOf(27 to 44, 39 to 40)) {
+            val i=at(x,y)
+            assertEquals(rest[i],moved[i],.00001f)
+            assertEquals(rest[i+1],moved[i+1],.00001f)
+        }
+        assertTrue(kotlin.math.abs(rest[at(23,29)+1]-moved[at(23,29)+1]) > .003f)
+        assertTrue(kotlin.math.abs(rest[at(10,18)]-moved[at(10,18)]) > .002f)
+    }
+    @Test fun meshNeverFoldsAndExportActualAnimation() {
+        val frames=(0..216).map { deformCompanionMesh(companionPose(it/24f)) }
+        for (mesh in frames) for (y in 0 until 48) for(x in 0 until 48) {
+            val a=(y*49+x)*2; val b=a+2; val c=a+98; val d=c+2
+            fun area(i:Int,j:Int,k:Int)=(mesh[j]-mesh[i])*(mesh[k+1]-mesh[i+1])-(mesh[j+1]-mesh[i+1])*(mesh[k]-mesh[i])
+            assertTrue("Mesh triangle folded",area(a,b,c)>0f)
+            assertTrue("Mesh triangle folded",area(b,d,c)>0f)
+        }
+        val out=java.io.File("build/motion-preview.json")
+        out.parentFile.mkdirs()
+        out.writeText("{\"columns\":48,\"rows\":48,\"fps\":24,\"frames\":["+frames.joinToString(",") { it.joinToString(",","[","]") }+"]}")
     }
 }
