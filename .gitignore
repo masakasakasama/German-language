@@ -6,3 +6,6 @@ local.properties
 *.keystore
 secrets.properties
 .local-release/
+
+*.blend1
+__pycache__/
