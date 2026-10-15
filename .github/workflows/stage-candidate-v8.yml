@@ -12,8 +12,8 @@ jobs:
     steps:
       - uses: actions/download-artifact@v4
         with:
-          name: unsigned-v8-cc8cc9ef15981ce98d46ace7da451b44f6424a85
-          run-id: 38749247078
+          name: unsigned-v8-9f7900db84dbe825527562311a15bd7a74dab39c
+          run-id: 38805545546
           github-token: ${{ github.token }}
           path: candidate
       - name: Stage verified source candidate in draft only
@@ -21,7 +21,7 @@ jobs:
           GH_TOKEN: ${{ github.token }}
           GH_REPO: ${{ github.repository }}
         run: |
-          test "$(cat candidate/source-commit.txt)" = cc8cc9ef15981ce98d46ace7da451b44f6424a85
+          test "$(cat candidate/source-commit.txt)" = 9f7900db84dbe825527562311a15bd7a74dab39c
           test "$(gh release view v8 --json isDraft --jq .isDraft)" = true
           cd candidate
           zip -qr ../ReiseDeutsch-v8-unsigned-build.zip .
