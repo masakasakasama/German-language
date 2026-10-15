@@ -2,7 +2,7 @@ name: Publish ZIP download for Android
 on:
   push:
     branches: [release-apk]
-    paths: [distribution/ReiseDeutsch-0.1.5.zip]
+    paths: [distribution/ReiseDeutsch-0.1.6.zip]
 permissions:
   contents: write
 jobs:
@@ -14,16 +14,16 @@ jobs:
         run: |
           python3 - <<'PY'
           import hashlib, zipfile
-          with zipfile.ZipFile('distribution/ReiseDeutsch-0.1.5.zip') as z:
+          with zipfile.ZipFile('distribution/ReiseDeutsch-0.1.6.zip') as z:
               assert z.testzip() is None
-              assert z.namelist() == ['ReiseDeutsch-0.1.5.apk']
-              apk = z.read('ReiseDeutsch-0.1.5.apk')
-              assert len(apk) == 1716899
-              assert hashlib.sha256(apk).hexdigest() == '8116a6d6d1640975db5b70e43473587f3a32d27164a0349428666107303c90f1'
+              assert z.namelist() == ['ReiseDeutsch-0.1.6.apk']
+              apk = z.read('ReiseDeutsch-0.1.6.apk')
+              assert len(apk) == 4514289
+              assert hashlib.sha256(apk).hexdigest() == '7034ba05a9bd6f5793a50bd904a647a44aa972603d8a823e819be1368dfa36ef'
           print('ZIP contains the exact published APK')
           PY
       - name: Add ZIP download to the existing release
         env:
           GH_TOKEN: ${{ github.token }}
           GH_REPO: ${{ github.repository }}
-        run: gh release upload v5 distribution/ReiseDeutsch-0.1.5.zip
+        run: gh release upload v6 distribution/ReiseDeutsch-0.1.6.zip

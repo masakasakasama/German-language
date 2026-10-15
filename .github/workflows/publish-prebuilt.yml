@@ -9,7 +9,7 @@ permissions:
   contents: write
 
 concurrency:
-  group: publish-reisedeutsch-v5
+  group: publish-reisedeutsch-v6
   cancel-in-progress: false
 
 jobs:
@@ -22,13 +22,13 @@ jobs:
           python3 - <<'PY'
           import hashlib, json, pathlib
           feed = json.loads(pathlib.Path('distribution/latest.json').read_text())
-          apk = pathlib.Path('distribution/ReiseDeutsch-0.1.5.apk').read_bytes()
-          assert feed['sourceCommit'] == '797252cd87fcca7cbb6f23a59d4e449b57fb4a92'
+          apk = pathlib.Path('distribution/ReiseDeutsch-0.1.6.apk').read_bytes()
+          assert feed['sourceCommit'] == 'ae3711f0da355ba434f7402c4c63dcccd48c28a6'
           assert feed['packageName'] == 'com.masakasakasama.reisedeutsch'
-          assert feed['versionCode'] == 5 and feed['versionName'] == '0.1.5'
-          assert feed['sha256'] == hashlib.sha256(apk).hexdigest() == '8116a6d6d1640975db5b70e43473587f3a32d27164a0349428666107303c90f1'
-          assert feed['sizeBytes'] == len(apk) == 1716899
-          assert feed['apkUrl'] == 'https://github.com/masakasakasama/German-language/releases/download/v5/ReiseDeutsch-0.1.5.apk'
+          assert feed['versionCode'] == 6 and feed['versionName'] == '0.1.6'
+          assert feed['sha256'] == hashlib.sha256(apk).hexdigest() == '7034ba05a9bd6f5793a50bd904a647a44aa972603d8a823e819be1368dfa36ef'
+          assert feed['sizeBytes'] == len(apk) == 4514289
+          assert feed['apkUrl'] == 'https://github.com/masakasakasama/German-language/releases/download/v6/ReiseDeutsch-0.1.6.apk'
           print('Verified signed APK bytes and update metadata')
           PY
       - name: Upload APK and publish release
@@ -37,9 +37,9 @@ jobs:
           GH_REPO: ${{ github.repository }}
         run: |
           set -eu
-          if ! gh release view v5 >/dev/null 2>&1; then
-            gh release create v5 --draft --target 797252cd87fcca7cbb6f23a59d4e449b57fb4a92 --title 'ReiseDeutsch 0.1.5' --notes '旅のうさぎを3D化。ホームでゆっくり揺れ、ボタンで手を振ります。動きの停止とバックグラウンド描画停止に対応。編集可能なBlender・GLBモデルも公開。 テスト・lint・署名検証・オフスクリーン3D描画を確認済み。Android実機動作は未検証です。'
+          if ! gh release view v6 >/dev/null 2>&1; then
+            gh release create v6 --draft --target ae3711f0da355ba434f7402c4c63dcccd48c28a6 --title 'ReiseDeutsch 0.1.6' --notes '選んだリアルなうさぎ画像をホームに採用。ゆったり揺れる待機動作と、タップで弾む反応を追加。動きの停止・バックグラウンド停止に対応。画像を使ったアニメーションです。 テスト・lint・ビルド・署名を確認。実機確認は未実施です。'
           fi
-          gh release upload v5 distribution/ReiseDeutsch-0.1.5.apk distribution/latest.json art/mascot/reise-bunny-data.zip art/mascot/reise-bunny.glb --clobber
-          gh release edit v5 --draft=false
-          gh release view v5 --json url,assets
+          gh release upload v6 distribution/ReiseDeutsch-0.1.6.apk distribution/latest.json --clobber
+          gh release edit v6 --draft=false
+          gh release view v6 --json url,assets

@@ -1,13 +1,13 @@
 {
   "schemaVersion": 1,
   "packageName": "com.masakasakasama.reisedeutsch",
-  "versionCode": 5,
-  "versionName": "0.1.5",
+  "versionCode": 6,
+  "versionName": "0.1.6",
   "minSdk": 26,
-  "sourceCommit": "797252cd87fcca7cbb6f23a59d4e449b57fb4a92",
-  "releasePageUrl": "https://github.com/masakasakasama/German-language/releases/tag/v5",
-  "apkUrl": "https://github.com/masakasakasama/German-language/releases/download/v5/ReiseDeutsch-0.1.5.apk",
-  "sha256": "8116a6d6d1640975db5b70e43473587f3a32d27164a0349428666107303c90f1",
-  "sizeBytes": 1716899,
-  "notes": "旅のうさぎを3D化。ホームでゆっくり揺れ、ボタンで手を振ります。動きの停止とバックグラウンド描画停止に対応。編集可能なBlender・GLBモデルも公開。"
+  "sourceCommit": "ae3711f0da355ba434f7402c4c63dcccd48c28a6",
+  "releasePageUrl": "https://github.com/masakasakasama/German-language/releases/tag/v6",
+  "apkUrl": "https://github.com/masakasakasama/German-language/releases/download/v6/ReiseDeutsch-0.1.6.apk",
+  "sha256": "7034ba05a9bd6f5793a50bd904a647a44aa972603d8a823e819be1368dfa36ef",
+  "sizeBytes": 4514289,
+  "notes": "選んだリアルなうさぎ画像をホームに採用。ゆったり揺れる待機動作と、タップで弾む反応を追加。動きの停止・バックグラウンド停止に対応。画像を使ったアニメーションです。"
 }
