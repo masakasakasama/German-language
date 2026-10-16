@@ -1,5 +1,5 @@
 name: Build unsigned release candidate
-# Includes stepping and jump actions.
+# Real skinned 3D character with rotation, gait and jump.
 on:
   push:
     branches: [main]
@@ -11,7 +11,7 @@ jobs:
   candidate:
     runs-on: ubuntu-latest
     env:
-      BUILD_NUMBER: '8'
+      BUILD_NUMBER: '9'
       BUILD_SHA: ${{ github.sha }}
     steps:
       - uses: actions/checkout@v4
@@ -22,6 +22,8 @@ jobs:
       - uses: android-actions/setup-android@v3
         with:
           packages: 'platform-tools platforms;android-35 build-tools;35.0.0'
+      - run: python3 -m pip install numpy==2.2.6
+      - run: python3 tools/validate_rigged_companion.py
       - run: ./gradlew testDebugUnitTest lintRelease assembleRelease --no-daemon
       - name: Package candidate and official signing utility
         run: |
@@ -30,9 +32,9 @@ jobs:
           cp "$ANDROID_HOME/build-tools/35.0.0/lib/apksigner.jar" candidate/
           printf '%s\n' "$BUILD_SHA" > candidate/source-commit.txt
           cp -r app/build/test-results/testDebugUnitTest candidate/test-results
-          cp app/build/motion-preview.json candidate/
+          cp app/src/main/assets/companion3d/model.json candidate/rigged-model.json
       - uses: actions/upload-artifact@v4
         with:
-          name: unsigned-v8-${{ github.sha }}
+          name: unsigned-v9-${{ github.sha }}
           path: candidate/
           retention-days: 7
