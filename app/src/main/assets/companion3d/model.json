@@ -1,0 +1,402 @@
+{
+  "format": 1,
+  "stride": 64,
+  "bones": [
+    "root",
+    "pelvis",
+    "chest",
+    "head",
+    "ear.L",
+    "ear.R",
+    "upper_arm.L",
+    "forearm.L",
+    "hand.L",
+    "upper_arm.R",
+    "forearm.R",
+    "hand.R",
+    "thigh.L",
+    "shin.L",
+    "foot.L",
+    "thigh.R",
+    "shin.R",
+    "foot.R",
+    "case",
+    "backpack"
+  ],
+  "parents": [
+    -1,
+    0,
+    1,
+    2,
+    3,
+    3,
+    2,
+    6,
+    7,
+    2,
+    9,
+    10,
+    1,
+    12,
+    13,
+    1,
+    15,
+    16,
+    11,
+    2
+  ],
+  "bindHeads": [
+    [
+      0.0,
+      0.05000000074505806,
+      -0.0
+    ],
+    [
+      -0.029999999329447746,
+      0.6499999761581421,
+      -0.0
+    ],
+    [
+      -0.029999999329447746,
+      0.8500000238418579,
+      -0.0
+    ],
+    [
+      -0.05999999865889549,
+      1.225000023841858,
+      -0.0
+    ],
+    [
+      -0.05999999865889549,
+      2.0250000953674316,
+      -0.029999999329447746
+    ],
+    [
+      0.30000001192092896,
+      1.7999999523162842,
+      -0.03999999910593033
+    ],
+    [
+      -0.4650000035762787,
+      1.25,
+      -0.0
+    ],
+    [
+      -0.6449999809265137,
+      1.399999976158142,
+      -0.0
+    ],
+    [
+      -0.7950000166893005,
+      1.5,
+      -0.0
+    ],
+    [
+      0.15000000596046448,
+      1.1749999523162842,
+      -0.0
+    ],
+    [
+      0.38999998569488525,
+      1.024999976158142,
+      -0.0
+    ],
+    [
+      0.5550000071525574,
+      0.925000011920929,
+      -0.0
+    ],
+    [
+      -0.20999999344348907,
+      0.625,
+      -0.0
+    ],
+    [
+      -0.33000001311302185,
+      0.42500001192092896,
+      -0.0
+    ],
+    [
+      -0.30000001192092896,
+      0.20000000298023224,
+      -0.0
+    ],
+    [
+      0.09000000357627869,
+      0.625,
+      -0.0
+    ],
+    [
+      0.20999999344348907,
+      0.42500001192092896,
+      -0.0
+    ],
+    [
+      0.18000000715255737,
+      0.20000000298023224,
+      -0.0
+    ],
+    [
+      0.6600000262260437,
+      0.925000011920929,
+      -0.0
+    ],
+    [
+      0.029999999329447746,
+      1.024999976158142,
+      -0.23000000417232513
+    ]
+  ],
+  "parts": [
+    {
+      "name": "Tail",
+      "first": 0,
+      "count": 5520
+    },
+    {
+      "name": "Backpack",
+      "first": 5520,
+      "count": 1284
+    },
+    {
+      "name": "Backpack pocket",
+      "first": 6804,
+      "count": 1284
+    },
+    {
+      "name": "Leather shoulder strap",
+      "first": 8088,
+      "count": 3588
+    },
+    {
+      "name": "Leather shoulder strap.001",
+      "first": 11676,
+      "count": 3588
+    },
+    {
+      "name": "Body under coat",
+      "first": 15264,
+      "count": 5520
+    },
+    {
+      "name": "Tailored coat torso",
+      "first": 20784,
+      "count": 5520
+    },
+    {
+      "name": "Waistcoat",
+      "first": 26304,
+      "count": 5520
+    },
+    {
+      "name": "Coat lapel",
+      "first": 31824,
+      "count": 5520
+    },
+    {
+      "name": "Coat lapel.001",
+      "first": 37344,
+      "count": 5520
+    },
+    {
+      "name": "Brass button",
+      "first": 42864,
+      "count": 864
+    },
+    {
+      "name": "Brass button.001",
+      "first": 43728,
+      "count": 864
+    },
+    {
+      "name": "Brass button.002",
+      "first": 44592,
+      "count": 864
+    },
+    {
+      "name": "Brass button.003",
+      "first": 45456,
+      "count": 864
+    },
+    {
+      "name": "Brass button.004",
+      "first": 46320,
+      "count": 864
+    },
+    {
+      "name": "Brass button.005",
+      "first": 47184,
+      "count": 864
+    },
+    {
+      "name": "Left sleeve",
+      "first": 48048,
+      "count": 3588
+    },
+    {
+      "name": "Right sleeve",
+      "first": 51636,
+      "count": 3588
+    },
+    {
+      "name": "Cuff L",
+      "first": 55224,
+      "count": 5520
+    },
+    {
+      "name": "Cuff R",
+      "first": 60744,
+      "count": 5520
+    },
+    {
+      "name": "Left palm",
+      "first": 66264,
+      "count": 5520
+    },
+    {
+      "name": "Left finger",
+      "first": 71784,
+      "count": 1320
+    },
+    {
+      "name": "Left finger.001",
+      "first": 73104,
+      "count": 1320
+    },
+    {
+      "name": "Left finger.002",
+      "first": 74424,
+      "count": 1320
+    },
+    {
+      "name": "Left finger.003",
+      "first": 75744,
+      "count": 1320
+    },
+    {
+      "name": "Right palm",
+      "first": 77064,
+      "count": 5520
+    },
+    {
+      "name": "Left leg",
+      "first": 82584,
+      "count": 3588
+    },
+    {
+      "name": "Right leg",
+      "first": 86172,
+      "count": 3588
+    },
+    {
+      "name": "Left foot",
+      "first": 89760,
+      "count": 5520
+    },
+    {
+      "name": "Right foot",
+      "first": 95280,
+      "count": 5520
+    },
+    {
+      "name": "Head",
+      "first": 100800,
+      "count": 14976
+    },
+    {
+      "name": "Left ear",
+      "first": 115776,
+      "count": 5520
+    },
+    {
+      "name": "Right ear",
+      "first": 121296,
+      "count": 5520
+    },
+    {
+      "name": "Beret",
+      "first": 126816,
+      "count": 5520
+    },
+    {
+      "name": "Beret brim",
+      "first": 132336,
+      "count": 5520
+    },
+    {
+      "name": "Beret stem",
+      "first": 137856,
+      "count": 5520
+    },
+    {
+      "name": "Muzzle",
+      "first": 143376,
+      "count": 5520
+    },
+    {
+      "name": "Nose",
+      "first": 148896,
+      "count": 2160
+    },
+    {
+      "name": "Suitcase",
+      "first": 151056,
+      "count": 1284
+    },
+    {
+      "name": "Luggage wheel",
+      "first": 152340,
+      "count": 1320
+    },
+    {
+      "name": "Luggage wheel.001",
+      "first": 153660,
+      "count": 1320
+    },
+    {
+      "name": "Handle rail",
+      "first": 154980,
+      "count": 708
+    },
+    {
+      "name": "Handle rail.001",
+      "first": 155688,
+      "count": 708
+    },
+    {
+      "name": "Grip",
+      "first": 156396,
+      "count": 708
+    }
+  ],
+  "clips": [
+    {
+      "name": "Idle",
+      "frames": 109,
+      "fps": 30,
+      "offset": 0,
+      "loop": true
+    },
+    {
+      "name": "Wave",
+      "frames": 73,
+      "fps": 30,
+      "offset": 34880,
+      "loop": false
+    },
+    {
+      "name": "Walk",
+      "frames": 31,
+      "fps": 30,
+      "offset": 58240,
+      "loop": true
+    },
+    {
+      "name": "Jump",
+      "frames": 43,
+      "fps": 30,
+      "offset": 68160,
+      "loop": false
+    }
+  ]
+}
