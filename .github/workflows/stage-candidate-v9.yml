@@ -1,0 +1,29 @@
+name: Stage v9 unsigned build in draft release
+on:
+  push:
+    branches: [release-apk]
+    paths: [.github/workflows/stage-candidate-v9.yml]
+permissions:
+  contents: write
+  actions: read
+jobs:
+  stage:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: unsigned-v9-941a1dc763d48de87ce864b97e5a9b1e6d279b26
+          run-id: 38849040170
+          github-token: ${{ github.token }}
+          path: candidate
+      - name: Stage verified source candidate in draft only
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+        run: |
+          test "$(cat candidate/source-commit.txt)" = 941a1dc763d48de87ce864b97e5a9b1e6d279b26
+          test "$(gh release view v9 --json isDraft --jq .isDraft)" = true
+          cd candidate
+          zip -qr ../ReiseDeutsch-v9-unsigned-build.zip .
+          cd ..
+          gh release upload v9 ReiseDeutsch-v9-unsigned-build.zip
